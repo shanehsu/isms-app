@@ -8,7 +8,7 @@ services.factory('token', ['$resource', '$localStorage', function($resource, $lo
     });
     return {
         valid: function() {
-            
+
         },
         get: function() {
             return $localStorage.token;
@@ -18,7 +18,7 @@ services.factory('token', ['$resource', '$localStorage', function($resource, $lo
 
 // News
 services.factory('news', ['$resource', function($resource) {
-    return $resource('http://192.168.1.12:3000/news/', {}, {
+    return $resource('http://localhost:3000/news/', {}, {
         latest: {method: 'GET', params: {}, isArray: true}
     });
 }]);
