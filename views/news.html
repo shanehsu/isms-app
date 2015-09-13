@@ -1,0 +1,34 @@
+<h2>最新消息</h2>
+
+<div class="spinner" ng-if="state == 0">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+
+<table class="table table-striped" ng-if="state == 1">
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>來源</th>
+            <th>新聞簡介</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="piece in news">
+            <td>{{piece.date | date:'y 年 M 月 d 日'}}</td>
+            <td>{{piece.source}}</td>
+            <td><a href="{{piece.link}}">{{piece.summary}}</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="alert alert-danger" role="alert" ng-if="state == -1">
+    無法載入最新消息
+</div>
+
+<div>
+    <h4>{{token}}</h4>
+</div>
