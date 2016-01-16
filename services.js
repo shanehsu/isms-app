@@ -18,7 +18,7 @@ services.factory('token', ['$resource', '$localStorage', function($resource, $lo
 
 // News
 services.factory('news', ['$resource', function($resource) {
-    return $resource('http://localhost:3000/news/', {}, {
+    return $resource('http://infinite-temple-3140.herokuapp.com/pieces', {}, {
         latest: {method: 'GET', params: {}, isArray: true}
     });
 }]);
