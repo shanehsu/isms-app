@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "angular2": "2.0.0-beta.0",
+    "bootstrap": "^4.0.0-alpha.2",
     "concurrently": "^1.0.0",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
