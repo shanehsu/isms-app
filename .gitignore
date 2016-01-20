@@ -27,4 +27,4 @@ build/Release
 node_modules
 
 # TypeScript Compiled Source
-dist/
+# Uploaded because Azure does not run "npm start"
