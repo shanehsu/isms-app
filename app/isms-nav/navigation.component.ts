@@ -18,9 +18,5 @@ export class NavigationComponent implements OnInit {
       this._router.navigate([item.component]);
     }
     
-    isActive(item: NavigationItem) {
-      return this._router.lastNavigationAttempt.startsWith(item.route);
-    }
-    
     constructor(private _router: Router, @Inject('app.config') private _config) {}
 }

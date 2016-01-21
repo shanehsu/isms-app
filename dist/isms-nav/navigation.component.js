@@ -33,9 +33,6 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
                 NavigationComponent.prototype.navigate = function (item) {
                     this._router.navigate([item.component]);
                 };
-                NavigationComponent.prototype.isActive = function (item) {
-                    return this._router.lastNavigationAttempt.startsWith(item.route);
-                };
                 NavigationComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-nav',
