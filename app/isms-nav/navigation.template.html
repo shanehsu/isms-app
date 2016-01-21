@@ -6,7 +6,7 @@
     <div class="nav navbar-nav collapse navbar-toggleable-xs" id="navbar">
       <a class="navbar-brand">ISMS 資訊安全系統</a>
       <a class="nav-item nav-link" *ngFor="#item of navigationItems"
-         [class.active]="_router.lastNavigationAttempt.startsWith(item.route)"
+         [class.active]="isActive(item)"
          (click)="navigate(item)">{{item.item}}</a>
     </div>
   </nav>

@@ -23,8 +23,9 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
             }],
         execute: function() {
             NavigationComponent = (function () {
-                function NavigationComponent(_router, _config) {
+                function NavigationComponent(_router, _location, _config) {
                     this._router = _router;
+                    this._location = _location;
                     this._config = _config;
                 }
                 NavigationComponent.prototype.ngOnInit = function () {
@@ -33,13 +34,16 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
                 NavigationComponent.prototype.navigate = function (item) {
                     this._router.navigate([item.component]);
                 };
+                NavigationComponent.prototype.isActive = function (item) {
+                    return this._location.path().startsWith(item.route);
+                };
                 NavigationComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-nav',
                         templateUrl: '/app/isms-nav/navigation.template.html'
                     }),
-                    __param(1, core_1.Inject('app.config')), 
-                    __metadata('design:paramtypes', [router_1.Router, Object])
+                    __param(2, core_1.Inject('app.config')), 
+                    __metadata('design:paramtypes', [router_1.Router, router_1.Location, Object])
                 ], NavigationComponent);
                 return NavigationComponent;
             })();

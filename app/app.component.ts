@@ -1,5 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Router, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 import {NavigationComponent} from './isms-nav/navigation.component'
 import {AdminIndexComponent} from './admin/isms-admin-index/admin-index.component'
@@ -8,7 +8,7 @@ import {NewsComponent}       from './isms-news/news.component'
 @Component({
     selector: 'isms-app',
     template:`
-    <isms-nav></isms-nav>
+    <isms-nav [currentRoute]="_router.lastNavigationAttempt"></isms-nav>
     <router-outlet></router-outlet>
     `,
     directives: [NavigationComponent, ROUTER_DIRECTIVES]
@@ -21,7 +21,7 @@ import {NewsComponent}       from './isms-news/news.component'
     component: NewsComponent,
     useAsDefault: true
   }, {
-    path: '/admin/...',
+    path: '/admin',
     name: 'Admin',
     component: AdminIndexComponent
   }
@@ -32,5 +32,5 @@ export class AppComponent implements OnInit {
         
     }
     
-    constructor() {}
+    constructor(private _router: Router) {}
 }

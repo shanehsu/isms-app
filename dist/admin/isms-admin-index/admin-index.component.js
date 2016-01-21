@@ -29,8 +29,7 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
                         selector: 'isms-admin-index',
                         template: "\n    <h2>Admin Index</h2>\n    <router-outlet></router-outlet>\n    ",
                         directives: [router_1.ROUTER_DIRECTIVES]
-                    }),
-                    router_1.RouteConfig([]), 
+                    }), 
                     __metadata('design:paramtypes', [])
                 ], AdminIndexComponent);
                 return AdminIndexComponent;

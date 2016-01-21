@@ -10,9 +10,8 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
     directives: [ROUTER_DIRECTIVES]
 })
 
-@RouteConfig([
-  
-])
+// @RouteConfig([
+// ])
 
 export class AdminIndexComponent implements OnInit {
     ngOnInit() {

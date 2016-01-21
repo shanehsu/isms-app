@@ -29,14 +29,15 @@ System.register(['angular2/core', 'angular2/router', './isms-nav/navigation.comp
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent() {
+                function AppComponent(_router) {
+                    this._router = _router;
                 }
                 AppComponent.prototype.ngOnInit = function () {
                 };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-app',
-                        template: "\n    <isms-nav></isms-nav>\n    <router-outlet></router-outlet>\n    ",
+                        template: "\n    <isms-nav [currentRoute]=\"_router.lastNavigationAttempt\"></isms-nav>\n    <router-outlet></router-outlet>\n    ",
                         directives: [navigation_component_1.NavigationComponent, router_1.ROUTER_DIRECTIVES]
                     }),
                     router_1.RouteConfig([
@@ -46,12 +47,12 @@ System.register(['angular2/core', 'angular2/router', './isms-nav/navigation.comp
                             component: news_component_1.NewsComponent,
                             useAsDefault: true
                         }, {
-                            path: '/admin/...',
+                            path: '/admin',
                             name: 'Admin',
                             component: admin_index_component_1.AdminIndexComponent
                         }
                     ]), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [router_1.Router])
                 ], AppComponent);
                 return AppComponent;
             })();
