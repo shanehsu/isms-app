@@ -1,0 +1,13 @@
+<div class="container" role="navigation">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar">
+      &#9776;
+    </button>
+    <div class="nav navbar-nav collapse navbar-toggleable-xs" id="navbar">
+      <a class="navbar-brand">ISMS 資訊安全系統</a>
+      <a class="nav-item nav-link" *ngFor="#item of navigationItems" [class.active]="isActive(item)" (click)="navigate(item)">{{item.item}}</a>
+    </div>
+  </nav>
+</div>
+
+<p></p>

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     
+    <base href="/">
+    
     <title>Angular 2 QuickStart</title>
 
     <!-- 1. Load libraries -->
@@ -13,9 +15,14 @@
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="node_modules/rxjs/bundles/Rx.js"></script>
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+    <script src="https://cdn.polyfill.io/v1/polyfill.js?features=Intl.~locale.zh-tw,Intl.~locale.en"></script>
+    
+    <script src="node_modules/angular2/bundles/router.dev.js"></script>
+    <script src="node_modules/angular2/bundles/http.dev.js"></script>
     
     <!-- Bootstrap 4 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.1.1/js/tether.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     
@@ -37,6 +44,6 @@
 
   <!-- 3. Display the application -->
   <body>
-    <my-app>載入應用程式中⋯⋯</my-app>
+    <isms-app>載入應用程式中⋯⋯</isms-app>
   </body>
 </html>
