@@ -11,7 +11,7 @@ export class NewsService {
   }
   
   retrieve(fromDate = Date()) {
-    return new Promise<Piece[]>(resolve => 
+    return new Promise<Piece[]>((resolve, reject) => 
       this._http.get(this._baseURL)
           .map(response => response.json())
           .subscribe(
@@ -28,7 +28,10 @@ export class NewsService {
               }
               resolve(pieces);
             },
-            err  => console.error(err),
+            err  => {
+              reject();
+              console.error(err)
+            },
             ()   => console.log("HTTP GET Complete.")
           )
     );
