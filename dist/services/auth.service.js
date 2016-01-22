@@ -30,7 +30,7 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                 }
                 AuthService.prototype.login = function (email) {
                     var _this = this;
-                    return new Promise(function (resolve) {
+                    return new Promise(function (resolve, reject) {
                         var endpoint = _this._baseURL + '/login';
                         var headers = new http_1.Headers();
                         headers.append('Content-Type', 'application/json');
@@ -42,8 +42,8 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                             .map(function (res) { return res.text(); })
                             .subscribe(function (data) {
                             localStorage.setItem('token', data);
-                            resolve(true);
-                        }, function (err) { return resolve(false); }, function () { return console.log('Authentication Complete'); });
+                            resolve();
+                        }, function (err) { return reject(); });
                     });
                 };
                 AuthService.prototype.has_token = function () {
@@ -56,7 +56,7 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                 };
                 AuthService.prototype.validate_token = function () {
                     var _this = this;
-                    return new Promise(function (resolve) {
+                    return new Promise(function (resolve, reject) {
                         if (_this.retrieve_token()) {
                             var endpoint = _this._baseURL + '/valid';
                             var headers = new http_1.Headers();
@@ -75,7 +75,7 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                                     _this.remove_token();
                                     resolve(false);
                                 }
-                            }, function (err) { return resolve(false); }, function () { return console.log('Authentication Complete'); });
+                            }, function (err) { return resolve(false); });
                         }
                     });
                 };
@@ -92,6 +92,45 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                         localStorage.removeItem('token');
                     }
                 };
+                AuthService.prototype.me = function () {
+                    var _this = this;
+                    if (!this.has_token) {
+                        return Promise.reject('no token in local storage');
+                    }
+                    else {
+                        return new Promise(function (resolve, reject) {
+                            var endpoint = _this._config.endpoint + '/users/me';
+                            var headers = new http_1.Headers();
+                            headers.append('Content-Type', 'application/json');
+                            headers.append('token', _this.retrieve_token());
+                            _this._http.get(endpoint, {
+                                headers: headers
+                            }).map(function (response) { return response.json(); })
+                                .subscribe(function (data) {
+                                resolve({
+                                    id: data._id,
+                                    email: data.email,
+                                    name: data.name,
+                                    title: data.title,
+                                    group: data.group,
+                                    unit: data.unit,
+                                    tokens: data.tokens.map(function (value) {
+                                        return {
+                                            id: value._id,
+                                            origin: value.origin,
+                                            token: value.token,
+                                            userAgent: value.userAgent,
+                                            used: new Date(value.used)
+                                        };
+                                    })
+                                });
+                            }, function (err) {
+                                console.error(err);
+                                reject();
+                            });
+                        });
+                    }
+                };
                 AuthService = __decorate([
                     core_1.Injectable(),
                     __param(1, core_1.Inject("app.config")), 
@@ -103,32 +142,4 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
         }
     }
 });
-/*
-authenticate(data) {
-  var username = data.credentials.username;
-  var password = data.credentials.password;
-
-  var creds = "username=" + username + "&password=" + password;
-
-  var headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-  this.http.post('http://localhost:3001/sessions/create', creds, {
-    headers: headers
-    })
-    .map(res => res.json())
-    .subscribe(
-      data => this.saveJwt(data.id_token),
-      err => this.logError(err),
-      () => console.log('Authentication Complete')
-    );
-}
-
-saveJwt(jwt) {
-  if(jwt) {
-    localStorage.setItem('id_token', jwt)
-  }
-}
- */
-// TODO: Identity Object and /auth/me 
 //# sourceMappingURL=auth.service.js.map

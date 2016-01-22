@@ -31,8 +31,7 @@ export class NewsService {
             err  => {
               reject();
               console.error(err)
-            },
-            ()   => console.log("HTTP GET Complete.")
+            }
           )
     );
   }

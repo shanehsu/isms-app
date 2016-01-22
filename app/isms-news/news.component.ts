@@ -16,7 +16,7 @@ export class NewsComponent implements OnInit {
   
   ngOnInit() {
     this.pieces = [];
-    this._newsService.retrieve().then(pieces => this.pieces = pieces).then(pieces => console.log(pieces));
+    this._newsService.retrieve().then(pieces => this.pieces = pieces);
   }
   
   constructor(private _newsService: NewsService) {}

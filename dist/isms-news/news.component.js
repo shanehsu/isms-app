@@ -26,7 +26,7 @@ System.register(['angular2/core', './../services/news.service'], function(export
                 NewsComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.pieces = [];
-                    this._newsService.retrieve().then(function (pieces) { return _this.pieces = pieces; }).then(function (pieces) { return console.log(pieces); });
+                    this._newsService.retrieve().then(function (pieces) { return _this.pieces = pieces; });
                 };
                 NewsComponent = __decorate([
                     core_1.Component({

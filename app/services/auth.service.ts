@@ -11,8 +11,8 @@ export class AuthService {
     this._baseURL = _config.endpoint + '/auth';
   }
   
-  login(email: string) : Promise<boolean> {
-    return new Promise<boolean>(resolve => {
+  login(email: string) : Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       var endpoint = this._baseURL + '/login';
       var headers = new Headers();
       headers.append('Content-Type', 'application/json');
@@ -26,9 +26,9 @@ export class AuthService {
       .subscribe(
         data => {
           localStorage.setItem('token', data);
-          resolve(true);
+          resolve();
         },
-        err => resolve(false)
+        err => reject()
       )
     });
   }
@@ -98,7 +98,7 @@ export class AuthService {
         }).map(response => response.json())
           .subscribe(
             data => {
-              return {
+              resolve({
                 id: data._id,
                 email: data.email,
                 name: data.name,
@@ -114,7 +114,7 @@ export class AuthService {
                     used: new Date(value.used)
                   }
                 })
-              };
+              });
             },
             err  => {
               console.error(err);

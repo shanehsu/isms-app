@@ -7,5 +7,5 @@ export interface User {
   title: string;
   group: number;
   unit: string;
-  tokens: [Token];
+  tokens: Token[];
 }
