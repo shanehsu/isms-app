@@ -26,12 +26,12 @@ System.register(['angular2/core', './../services/news.service'], function(export
                 NewsComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.pieces = [];
-                    this._newsService.retrieve().then(function (pieces) { return _this.pieces = pieces; }).then(function (pieces) { return console.log(pieces); });
+                    this._newsService.retrieve().then(function (pieces) { return _this.pieces = pieces; });
                 };
                 NewsComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-news',
-                        template: "\n    <div class=\"container\">\n      <h2>\u6700\u65B0\u6D88\u606F</h2>\n      <table class=\"table table-striped\" ng-if=\"state == 1\">\n          <thead>\n              <tr>\n                  <th>\u65E5\u671F</th>\n                  <th>\u4F86\u6E90</th>\n                  <th>\u65B0\u805E\u7C21\u4ECB</th>\n              </tr>\n          </thead>\n          <tbody>\n              <tr *ngFor=\"#piece of pieces\">\n                  <td>{{piece.date | date: 'longDate'}}</td>\n                  <td>{{piece.source}}</td>\n                  <td><a [href]=\"piece.link\">{{piece.summary}}</a></td>\n              </tr>\n          </tbody>\n      </table>\n    </div>\n    ",
+                        templateUrl: '/app/isms-news/news.template.html',
                         providers: [news_service_1.NewsService]
                     }), 
                     __metadata('design:paramtypes', [news_service_1.NewsService])

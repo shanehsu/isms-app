@@ -8,7 +8,7 @@ import {NewsComponent}       from './isms-news/news.component'
 @Component({
     selector: 'isms-app',
     template:`
-    <isms-nav [currentRoute]="_router.lastNavigationAttempt"></isms-nav>
+    <isms-nav></isms-nav>
     <router-outlet></router-outlet>
     `,
     directives: [NavigationComponent, ROUTER_DIRECTIVES]
@@ -21,7 +21,7 @@ import {NewsComponent}       from './isms-news/news.component'
     component: NewsComponent,
     useAsDefault: true
   }, {
-    path: '/admin',
+    path: '/admin/...',
     name: 'Admin',
     component: AdminIndexComponent
   }

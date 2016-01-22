@@ -5,9 +5,14 @@
     </button>
     <div class="nav navbar-nav collapse navbar-toggleable-xs" id="navbar">
       <a class="navbar-brand">ISMS 資訊安全系統</a>
-      <a class="nav-item nav-link" *ngFor="#item of navigationItems"
-         [class.active]="isActive(item)"
-         (click)="navigate(item)">{{item.item}}</a>
+      <template ngFor #item [ngForOf]="navigationItems">
+        <a class="nav-item nav-link" *ngIf="item.privilege >= privilege"
+           [class.active]="isActive(item)"
+           (click)="navigate(item)">{{item.item}}</a>
+      </template>
+      <div class="pull-xs-right">
+        <isms-nav-login (authStatusDidChange)="renewPrivilege()"></isms-nav-login>
+      </div>
     </div>
   </nav>
 </div>

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './../news-admin/news-admin.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1;
+    var core_1, router_1, news_admin_component_1;
     var AdminIndexComponent;
     return {
         setters:[
@@ -17,6 +17,9 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (news_admin_component_1_1) {
+                news_admin_component_1 = news_admin_component_1_1;
             }],
         execute: function() {
             AdminIndexComponent = (function () {
@@ -27,9 +30,17 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1) {
                 AdminIndexComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-admin-index',
-                        template: "\n    <h2>Admin Index</h2>\n    <router-outlet></router-outlet>\n    ",
+                        templateUrl: '/app/admin/isms-admin-index/admin-index.template.html',
                         directives: [router_1.ROUTER_DIRECTIVES]
-                    }), 
+                    }),
+                    router_1.RouteConfig([
+                        {
+                            path: '/news',
+                            name: 'NewsAdmin',
+                            component: news_admin_component_1.NewsAdminComponent,
+                            useAsDefault: true
+                        }
+                    ]), 
                     __metadata('design:paramtypes', [])
                 ], AdminIndexComponent);
                 return AdminIndexComponent;

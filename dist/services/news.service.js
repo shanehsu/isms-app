@@ -31,7 +31,7 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                 NewsService.prototype.retrieve = function (fromDate) {
                     var _this = this;
                     if (fromDate === void 0) { fromDate = Date(); }
-                    return new Promise(function (resolve) {
+                    return new Promise(function (resolve, reject) {
                         return _this._http.get(_this._baseURL)
                             .map(function (response) { return response.json(); })
                             .subscribe(function (data) {
@@ -47,7 +47,10 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                                 });
                             }
                             resolve(pieces);
-                        }, function (err) { return console.error(err); }, function () { return console.log("HTTP GET Complete."); });
+                        }, function (err) {
+                            reject();
+                            console.error(err);
+                        });
                     });
                 };
                 NewsService = __decorate([

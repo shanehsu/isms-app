@@ -1,0 +1,14 @@
+<div [ngSwitch]="_state">
+  <template [ngSwitchWhen]="-1" ngSwitchDefault>
+    <a class="nav-item nav-link active" >請稍等⋯⋯</a>
+  </template>
+  <template [ngSwitchWhen]="0">
+    <form class="form-inline">
+      <input #email class="form-control" type="text" placeholder="Email">
+      <a class="btn btn-success-outline" (click)="login(email.value)">Login</a>
+    </form>
+  </template>
+  <template [ngSwitchWhen]="1">
+    <span class="nav-item nav-link active" >{{_currentUser.name}}（<a (click)="logout()">登出</a>）</span>
+  </template>
+</div>
