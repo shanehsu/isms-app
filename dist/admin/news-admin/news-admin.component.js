@@ -28,8 +28,7 @@ System.register(['angular2/core', './../../services/news.service'], function(exp
                 NewsAdminComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-news-admin',
-                        templateUrl: '/app/admin/news-admin/news-admin.template.html',
-                        providers: [news_service_1.NewsService]
+                        templateUrl: '/app/admin/news-admin/news-admin.template.html'
                     }), 
                     __metadata('design:paramtypes', [news_service_1.NewsService])
                 ], NewsAdminComponent);

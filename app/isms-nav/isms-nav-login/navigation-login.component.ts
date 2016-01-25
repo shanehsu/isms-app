@@ -7,8 +7,7 @@ import {User}              from './../../types/user'
 
 @Component({
     selector: 'isms-nav-login',
-    templateUrl: '/app/isms-nav/isms-nav-login/navigation-login.template.html',
-    providers: [TokenService]
+    templateUrl: '/app/isms-nav/isms-nav-login/navigation-login.template.html'
 })
 
 export class NavigationLoginComponent implements OnInit {

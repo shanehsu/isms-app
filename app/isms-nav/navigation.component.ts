@@ -7,8 +7,7 @@ import {AuthService}               from './../services/auth.service'
 @Component({
     selector: 'isms-nav',
     templateUrl: '/app/isms-nav/navigation.template.html',
-    directives: [NavigationLoginComponent],
-    providers: [AuthService]
+    directives: [NavigationLoginComponent]
 })
 
 export class NavigationComponent implements OnInit {

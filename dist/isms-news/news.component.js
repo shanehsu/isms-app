@@ -25,14 +25,23 @@ System.register(['angular2/core', './../services/news.service'], function(export
                 }
                 NewsComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    this.currentPage = 1;
                     this.pieces = [];
-                    this._newsService.retrieve().then(function (pieces) { return _this.pieces = pieces; });
+                    this._newsService.retrieve().then(function (pieces) {
+                        _this.pieces = pieces;
+                        _this.piecesView = _this.pieces.slice(0, 10);
+                    });
+                };
+                NewsComponent.prototype.older = function () {
+                    this.currentPage++;
+                };
+                NewsComponent.prototype.newer = function () {
+                    this.currentPage--;
                 };
                 NewsComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-news',
-                        templateUrl: '/app/isms-news/news.template.html',
-                        providers: [news_service_1.NewsService]
+                        templateUrl: '/app/isms-news/news.template.html'
                     }), 
                     __metadata('design:paramtypes', [news_service_1.NewsService])
                 ], NewsComponent);

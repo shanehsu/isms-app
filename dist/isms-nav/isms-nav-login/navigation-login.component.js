@@ -79,8 +79,7 @@ System.register(['angular2/core', './../../services/auth.service', './../../serv
                 NavigationLoginComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-nav-login',
-                        templateUrl: '/app/isms-nav/isms-nav-login/navigation-login.template.html',
-                        providers: [token_service_1.TokenService]
+                        templateUrl: '/app/isms-nav/isms-nav-login/navigation-login.template.html'
                     }), 
                     __metadata('design:paramtypes', [auth_service_1.AuthService, token_service_1.TokenService])
                 ], NavigationLoginComponent);

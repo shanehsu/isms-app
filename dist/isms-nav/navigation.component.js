@@ -60,8 +60,7 @@ System.register(['angular2/core', 'angular2/router', './isms-nav-login/navigatio
                     core_1.Component({
                         selector: 'isms-nav',
                         templateUrl: '/app/isms-nav/navigation.template.html',
-                        directives: [navigation_login_component_1.NavigationLoginComponent],
-                        providers: [auth_service_1.AuthService]
+                        directives: [navigation_login_component_1.NavigationLoginComponent]
                     }),
                     __param(3, core_1.Inject('app.config')), 
                     __metadata('design:paramtypes', [router_1.Router, router_1.Location, auth_service_1.AuthService, Object])

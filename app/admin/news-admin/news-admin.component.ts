@@ -7,8 +7,7 @@ import {Piece}             from './../../types/piece'
 
 @Component({
     selector: 'isms-news-admin',
-    templateUrl: '/app/admin/news-admin/news-admin.template.html',
-    providers: [NewsService]
+    templateUrl: '/app/admin/news-admin/news-admin.template.html'
 })
 
 export class NewsAdminComponent implements OnInit {
