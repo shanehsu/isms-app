@@ -124,4 +124,10 @@ export class AuthService {
       })
     }
   }
+  
+  privilege() : Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      this.me().then(me => resolve(me.group)).catch(reject);
+    })
+  }
 }

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './isms-nav-login/navigation-login.component', './../services/auth.service'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './../services/auth.service', './isms-nav-login/navigation-login.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,7 +11,7 @@ System.register(['angular2/core', 'angular2/router', './isms-nav-login/navigatio
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, router_1, navigation_login_component_1, auth_service_1;
+    var core_1, router_1, auth_service_1, navigation_login_component_1;
     var NavigationComponent;
     return {
         setters:[
@@ -21,11 +21,11 @@ System.register(['angular2/core', 'angular2/router', './isms-nav-login/navigatio
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (navigation_login_component_1_1) {
-                navigation_login_component_1 = navigation_login_component_1_1;
-            },
             function (auth_service_1_1) {
                 auth_service_1 = auth_service_1_1;
+            },
+            function (navigation_login_component_1_1) {
+                navigation_login_component_1 = navigation_login_component_1_1;
             }],
         execute: function() {
             NavigationComponent = (function () {

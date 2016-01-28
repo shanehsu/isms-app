@@ -1,12 +1,7 @@
 "use strict"
 
 import {NavigationItem} from './types/navigation-item'
-
-interface Config {
-  endpoint: string;
-  navigationItems: [NavigationItem];
-  adminItems: [NavigationItem]
-}
+import {Config} from './types/config'
 
 export var config: Config = {
     endpoint: 'http://infinite-temple-3140.herokuapp.com',
@@ -26,9 +21,15 @@ export var config: Config = {
     ],
     adminItems: [
       {
-        item: "編輯最新消息",
+        item: "最新消息",
         component: "NewsAdmin",
         route: "/news",
+        privilege: 1
+      },
+      {
+        item: "使用者",
+        component: "UserAdmin",
+        route: "/user",
         privilege: 1
       }
     ]

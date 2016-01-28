@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './../news-admin/news-admin.component'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './../../services/auth.service', './../news-admin/news-admin.component', './../user-admin/user-admin.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,10 @@ System.register(['angular2/core', 'angular2/router', './../news-admin/news-admin
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, news_admin_component_1;
+    var __param = (this && this.__param) || function (paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    };
+    var core_1, router_1, auth_service_1, news_admin_component_1, user_admin_component_1;
     var AdminIndexComponent;
     return {
         setters:[
@@ -18,14 +21,34 @@ System.register(['angular2/core', 'angular2/router', './../news-admin/news-admin
             function (router_1_1) {
                 router_1 = router_1_1;
             },
+            function (auth_service_1_1) {
+                auth_service_1 = auth_service_1_1;
+            },
             function (news_admin_component_1_1) {
                 news_admin_component_1 = news_admin_component_1_1;
+            },
+            function (user_admin_component_1_1) {
+                user_admin_component_1 = user_admin_component_1_1;
             }],
         execute: function() {
             AdminIndexComponent = (function () {
-                function AdminIndexComponent() {
+                function AdminIndexComponent(_router, _authService, _location, _config) {
+                    this._router = _router;
+                    this._authService = _authService;
+                    this._location = _location;
+                    this._config = _config;
                 }
                 AdminIndexComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.privilege = 4;
+                    this.adminItems = this._config.adminItems;
+                    this._authService.privilege().then(function (p) { return _this.privilege = p; });
+                };
+                AdminIndexComponent.prototype.isActive = function (item) {
+                    return this._location.path().startsWith('/admin' + item.route);
+                };
+                AdminIndexComponent.prototype.navigate = function (item) {
+                    this._router.navigate([item.component]);
                 };
                 AdminIndexComponent = __decorate([
                     core_1.Component({
@@ -39,9 +62,15 @@ System.register(['angular2/core', 'angular2/router', './../news-admin/news-admin
                             name: 'NewsAdmin',
                             component: news_admin_component_1.NewsAdminComponent,
                             useAsDefault: true
+                        },
+                        {
+                            path: '/user',
+                            name: 'UserAdmin',
+                            component: user_admin_component_1.UserAdminComponent
                         }
-                    ]), 
-                    __metadata('design:paramtypes', [])
+                    ]),
+                    __param(3, core_1.Inject('app.config')), 
+                    __metadata('design:paramtypes', [router_1.Router, auth_service_1.AuthService, router_1.Location, Object])
                 ], AdminIndexComponent);
                 return AdminIndexComponent;
             })();

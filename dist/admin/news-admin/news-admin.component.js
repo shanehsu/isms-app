@@ -24,10 +24,19 @@ System.register(['angular2/core', './../../services/news.service'], function(exp
                     this._newsService = _newsService;
                 }
                 NewsAdminComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._pieces = [];
+                    this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                };
+                NewsAdminComponent.prototype.edit = function (id) {
+                    console.log('I will edit!');
+                };
+                NewsAdminComponent.prototype.delete = function (id) {
+                    console.log('I will delete');
                 };
                 NewsAdminComponent = __decorate([
                     core_1.Component({
-                        selector: 'isms-news-admin',
+                        selector: 'news-admin',
                         templateUrl: '/app/admin/news-admin/news-admin.template.html'
                     }), 
                     __metadata('design:paramtypes', [news_service_1.NewsService])

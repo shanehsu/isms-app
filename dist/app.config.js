@@ -22,9 +22,15 @@ System.register([], function(exports_1) {
                 ],
                 adminItems: [
                     {
-                        item: "編輯最新消息",
+                        item: "最新消息",
                         component: "NewsAdmin",
                         route: "/news",
+                        privilege: 1
+                    },
+                    {
+                        item: "使用者",
+                        component: "UserAdmin",
+                        route: "/user",
                         privilege: 1
                     }
                 ]

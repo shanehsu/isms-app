@@ -131,6 +131,12 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                         });
                     }
                 };
+                AuthService.prototype.privilege = function () {
+                    var _this = this;
+                    return new Promise(function (resolve, reject) {
+                        _this.me().then(function (me) { return resolve(me.group); }).catch(reject);
+                    });
+                };
                 AuthService = __decorate([
                     core_1.Injectable(),
                     __param(1, core_1.Inject("app.config")), 

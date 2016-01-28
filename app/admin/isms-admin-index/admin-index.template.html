@@ -2,4 +2,21 @@
   <h2>Admin Index</h2>
 </div>
 
-<router-outlet></router-outlet>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2">
+      <ul class="nav nav-pills nav-stacked">
+      <template ngFor #item [ngForOf]="adminItems">
+        <li class="nav-item">
+          <a class="nav-link"  *ngIf="item.privilege >= privilege"
+            [class.active]="isActive(item)"
+            (click)="navigate(item)">{{item.item}}</a>
+        </li>
+      </template>
+      </ul>
+    </div>
+    <div class="col-sm-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

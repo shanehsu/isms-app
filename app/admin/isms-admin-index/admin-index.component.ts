@@ -1,7 +1,13 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, OnInit, Inject, Input} from 'angular2/core';
+import {Router, Location, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+
+import {NavigationItem} from './../../types/navigation-item'
+import {Config}         from './../../types/config'
+
+import {AuthService} from './../../services/auth.service'
 
 import {NewsAdminComponent} from './../news-admin/news-admin.component'
+import {UserAdminComponent} from './../user-admin/user-admin.component'
 
 @Component({
     selector: 'isms-admin-index',
@@ -15,13 +21,32 @@ import {NewsAdminComponent} from './../news-admin/news-admin.component'
     name: 'NewsAdmin',
     component: NewsAdminComponent,
     useAsDefault: true
+  },
+  {
+    path: '/user',
+    name: 'UserAdmin',
+    component: UserAdminComponent
   }
 ])
 
 export class AdminIndexComponent implements OnInit {
-    ngOnInit() {
-        
-    }
+  private adminItems: [NavigationItem];
+  private privilege: number;
+  
+  ngOnInit() {
+    this.privilege = 4;
+    this.adminItems =  this._config.adminItems;
     
-    constructor() {}
+    this._authService.privilege().then(p => this.privilege = p);
+  }
+  
+  isActive(item): boolean {
+    return this._location.path().startsWith('/admin' + item.route);
+  }
+  
+  navigate(item) {
+    this._router.navigate([item.component]);
+  }
+  
+  constructor(private _router: Router, private _authService: AuthService, private _location: Location, @Inject('app.config') private _config: Config) {}
 }

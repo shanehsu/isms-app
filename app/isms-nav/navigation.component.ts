@@ -1,8 +1,12 @@
 import {Component, OnInit, Inject} from 'angular2/core';
 import {Router, Location}          from 'angular2/router';
+
+import {Config}                    from './../types/config'
 import {NavigationItem}            from './../types/navigation-item'
-import {NavigationLoginComponent}  from './isms-nav-login/navigation-login.component'
+
 import {AuthService}               from './../services/auth.service'
+
+import {NavigationLoginComponent}  from './isms-nav-login/navigation-login.component'
 
 @Component({
     selector: 'isms-nav',
@@ -37,5 +41,5 @@ export class NavigationComponent implements OnInit {
     }
   }
   
-  constructor(private _router: Router, private _location: Location, private _authService: AuthService, @Inject('app.config') private _config) {}
+  constructor(private _router: Router, private _location: Location, private _authService: AuthService, @Inject('app.config') private _config: Config) {}
 }

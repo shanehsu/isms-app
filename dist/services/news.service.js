@@ -109,6 +109,49 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         }, function (err) { return reject(); });
                     });
                 };
+                NewsService.prototype.update = function (piece) {
+                    var _this = this;
+                    return new Promise(function (resolve, reject) {
+                        var header = new http_1.Headers({
+                            token: _this._authService.retrieve_token(),
+                            'Content-Type': 'application/json'
+                        });
+                        _this._http.put(_this._baseURL + '/' + piece.id, JSON.stringify({
+                            date: piece.date,
+                            link: piece.link,
+                            source: piece.source,
+                            summary: piece.summary
+                        }), header)
+                            .map(function (res) { return res.json(); })
+                            .subscribe(function (data) {
+                            var piece;
+                            piece.id = data._id;
+                            piece.date = new Date(data.date);
+                            piece.link = data.link;
+                            piece.source = data.source;
+                            piece.summary = data.summary;
+                            resolve(piece);
+                        }, function (err) { return reject(); });
+                    });
+                };
+                NewsService.prototype.delete = function (id) {
+                    var _this = this;
+                    return new Promise(function (resolve, reject) {
+                        var header = new http_1.Headers({
+                            token: _this._authService.retrieve_token()
+                        });
+                        _this._http.delete(_this._baseURL + '/' + id, header)
+                            .map(function (res) { return res.status; })
+                            .subscribe(function (data) {
+                            if (data == 200) {
+                                resolve();
+                            }
+                            else {
+                                reject();
+                            }
+                        }, function (err) { return reject(); });
+                    });
+                };
                 NewsService = __decorate([
                     core_1.Injectable(),
                     __param(2, core_1.Inject("app.config")), 
