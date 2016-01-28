@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../../services/news.service'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './news-list/news-list.component', './news-detail/news-detail.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,38 +8,48 @@ System.register(['angular2/core', './../../services/news.service'], function(exp
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, news_service_1;
+    var core_1, router_1, news_list_component_1, news_detail_component_1;
     var NewsAdminComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (news_service_1_1) {
-                news_service_1 = news_service_1_1;
+            function (router_1_1) {
+                router_1 = router_1_1;
+            },
+            function (news_list_component_1_1) {
+                news_list_component_1 = news_list_component_1_1;
+            },
+            function (news_detail_component_1_1) {
+                news_detail_component_1 = news_detail_component_1_1;
             }],
         execute: function() {
             NewsAdminComponent = (function () {
-                function NewsAdminComponent(_newsService) {
-                    this._newsService = _newsService;
+                function NewsAdminComponent() {
                 }
                 NewsAdminComponent.prototype.ngOnInit = function () {
-                    var _this = this;
-                    this._pieces = [];
-                    this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
-                };
-                NewsAdminComponent.prototype.edit = function (id) {
-                    console.log('I will edit!');
-                };
-                NewsAdminComponent.prototype.delete = function (id) {
-                    console.log('I will delete');
                 };
                 NewsAdminComponent = __decorate([
                     core_1.Component({
                         selector: 'news-admin',
-                        templateUrl: '/app/admin/news-admin/news-admin.template.html'
-                    }), 
-                    __metadata('design:paramtypes', [news_service_1.NewsService])
+                        templateUrl: '/app/admin/news-admin/news-admin.template.html',
+                        directives: [router_1.ROUTER_DIRECTIVES]
+                    }),
+                    router_1.RouteConfig([
+                        {
+                            path: '/',
+                            name: 'NewsList',
+                            component: news_list_component_1.NewsListComponent,
+                            useAsDefault: true
+                        },
+                        {
+                            path: '/:id',
+                            name: 'NewsDetail',
+                            component: news_detail_component_1.NewsDetailComponent
+                        }
+                    ]), 
+                    __metadata('design:paramtypes', [])
                 ], NewsAdminComponent);
                 return NewsAdminComponent;
             })();

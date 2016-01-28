@@ -58,7 +58,7 @@ System.register(['angular2/core', 'angular2/router', './../../services/auth.serv
                     }),
                     router_1.RouteConfig([
                         {
-                            path: '/news',
+                            path: '/news/...',
                             name: 'NewsAdmin',
                             component: news_admin_component_1.NewsAdminComponent,
                             useAsDefault: true

@@ -4,7 +4,8 @@ import {NavigationItem} from './types/navigation-item'
 import {Config} from './types/config'
 
 export var config: Config = {
-    endpoint: 'http://infinite-temple-3140.herokuapp.com',
+    // endpoint: 'http://infinite-temple-3140.herokuapp.com',
+    endpoint: 'http://localhost:3000',
     navigationItems: [
       {
         item: "最新消息",

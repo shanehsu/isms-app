@@ -82,21 +82,23 @@ export class NewsService {
         'Content-Type': 'application/json'
       });
 
-      this._http.post(this._baseURL, JSON.stringify(object), header)
-                .map(res => res.json())
-                .subscribe(
-                  data => {
-                    var piece: Piece;
-                    piece.id = data._id;
-                    piece.date = new Date(data.date);
-                    piece.link = data.link;
-                    piece.source = data.source;
-                    piece.summary = data.summary;
+      this._http.post(this._baseURL, JSON.stringify(object), {
+        headers: header
+      })
+        .map(res => res.json())
+        .subscribe(
+          data => {
+            var piece: Piece;
+            piece.id = data._id;
+            piece.date = new Date(data.date);
+            piece.link = data.link;
+            piece.source = data.source;
+            piece.summary = data.summary;
 
-                    resolve(piece);
-                  },
-                  err => reject()
-                )
+            resolve(piece);
+          },
+          err => reject()
+        )
     });
   }
 
@@ -112,7 +114,9 @@ export class NewsService {
         link: piece.link,
         source: piece.source,
         summary: piece.summary
-      }), header)
+      }), {
+        headers: header
+      })
         .map(res => res.json())
         .subscribe(
           data => {
@@ -136,7 +140,9 @@ export class NewsService {
         token: this._authService.retrieve_token()
       });
 
-      this._http.delete(this._baseURL + '/' + id, header)
+      this._http.delete(this._baseURL + '/' + id, {
+        headers: header
+      })
                 .map(res => res.status)
                 .subscribe(
                   data => {

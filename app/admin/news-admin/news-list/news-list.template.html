@@ -1,0 +1,18 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <th style="width: 20%">日期</th>
+              <th style="width: 15%">來源</th>
+              <th style="width: 55%">新聞簡介</th>
+              <th style="width: 10%">動作</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="#piece of _pieces">
+              <td>{{piece.date | date: 'longDate'}}</td>
+              <td>{{piece.source}}</td>
+              <td><a [href]="piece.link">{{piece.summary}}</a></td>
+              <td><a (click)="edit(piece.id)">編輯</a><br/><a (click)="delete(piece.id)">刪除</a></td>
+          </tr>
+      </tbody>
+  </table>

@@ -17,7 +17,7 @@ import {UserAdminComponent} from './../user-admin/user-admin.component'
 
 @RouteConfig([
   {
-    path: '/news',
+    path: '/news/...',
     name: 'NewsAdmin',
     component: NewsAdminComponent,
     useAsDefault: true

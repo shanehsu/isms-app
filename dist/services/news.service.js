@@ -96,7 +96,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             token: _this._authService.retrieve_token(),
                             'Content-Type': 'application/json'
                         });
-                        _this._http.post(_this._baseURL, JSON.stringify(object), header)
+                        _this._http.post(_this._baseURL, JSON.stringify(object), {
+                            headers: header
+                        })
                             .map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var piece;
@@ -121,7 +123,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             link: piece.link,
                             source: piece.source,
                             summary: piece.summary
-                        }), header)
+                        }), {
+                            headers: header
+                        })
                             .map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var piece;
@@ -140,7 +144,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         var header = new http_1.Headers({
                             token: _this._authService.retrieve_token()
                         });
-                        _this._http.delete(_this._baseURL + '/' + id, header)
+                        _this._http.delete(_this._baseURL + '/' + id, {
+                            headers: header
+                        })
                             .map(function (res) { return res.status; })
                             .subscribe(function (data) {
                             if (data == 200) {
