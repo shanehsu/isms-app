@@ -1,13 +1,11 @@
 import {Component, OnInit} from 'angular2/core'
 import {NgForm}    from 'angular2/common';
 
-import {Pipe}              from 'angular2/core';
-
 import {Piece}             from './../../../types/piece'
 
 import {NewsService}       from './../../../services/news.service'
 
-import {Router, RouteParams}            from 'angular2/router'
+import {Router, RouteParams} from 'angular2/router'
 
 import {DatePicker}        from './../../../controls/datepicker/datepicker.component'
 

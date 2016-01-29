@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './user-list/user-list.component'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './user-list/user-list.component', './user-detail/user-detail.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', './user-list/user-list.comp
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, user_list_component_1;
+    var core_1, router_1, user_list_component_1, user_detail_component_1;
     var UserAdminComponent;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['angular2/core', 'angular2/router', './user-list/user-list.comp
             },
             function (user_list_component_1_1) {
                 user_list_component_1 = user_list_component_1_1;
+            },
+            function (user_detail_component_1_1) {
+                user_detail_component_1 = user_detail_component_1_1;
             }],
         execute: function() {
             UserAdminComponent = (function () {
@@ -39,6 +42,11 @@ System.register(['angular2/core', 'angular2/router', './user-list/user-list.comp
                             name: 'UserList',
                             component: user_list_component_1.UserListComponent,
                             useAsDefault: true
+                        },
+                        {
+                            path: '/:id',
+                            name: 'UserDetail',
+                            component: user_detail_component_1.UserDetailComponent,
                         }
                     ]), 
                     __metadata('design:paramtypes', [])

@@ -36,7 +36,7 @@ System.register(['angular2/core', 'angular2/router', './../../../services/news.s
                 NewsListComponent.prototype.new = function () {
                     var _this = this;
                     this._newsService.create(this._newsService.fake())
-                        .then(function () { return _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); })
+                        .then(function (id) { return _this.edit(id); })
                         .catch(function () { return _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); });
                 };
                 NewsListComponent.prototype.deleteExcessive = function () {

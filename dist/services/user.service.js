@@ -32,6 +32,17 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                     this._config = _config;
                     this._baseURL = _config.endpoint + '/users';
                 }
+                UserService.prototype.emptyUser = function () {
+                    return {
+                        id: '',
+                        email: '',
+                        name: '',
+                        title: '',
+                        unit: '',
+                        group: 10,
+                        tokens: []
+                    };
+                };
                 /**
                  * If `id` is given, a list containing one user is returned. Otherwise, a list of all users is returned.
                  * Retrieving all users also means that tokens field is left out.
@@ -84,6 +95,60 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                                 tokens: []
                             };
                         })); }, function (err) { return reject(err); });
+                    });
+                };
+                UserService.prototype.new = function (user) {
+                    var _this = this;
+                    var postObject;
+                    if (user) {
+                        postObject = user;
+                        postObject.id = undefined;
+                    }
+                    else {
+                        postObject = {
+                            email: '',
+                            name: '',
+                            title: '',
+                            group: 10,
+                            tokens: []
+                        };
+                    }
+                    return new Promise(function (resolve, reject) {
+                        _this._http.post(_this._baseURL, JSON.stringify(postObject), {
+                            headers: new http_1.Headers({
+                                token: _this._authService.retrieve_token(),
+                                'Content-Type': 'application/json'
+                            })
+                        }).map(function (res) { return res.text(); }).subscribe(function (id) { return resolve(id); }, function (err) { return reject(err); });
+                    });
+                };
+                UserService.prototype.update = function (originalUser) {
+                    var _this = this;
+                    var user = Object.assign({}, originalUser);
+                    var id = user.id;
+                    var object = user;
+                    object.tokens = undefined;
+                    if (user.unit == '') {
+                        object.unit = undefined;
+                    }
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(_this._baseURL + '/' + id, JSON.stringify(object), {
+                            headers: new http_1.Headers({
+                                token: _this._authService.retrieve_token(),
+                                'Content-Type': 'application/json'
+                            })
+                        }).subscribe(function () { return resolve(); }, function (err) { return reject(err); });
+                    });
+                };
+                UserService.prototype.delete = function (id) {
+                    var _this = this;
+                    return new Promise(function (resolve, reject) {
+                        _this._http.delete(_this._baseURL + '/' + id, {
+                            headers: new http_1.Headers({
+                                token: _this._authService.retrieve_token(),
+                                'Content-Type': 'application/json'
+                            })
+                        }).subscribe(function () { return resolve(); }, function (err) { return reject(err); });
                     });
                 };
                 UserService = __decorate([

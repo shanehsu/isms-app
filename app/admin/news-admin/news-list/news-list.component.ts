@@ -23,7 +23,7 @@ export class NewsListComponent implements OnInit {
   
   new() {
     this._newsService.create(this._newsService.fake())
-        .then(() => this._newsService.retrieve().then(pieces => this._pieces = pieces))
+        .then(id => this.edit(id))
         .catch(() => this._newsService.retrieve().then(pieces => this._pieces = pieces))
   }
   

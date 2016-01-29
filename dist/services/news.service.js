@@ -127,15 +127,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         _this._http.post(_this._baseURL, JSON.stringify(object), {
                             headers: header
                         })
-                            .map(function (res) { return res.json(); })
-                            .subscribe(function (data) {
-                            var piece;
-                            piece.id = data._id;
-                            piece.date = new Date(data.date);
-                            piece.link = data.link;
-                            piece.source = data.source;
-                            piece.summary = data.summary;
-                            resolve(piece);
+                            .map(function (res) { return res.text(); })
+                            .subscribe(function (id) {
+                            resolve(id);
                         }, function (err) { return reject(); });
                     });
                 };
@@ -155,12 +149,6 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             headers: header
                         })
                             .subscribe(function (data) {
-                            // var piece: Piece;
-                            // piece.id = data._id;
-                            // piece.date = new Date(data.date);
-                            // piece.link = data.link;
-                            // piece.source = data.source;
-                            // piece.summary = data.summary;
                             resolve();
                         }, function (err) { return reject(null); });
                     });

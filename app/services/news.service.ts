@@ -101,7 +101,7 @@ export class NewsService {
   }
   
   create(piece: Piece) {
-    return new Promise<Piece>((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       let object = {
         date: piece.date.toISOString(),
         summary: piece.summary,
@@ -117,17 +117,10 @@ export class NewsService {
       this._http.post(this._baseURL, JSON.stringify(object), {
         headers: header
       })
-        .map(res => res.json())
+        .map(res => res.text())
         .subscribe(
-          data => {
-            var piece: Piece;
-            piece.id = data._id;
-            piece.date = new Date(data.date);
-            piece.link = data.link;
-            piece.source = data.source;
-            piece.summary = data.summary;
-
-            resolve(piece);
+          id => {
+            resolve(id);
           },
           err => reject()
         )
@@ -149,17 +142,8 @@ export class NewsService {
       }), {
         headers: header
       })
-        // .map(res => res.json())
         .subscribe(
           data => {
-            // var piece: Piece;
-            
-            // piece.id = data._id;
-            // piece.date = new Date(data.date);
-            // piece.link = data.link;
-            // piece.source = data.source;
-            // piece.summary = data.summary;
-            
             resolve();
           },
           err => reject(null)
