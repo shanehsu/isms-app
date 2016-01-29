@@ -5,8 +5,8 @@ System.register([], function(exports_1) {
         setters:[],
         execute: function() {
             exports_1("config", config = {
-                // endpoint: 'http://infinite-temple-3140.herokuapp.com',
-                endpoint: 'http://localhost:3000',
+                endpoint: 'http://infinite-temple-3140.herokuapp.com',
+                // endpoint: 'http://localhost:3000',
                 navigationItems: [
                     {
                         item: "最新消息",
