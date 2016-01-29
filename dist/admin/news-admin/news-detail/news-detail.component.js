@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../../../services/news.service', 'angular2/router'], function(exports_1) {
+System.register(['angular2/core', './../../../services/news.service', 'angular2/router', './../../../controls/datepicker/datepicker.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './../../../services/news.service', 'angular2/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, news_service_1, router_1;
+    var core_1, news_service_1, router_1, datepicker_component_1;
     var NewsDetailComponent;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['angular2/core', './../../../services/news.service', 'angular2/
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (datepicker_component_1_1) {
+                datepicker_component_1 = datepicker_component_1_1;
             }],
         execute: function() {
             NewsDetailComponent = (function () {
@@ -29,15 +32,24 @@ System.register(['angular2/core', './../../../services/news.service', 'angular2/
                     this._newsService = _newsService;
                 }
                 NewsDetailComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._piece = this._newsService.fake();
                     this._id = this._routeParams.get('id');
+                    this._newsService.retrievePiece(this._id).then(function (piece) { return _this._piece = piece; });
                 };
-                NewsDetailComponent.prototype.back = function () {
+                NewsDetailComponent.prototype.submit = function () {
+                    var _this = this;
+                    this._newsService.update(this._piece).then(function (piece) { return _this._router.navigate(['NewsList']); })
+                        .catch(function (err) { return console.error(err); });
+                };
+                NewsDetailComponent.prototype.cancel = function () {
                     this._router.navigate(['NewsList']);
                 };
                 NewsDetailComponent = __decorate([
                     core_1.Component({
                         selector: 'news-detail',
                         templateUrl: '/app/admin/news-admin/news-detail/news-detail.template.html',
+                        directives: [datepicker_component_1.DatePicker]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, router_1.RouteParams, news_service_1.NewsService])
                 ], NewsDetailComponent);

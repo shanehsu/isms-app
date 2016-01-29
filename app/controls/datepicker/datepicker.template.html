@@ -1,0 +1,10 @@
+<div class="col-sm-8" style="padding-left: 0px !important;">
+<input type="text"
+       [ngModel]="_dateAsText"
+       [required]="_isRequired"
+       (ngModelChange)="updateDate($event)"
+       (blur)="touch()"
+       class="form-control">
+</div>
+
+<label for="date_display" class="col-sm-4 form-control-label">{{_chineseDate}}</label>

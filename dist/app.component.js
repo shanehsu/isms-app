@@ -37,7 +37,7 @@ System.register(['angular2/core', 'angular2/router', './isms-nav/navigation.comp
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-app',
-                        template: "\n    <isms-nav></isms-nav>\n    <router-outlet></router-outlet>\n    ",
+                        template: "\n    <isms-nav></isms-nav>\n    <br>\n    <router-outlet></router-outlet>\n    ",
                         directives: [navigation_component_1.NavigationComponent, router_1.ROUTER_DIRECTIVES]
                     }),
                     router_1.RouteConfig([

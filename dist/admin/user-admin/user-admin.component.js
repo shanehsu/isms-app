@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './user-list/user-list.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,25 +8,39 @@ System.register(['angular2/core'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, router_1, user_list_component_1;
     var UserAdminComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
+            },
+            function (user_list_component_1_1) {
+                user_list_component_1 = user_list_component_1_1;
             }],
         execute: function() {
             UserAdminComponent = (function () {
                 function UserAdminComponent() {
                 }
                 UserAdminComponent.prototype.ngOnInit = function () {
-                    console.log("Hello World?");
                 };
                 UserAdminComponent = __decorate([
                     core_1.Component({
                         selector: 'user-admin',
-                        template: "Hello World!\n    ",
-                    }), 
+                        templateUrl: '/app/admin/user-admin/user-admin.template.html',
+                        directives: [router_1.ROUTER_DIRECTIVES]
+                    }),
+                    router_1.RouteConfig([
+                        {
+                            path: '/',
+                            name: 'UserList',
+                            component: user_list_component_1.UserListComponent,
+                            useAsDefault: true
+                        }
+                    ]), 
                     __metadata('design:paramtypes', [])
                 ], UserAdminComponent);
                 return UserAdminComponent;

@@ -64,7 +64,7 @@ System.register(['angular2/core', 'angular2/router', './../../services/auth.serv
                             useAsDefault: true
                         },
                         {
-                            path: '/user',
+                            path: '/user/...',
                             name: 'UserAdmin',
                             component: user_admin_component_1.UserAdminComponent
                         }

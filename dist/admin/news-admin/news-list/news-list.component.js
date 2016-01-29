@@ -29,8 +29,45 @@ System.register(['angular2/core', 'angular2/router', './../../../services/news.s
                 }
                 NewsListComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    this._piecesToKeep = 20;
                     this._pieces = [];
                     this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                };
+                NewsListComponent.prototype.new = function () {
+                    var _this = this;
+                    this._newsService.create(this._newsService.fake())
+                        .then(function () { return _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); })
+                        .catch(function () { return _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); });
+                };
+                NewsListComponent.prototype.deleteExcessive = function () {
+                    var _this = this;
+                    var piecesToKeep = this._piecesToKeep;
+                    var length = this._pieces.length;
+                    if (piecesToKeep >= this._pieces.length)
+                        return;
+                    var shouldDelete = confirm("確定刪除多餘的 " + (length - piecesToKeep) + " 筆消息？");
+                    if (!shouldDelete)
+                        return;
+                    var issuedRequest = 0;
+                    var receivedResponse = 0;
+                    for (var index = this._piecesToKeep; index < this._pieces.length; index++) {
+                        issuedRequest++;
+                        this._newsService.delete(this._pieces[index].id)
+                            .then(function () {
+                            receivedResponse++;
+                            _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                            if (issuedRequest == receivedResponse) {
+                                _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                            }
+                        })
+                            .catch(function () {
+                            receivedResponse++;
+                            _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                            if (issuedRequest == receivedResponse) {
+                                _this._newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                            }
+                        });
+                    }
                 };
                 NewsListComponent.prototype.edit = function (id) {
                     this._router.navigate(['NewsDetail', { 'id': id }]);

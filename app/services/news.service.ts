@@ -11,6 +11,16 @@ export class NewsService {
   constructor(private _http: Http, private _authService: AuthService, @Inject("app.config") private _config) {
     this._baseURL = _config.endpoint + '/pieces';
   }
+  
+  fake() : Piece {
+    return {
+      id: '',
+      date: new Date(),
+      summary: '',
+      source: '',
+      link: ''
+    }
+  }
 
   retrieve() {
     return new Promise<Piece[]>((resolve, reject) =>
@@ -67,7 +77,29 @@ export class NewsService {
         )
     );
   }
-
+  
+  retrievePiece(id: string) : Promise<Piece> {
+    return new Promise<Piece>((resolve, reject) =>
+      this._http.get(this._baseURL + '/' + id)
+        .map(response => response.json())
+        .subscribe(
+          function(piece) {
+            resolve({
+                id: piece._id,
+                date: new Date(piece.date),
+                summary: piece.summary,
+                source: piece.source,
+                link: piece.link
+              });
+          },
+          err  => {
+            reject();
+            console.error(err)
+          }
+        )
+    );
+  }
+  
   create(piece: Piece) {
     return new Promise<Piece>((resolve, reject) => {
       let object = {
@@ -103,7 +135,7 @@ export class NewsService {
   }
 
   update(piece: Piece) {
-    return new Promise<Piece>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       let header = new Headers({
         token: this._authService.retrieve_token(),
         'Content-Type': 'application/json'
@@ -117,19 +149,20 @@ export class NewsService {
       }), {
         headers: header
       })
-        .map(res => res.json())
+        // .map(res => res.json())
         .subscribe(
           data => {
-            var piece: Piece;
-            piece.id = data._id;
-            piece.date = new Date(data.date);
-            piece.link = data.link;
-            piece.source = data.source;
-            piece.summary = data.summary;
-
-            resolve(piece);
+            // var piece: Piece;
+            
+            // piece.id = data._id;
+            // piece.date = new Date(data.date);
+            // piece.link = data.link;
+            // piece.source = data.source;
+            // piece.summary = data.summary;
+            
+            resolve();
           },
-          err => reject()
+          err => reject(null)
         )
     });
   }

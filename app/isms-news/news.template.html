@@ -1,5 +1,6 @@
 <div class="container">
   <h2>最新消息</h2>
+  <br>
   <table class="table table-striped">
       <thead>
           <tr>
@@ -16,4 +17,11 @@
           </tr>
       </tbody>
   </table>
+  
+  <nav>
+    <ul class="pager">
+      <li class="pager-prev" [class.disabled]="!hasOlder"><a (click)="older()">Older</a></li>
+      <li class="pager-next" [class.disabled]="!hasNewer"><a (click)="newer()">Newer</a></li>
+    </ul>
+  </nav>
 </div>

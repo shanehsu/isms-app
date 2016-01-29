@@ -25,18 +25,26 @@ System.register(['angular2/core', './../services/news.service'], function(export
                 }
                 NewsComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    this.hasNewer = false;
                     this.currentPage = 1;
                     this.pieces = [];
                     this._newsService.retrieve().then(function (pieces) {
                         _this.pieces = pieces;
                         _this.piecesView = _this.pieces.slice(0, 10);
+                        _this.hasOlder = (pieces.length > 10);
                     });
                 };
                 NewsComponent.prototype.older = function () {
+                    this.hasNewer = true;
                     this.currentPage++;
+                    this.hasOlder = this.pieces.length > this.currentPage * 10;
+                    this.piecesView = this.pieces.slice((this.currentPage - 1) * 10, this.currentPage * 10);
                 };
                 NewsComponent.prototype.newer = function () {
+                    this.hasOlder = true;
                     this.currentPage--;
+                    this.hasNewer = this.currentPage > 1;
+                    this.piecesView = this.pieces.slice((this.currentPage - 1) * 10, this.currentPage * 10);
                 };
                 NewsComponent = __decorate([
                     core_1.Component({

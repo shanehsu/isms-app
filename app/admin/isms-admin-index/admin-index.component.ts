@@ -23,7 +23,7 @@ import {UserAdminComponent} from './../user-admin/user-admin.component'
     useAsDefault: true
   },
   {
-    path: '/user',
+    path: '/user/...',
     name: 'UserAdmin',
     component: UserAdminComponent
   }

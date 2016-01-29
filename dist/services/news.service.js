@@ -32,6 +32,15 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                     this._config = _config;
                     this._baseURL = _config.endpoint + '/pieces';
                 }
+                NewsService.prototype.fake = function () {
+                    return {
+                        id: '',
+                        date: new Date(),
+                        summary: '',
+                        source: '',
+                        link: ''
+                    };
+                };
                 NewsService.prototype.retrieve = function () {
                     var _this = this;
                     return new Promise(function (resolve, reject) {
@@ -83,6 +92,25 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         });
                     });
                 };
+                NewsService.prototype.retrievePiece = function (id) {
+                    var _this = this;
+                    return new Promise(function (resolve, reject) {
+                        return _this._http.get(_this._baseURL + '/' + id)
+                            .map(function (response) { return response.json(); })
+                            .subscribe(function (piece) {
+                            resolve({
+                                id: piece._id,
+                                date: new Date(piece.date),
+                                summary: piece.summary,
+                                source: piece.source,
+                                link: piece.link
+                            });
+                        }, function (err) {
+                            reject();
+                            console.error(err);
+                        });
+                    });
+                };
                 NewsService.prototype.create = function (piece) {
                     var _this = this;
                     return new Promise(function (resolve, reject) {
@@ -126,16 +154,15 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         }), {
                             headers: header
                         })
-                            .map(function (res) { return res.json(); })
                             .subscribe(function (data) {
-                            var piece;
-                            piece.id = data._id;
-                            piece.date = new Date(data.date);
-                            piece.link = data.link;
-                            piece.source = data.source;
-                            piece.summary = data.summary;
-                            resolve(piece);
-                        }, function (err) { return reject(); });
+                            // var piece: Piece;
+                            // piece.id = data._id;
+                            // piece.date = new Date(data.date);
+                            // piece.link = data.link;
+                            // piece.source = data.source;
+                            // piece.summary = data.summary;
+                            resolve();
+                        }, function (err) { return reject(null); });
                     });
                 };
                 NewsService.prototype.delete = function (id) {

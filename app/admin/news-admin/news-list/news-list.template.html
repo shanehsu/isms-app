@@ -1,3 +1,19 @@
+<div>
+  <form class="form-inline">
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">留下最新</div>
+        <input type="number" class="form-control" id="amount" [(ngModel)]="_piecesToKeep">
+        <div class="input-group-addon">筆</div>
+      </div>
+      <button class="btn btn-primary" (click)="deleteExcessive()">執行</button>
+    </div>
+    <div class="input-group pull-xs-right">
+    <button type="button" class="btn btn-primary" (click)="new()"><i class="fa fa-plus"></i></button>
+  </div>
+  </form>
+</div>
+<p></p>
 <table class="table table-striped">
       <thead>
           <tr>
@@ -11,7 +27,7 @@
           <tr *ngFor="#piece of _pieces">
               <td>{{piece.date | date: 'longDate'}}</td>
               <td>{{piece.source}}</td>
-              <td><a [href]="piece.link">{{piece.summary}}</a></td>
+              <td>{{piece.summary}}</td>
               <td><a (click)="edit(piece.id)">編輯</a><br/><a (click)="delete(piece.id)">刪除</a></td>
           </tr>
       </tbody>
