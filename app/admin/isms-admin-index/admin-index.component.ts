@@ -8,6 +8,7 @@ import {AuthService} from './../../services/auth.service'
 
 import {NewsAdminComponent} from './../news-admin/news-admin.component'
 import {UserAdminComponent} from './../user-admin/user-admin.component'
+import {UnitAdminComponent} from './../unit-admin/unit-admin.component'
 
 @Component({
     selector: 'isms-admin-index',
@@ -26,6 +27,11 @@ import {UserAdminComponent} from './../user-admin/user-admin.component'
     path: '/user/...',
     name: 'UserAdmin',
     component: UserAdminComponent
+  },
+  {
+    path: '/unit/...',
+    name: 'UnitAdmin',
+    component: UnitAdminComponent
   }
 ])
 

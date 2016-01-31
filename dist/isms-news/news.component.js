@@ -35,12 +35,16 @@ System.register(['angular2/core', './../services/news.service'], function(export
                     });
                 };
                 NewsComponent.prototype.older = function () {
+                    if (!this.hasOlder)
+                        return;
                     this.hasNewer = true;
                     this.currentPage++;
                     this.hasOlder = this.pieces.length > this.currentPage * 10;
                     this.piecesView = this.pieces.slice((this.currentPage - 1) * 10, this.currentPage * 10);
                 };
                 NewsComponent.prototype.newer = function () {
+                    if (!this.hasNewer)
+                        return;
                     this.hasOlder = true;
                     this.currentPage--;
                     this.hasNewer = this.currentPage > 1;

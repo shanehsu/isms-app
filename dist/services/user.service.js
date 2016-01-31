@@ -44,7 +44,8 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                     };
                 };
                 /**
-                 * If `id` is given, a list containing one user is returned. Otherwise, a list of all users is returned.
+                 * If `id` is given, a list containing one user is returned.
+                 * Otherwise, a list of all users is returned.
                  * Retrieving all users also means that tokens field is left out.
                  */
                 UserService.prototype.get = function (id) {

@@ -1,16 +1,22 @@
+// Angular 2
 import {Component, OnInit} from 'angular2/core';
 import {Pipe, PipeTransform} from 'angular2/core';
 import {Router}            from 'angular2/router'
 
+// Services
 import {UserService} from './../../../services/user.service'
+import {UnitService} from './../../../services/unit.service'
+
+// Interfaces
 import {User} from './../../../types/user'
 
+// Pipes
 import {GroupNamePipe, UnitNamePipe} from './../../../pipes/pipes'
 
 @Component({
     selector: 'user-list',
     templateUrl: '/app/admin/user-admin/user-list/user-list.template.html',
-    providers: [UserService],
+    providers: [UserService, UnitService],
     pipes: [GroupNamePipe, UnitNamePipe]
 })
 

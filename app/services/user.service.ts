@@ -9,7 +9,9 @@ import {User}  from './../types/user'
 export class UserService {
   private _baseURL: string;
   
-  constructor(private _authService: AuthService, private _http: Http, @Inject("app.config") private _config) {
+  constructor(private _authService: AuthService,
+              private _http: Http,
+              @Inject("app.config") private _config) {
     this._baseURL = _config.endpoint + '/users';
   }
   
@@ -26,7 +28,8 @@ export class UserService {
   }
   
   /**
-   * If `id` is given, a list containing one user is returned. Otherwise, a list of all users is returned.
+   * If `id` is given, a list containing one user is returned.
+   * Otherwise, a list of all users is returned.
    * Retrieving all users also means that tokens field is left out.
    */
   get(id?: string) : Promise<User[]> {

@@ -31,6 +31,7 @@ export class NewsComponent implements OnInit {
   }
   
   older() {
+    if (!this.hasOlder) return;
     this.hasNewer = true;
     this.currentPage ++;
     this.hasOlder = this.pieces.length > this.currentPage * 10;
@@ -39,6 +40,7 @@ export class NewsComponent implements OnInit {
   }
   
   newer() {
+    if(!this.hasNewer) return;
     this.hasOlder = true;
     this.currentPage --;
     this.hasNewer = this.currentPage > 1;

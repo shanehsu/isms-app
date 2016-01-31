@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './../../services/auth.service', './../news-admin/news-admin.component', './../user-admin/user-admin.component'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './../../services/auth.service', './../news-admin/news-admin.component', './../user-admin/user-admin.component', './../unit-admin/unit-admin.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,7 +11,7 @@ System.register(['angular2/core', 'angular2/router', './../../services/auth.serv
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, router_1, auth_service_1, news_admin_component_1, user_admin_component_1;
+    var core_1, router_1, auth_service_1, news_admin_component_1, user_admin_component_1, unit_admin_component_1;
     var AdminIndexComponent;
     return {
         setters:[
@@ -29,6 +29,9 @@ System.register(['angular2/core', 'angular2/router', './../../services/auth.serv
             },
             function (user_admin_component_1_1) {
                 user_admin_component_1 = user_admin_component_1_1;
+            },
+            function (unit_admin_component_1_1) {
+                unit_admin_component_1 = unit_admin_component_1_1;
             }],
         execute: function() {
             AdminIndexComponent = (function () {
@@ -67,6 +70,11 @@ System.register(['angular2/core', 'angular2/router', './../../services/auth.serv
                             path: '/user/...',
                             name: 'UserAdmin',
                             component: user_admin_component_1.UserAdminComponent
+                        },
+                        {
+                            path: '/unit/...',
+                            name: 'UnitAdmin',
+                            component: unit_admin_component_1.UnitAdminComponent
                         }
                     ]),
                     __param(3, core_1.Inject('app.config')), 

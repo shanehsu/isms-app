@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1) {
+System.register(['angular2/core', './../services/unit.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,29 +8,47 @@ System.register(['angular2/core'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, unit_service_1;
     var UnitNamePipe;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (unit_service_1_1) {
+                unit_service_1 = unit_service_1_1;
             }],
         execute: function() {
             UnitNamePipe = (function () {
-                function UnitNamePipe() {
+                function UnitNamePipe(unitService) {
+                    var _this = this;
+                    this._units = {};
+                    unitService.units().then(function (units) {
+                        for (var _i = 0; _i < units.length; _i++) {
+                            var unit = units[_i];
+                            _this._units[unit.id] = unit.name;
+                        }
+                    });
                 }
-                UnitNamePipe.prototype.transform = function (value) {
-                    console.warn('要記得實作 UnitNamePipe 的功能。');
-                    if (!value || value == '') {
-                        return '無資料';
+                UnitNamePipe.prototype.transform = function (id, args) {
+                    if (!id || id == '') {
+                        if (args.indexOf('silent') < 0) {
+                            return '未隸屬任何單位';
+                        }
+                        else {
+                            return '';
+                        }
+                    }
+                    else if (this._units[id]) {
+                        return this._units[id];
                     }
                     else {
-                        return '未實作';
+                        return 'ID 屬於不存在的單位';
                     }
                 };
                 UnitNamePipe = __decorate([
                     core_1.Pipe({ name: 'unitName', pure: false }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [unit_service_1.UnitService])
                 ], UnitNamePipe);
                 return UnitNamePipe;
             })();

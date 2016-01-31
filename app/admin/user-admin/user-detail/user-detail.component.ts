@@ -5,13 +5,17 @@ import {User}             from './../../../types/user'
 import {Token}            from './../../../types/token'
 
 import {UserService}       from './../../../services/user.service'
+import {UnitService}       from './../../../services/unit.service'
+
+import {UnitNamePipe}      from './../../../pipes/unit-name.pipe'
 
 import {Router, RouteParams} from 'angular2/router'
 
 @Component({
     selector: 'user-detail',
     templateUrl: '/app/admin/user-admin/user-detail/user-detail.template.html',
-    providers: [UserService]
+    pipes: [UnitNamePipe],
+    providers: [UserService, UnitService]
 })
 
 export class UserDetailComponent implements OnInit {

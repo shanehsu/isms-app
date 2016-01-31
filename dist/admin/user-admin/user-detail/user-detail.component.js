@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../../../services/user.service', 'angular2/router'], function(exports_1) {
+System.register(['angular2/core', './../../../services/user.service', './../../../services/unit.service', './../../../pipes/unit-name.pipe', 'angular2/router'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './../../../services/user.service', 'angular2/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, user_service_1, router_1;
+    var core_1, user_service_1, unit_service_1, unit_name_pipe_1, router_1;
     var UserDetailComponent;
     return {
         setters:[
@@ -17,6 +17,12 @@ System.register(['angular2/core', './../../../services/user.service', 'angular2/
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
+            },
+            function (unit_service_1_1) {
+                unit_service_1 = unit_service_1_1;
+            },
+            function (unit_name_pipe_1_1) {
+                unit_name_pipe_1 = unit_name_pipe_1_1;
             },
             function (router_1_1) {
                 router_1 = router_1_1;
@@ -47,7 +53,8 @@ System.register(['angular2/core', './../../../services/user.service', 'angular2/
                     core_1.Component({
                         selector: 'user-detail',
                         templateUrl: '/app/admin/user-admin/user-detail/user-detail.template.html',
-                        providers: [user_service_1.UserService]
+                        pipes: [unit_name_pipe_1.UnitNamePipe],
+                        providers: [user_service_1.UserService, unit_service_1.UnitService]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, router_1.RouteParams, user_service_1.UserService])
                 ], UserDetailComponent);
