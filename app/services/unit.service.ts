@@ -206,4 +206,122 @@ export class UnitService {
           .subscribe(resolve, reject)
     })
   }
+  
+  freeUsers(): Promise<string[]> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token()
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/freeUsers'
+    
+    return new Promise<string[]>((resolve, reject) => {
+      this._http.get(URL, options)
+          .map(res => res.json())
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  usersInUnit(id: string): Promise<string[]> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token()
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/usersInUnit/' + id
+    
+    return new Promise<string[]>((resolve, reject) => {
+      this._http.get(URL, options)
+          .map(res => res.json())
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  relateUser(unitID: string, userID: string): Promise<void> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/relateUser/'
+    let payloadObject = {
+      user: userID,
+      unit: unitID
+    }
+    let payloadString = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payloadString, options)
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  removeUser(unitID: string, userID: string): Promise<void> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/removeUser/'
+    let payloadObject = {
+      user: userID,
+      unit: unitID
+    }
+    let payloadString = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payloadString, options)
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  assignRole(unitID: string, userID: string, role: string) {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/assignRole/'
+    let payloadObject = {
+      user: userID,
+      unit: unitID,
+      role: role
+    }
+    let payloadString = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payloadString, options)
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  deassignRole(unitID: string, userID: string, role: string) {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/deassignRole/'
+    let payloadObject = {
+      user: userID,
+      unit: unitID,
+      role: role
+    }
+    let payloadString = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payloadString, options)
+          .subscribe(resolve, reject)
+    })
+  }
 }

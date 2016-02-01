@@ -184,6 +184,118 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                UnitService.prototype.freeUsers = function () {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token()
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/freeUsers';
+                    return new Promise(function (resolve, reject) {
+                        _this._http.get(URL, options)
+                            .map(function (res) { return res.json(); })
+                            .subscribe(resolve, reject);
+                    });
+                };
+                UnitService.prototype.usersInUnit = function (id) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token()
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/usersInUnit/' + id;
+                    return new Promise(function (resolve, reject) {
+                        _this._http.get(URL, options)
+                            .map(function (res) { return res.json(); })
+                            .subscribe(resolve, reject);
+                    });
+                };
+                UnitService.prototype.relateUser = function (unitID, userID) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token(),
+                        'Content-Type': 'application/json'
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/relateUser/';
+                    var payloadObject = {
+                        user: userID,
+                        unit: unitID
+                    };
+                    var payloadString = JSON.stringify(payloadObject);
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(URL, payloadString, options)
+                            .subscribe(resolve, reject);
+                    });
+                };
+                UnitService.prototype.removeUser = function (unitID, userID) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token(),
+                        'Content-Type': 'application/json'
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/removeUser/';
+                    var payloadObject = {
+                        user: userID,
+                        unit: unitID
+                    };
+                    var payloadString = JSON.stringify(payloadObject);
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(URL, payloadString, options)
+                            .subscribe(resolve, reject);
+                    });
+                };
+                UnitService.prototype.assignRole = function (unitID, userID, role) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token(),
+                        'Content-Type': 'application/json'
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/assignRole/';
+                    var payloadObject = {
+                        user: userID,
+                        unit: unitID,
+                        role: role
+                    };
+                    var payloadString = JSON.stringify(payloadObject);
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(URL, payloadString, options)
+                            .subscribe(resolve, reject);
+                    });
+                };
+                UnitService.prototype.deassignRole = function (unitID, userID, role) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token(),
+                        'Content-Type': 'application/json'
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/deassignRole/';
+                    var payloadObject = {
+                        user: userID,
+                        unit: unitID,
+                        role: role
+                    };
+                    var payloadString = JSON.stringify(payloadObject);
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(URL, payloadString, options)
+                            .subscribe(resolve, reject);
+                    });
+                };
                 UnitService = __decorate([
                     core_1.Injectable(),
                     __param(2, core_1.Inject("app.config")), 

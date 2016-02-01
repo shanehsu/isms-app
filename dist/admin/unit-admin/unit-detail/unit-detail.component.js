@@ -38,17 +38,76 @@ System.register(['angular2/core', 'angular2/router', './../../../services/unit.s
                     var _this = this;
                     // Get a placeholder Unit to get around the undefined key bug.
                     this._unit = this._unitService.empty();
+                    this._unitUserIDs = [];
+                    this._freeUserIDs = [];
                     this._unitID = this._routeParams.get('id');
                     // Get the Unit from UnitService
                     this._unitService.unit(this._unitID)
                         .then(function (unit) { return _this._unit = unit; })
                         .catch(console.error);
+                    this._unitService.usersInUnit(this._unitID)
+                        .then(function (userIDs) { return _this._unitUserIDs = userIDs; })
+                        .catch(console.error);
+                    this._unitService.freeUsers()
+                        .then(function (userIDs) { return _this._freeUserIDs = userIDs; })
+                        .catch(console.error);
                 };
                 UnitDetailComponent.prototype.submit_name_and_identifier = function () {
-                    // console.log(this._unit)
                     var _this = this;
                     this._unitService.update(this._unit)
                         .then(function () { return _this._router.navigate(['UnitList']); })
+                        .catch(console.error);
+                };
+                UnitDetailComponent.prototype.relateUser = function (unitID, userID) {
+                    var _this = this;
+                    this._unitService.relateUser(unitID, userID)
+                        .then(function () {
+                        _this._unitService.usersInUnit(_this._unitID)
+                            .then(function (userIDs) { return _this._unitUserIDs = userIDs; })
+                            .catch(console.error);
+                        _this._unitService.freeUsers()
+                            .then(function (userIDs) { return _this._freeUserIDs = userIDs; })
+                            .catch(console.error);
+                    })
+                        .catch(console.error);
+                };
+                UnitDetailComponent.prototype.removeUser = function (unitID, userID) {
+                    var _this = this;
+                    this._unitService.removeUser(unitID, userID)
+                        .then(function () {
+                        _this._unitService.usersInUnit(_this._unitID)
+                            .then(function (userIDs) { return _this._unitUserIDs = userIDs; })
+                            .catch(console.error);
+                        _this._unitService.freeUsers()
+                            .then(function (userIDs) { return _this._freeUserIDs = userIDs; })
+                            .catch(console.error);
+                    })
+                        .catch(console.error);
+                };
+                UnitDetailComponent.prototype.assignRole = function (unitID, userID, role) {
+                    var _this = this;
+                    this._unitService.assignRole(unitID, userID, role)
+                        .then(function () {
+                        _this._unitService.unit(_this._unitID)
+                            .then(function (unit) { return _this._unit = unit; })
+                            .catch(console.error);
+                        _this._unitService.usersInUnit(_this._unitID)
+                            .then(function (userIDs) { return _this._unitUserIDs = userIDs; })
+                            .catch(console.error);
+                    })
+                        .catch(console.error);
+                };
+                UnitDetailComponent.prototype.deassignRole = function (unitID, userID, role) {
+                    var _this = this;
+                    this._unitService.deassignRole(unitID, userID, role)
+                        .then(function () {
+                        _this._unitService.unit(_this._unitID)
+                            .then(function (unit) { return _this._unit = unit; })
+                            .catch(console.error);
+                        _this._unitService.usersInUnit(_this._unitID)
+                            .then(function (userIDs) { return _this._unitUserIDs = userIDs; })
+                            .catch(console.error);
+                    })
                         .catch(console.error);
                 };
                 UnitDetailComponent.prototype.cancel = function () {
