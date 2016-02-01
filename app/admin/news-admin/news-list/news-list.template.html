@@ -25,7 +25,7 @@
       </thead>
       <tbody>
           <tr *ngFor="#piece of _pieces">
-              <td>{{piece.date | date: 'longDate'}}</td>
+              <td>{{piece.date | chineseDate}}</td>
               <td>{{piece.source}}</td>
               <td>{{piece.summary}}</td>
               <td><a (click)="edit(piece.id)">編輯</a><br/><a (click)="delete(piece.id)">刪除</a></td>

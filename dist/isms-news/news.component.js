@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../services/news.service'], function(exports_1) {
+System.register(['angular2/core', './../services/news.service', '../pipes/pipes'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './../services/news.service'], function(export
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, news_service_1;
+    var core_1, news_service_1, pipes_1;
     var NewsComponent;
     return {
         setters:[
@@ -17,6 +17,9 @@ System.register(['angular2/core', './../services/news.service'], function(export
             },
             function (news_service_1_1) {
                 news_service_1 = news_service_1_1;
+            },
+            function (pipes_1_1) {
+                pipes_1 = pipes_1_1;
             }],
         execute: function() {
             NewsComponent = (function () {
@@ -53,7 +56,8 @@ System.register(['angular2/core', './../services/news.service'], function(export
                 NewsComponent = __decorate([
                     core_1.Component({
                         selector: 'isms-news',
-                        templateUrl: '/app/isms-news/news.template.html'
+                        templateUrl: '/app/isms-news/news.template.html',
+                        pipes: [pipes_1.ChineseDatePipe]
                     }), 
                     __metadata('design:paramtypes', [news_service_1.NewsService])
                 ], NewsComponent);

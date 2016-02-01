@@ -2,12 +2,14 @@ import {Component, OnInit} from 'angular2/core';
 import {NewsService}       from './../services/news.service'
 
 import {Pipe}              from 'angular2/core';
+import {ChineseDatePipe}   from '../pipes/pipes'
 
 import {Piece}             from './../types/piece'
 
 @Component({
     selector: 'isms-news',
-    templateUrl: '/app/isms-news/news.template.html'
+    templateUrl: '/app/isms-news/news.template.html',
+    pipes: [ChineseDatePipe]
 })
 
 export class NewsComponent implements OnInit {
