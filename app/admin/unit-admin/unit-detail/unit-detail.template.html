@@ -116,7 +116,7 @@
               目前任職人員：
             </p>
             <p class="card-text" *ngFor="#agent of _unit.agents">
-              <a class="card-link" (click)="deassignRole(_unit.id, _unit.docsControl, 'agent')">{{agent | userName}}</a>
+              <a class="card-link" (click)="deassignRole(_unit.id, agent, 'agent')">{{agent | userName}}</a>
             </p>
             <p class="card-text">
               <small class="text-muted">點選以解除角色</small>
