@@ -8,7 +8,7 @@ import {Unit}  from './../types/unit'
 @Injectable()
 
 /**
- * This service provide a total of 13 methods to communicate with
+ * This service provide a total of 14 methods to communicate with
  * the Unit API provided by isms-api.
  * 
  * They include Unit Management, User Listing (User in Unit, User without Unit),
@@ -207,6 +207,9 @@ export class UnitService {
     })
   }
   
+  /**
+   * Returns a list of users without unit.
+   */
   freeUsers(): Promise<string[]> {
     let headers = new Headers({
       token: this._authService.retrieve_token()
@@ -223,6 +226,9 @@ export class UnitService {
     })
   }
   
+  /**
+   * Returns a list of users belonging to the given unit.
+   */
   usersInUnit(id: string): Promise<string[]> {
     let headers = new Headers({
       token: this._authService.retrieve_token()
@@ -239,6 +245,9 @@ export class UnitService {
     })
   }
   
+  /**
+   * Relate the user to the given unit.
+   */
   relateUser(unitID: string, userID: string): Promise<void> {
     let headers = new Headers({
       token: this._authService.retrieve_token(),
@@ -260,6 +269,9 @@ export class UnitService {
     })
   }
   
+  /**
+   * Remove the user from the given unit.
+   */
   removeUser(unitID: string, userID: string): Promise<void> {
     let headers = new Headers({
       token: this._authService.retrieve_token(),
@@ -281,6 +293,9 @@ export class UnitService {
     })
   }
   
+  /**
+   * Assign the given role of the given unit to the given user.
+   */
   assignRole(unitID: string, userID: string, role: string) {
     let headers = new Headers({
       token: this._authService.retrieve_token(),
@@ -303,6 +318,9 @@ export class UnitService {
     })
   }
   
+  /**
+   * Deassign the given role of the given unit to the given user.
+   */
   deassignRole(unitID: string, userID: string, role: string) {
     let headers = new Headers({
       token: this._authService.retrieve_token(),
@@ -316,6 +334,76 @@ export class UnitService {
       user: userID,
       unit: unitID,
       role: role
+    }
+    let payloadString = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payloadString, options)
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  /**
+   * Returns a list of IDs of Units without parent unit.
+   */
+  freeUnits(id: string): Promise<string[]> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token()
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/freeUnits'
+    
+    return new Promise<string[]>((resolve, reject) => {
+      this._http.get(URL, options)
+          .map(res => res.json())
+          .subscribe(ids => {
+            let data = <string[]>ids.filter(x => x != id)
+            resolve(data)
+          }, reject)
+    })
+  }
+  
+  /**
+   * Relate the user to the given unit.
+   */
+  relateParent(parentID: string, childID: string): Promise<void> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/relateParent/'
+    let payloadObject = {
+      parent: parentID,
+      child: childID
+    }
+    let payloadString = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payloadString, options)
+          .subscribe(resolve, reject)
+    })
+  }
+  
+  /**
+   * Remove the user from the given unit.
+   */
+  removeParent(parentID: string, childID: string): Promise<void> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/removeParent/'
+    let payloadObject = {
+      parent: parentID,
+      child: childID
     }
     let payloadString = JSON.stringify(payloadObject)
     

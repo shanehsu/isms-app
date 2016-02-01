@@ -40,6 +40,7 @@ System.register(['angular2/core', 'angular2/router', './../../../services/unit.s
                     this._unit = this._unitService.empty();
                     this._unitUserIDs = [];
                     this._freeUserIDs = [];
+                    this._freeUnitIDs = [];
                     this._unitID = this._routeParams.get('id');
                     // Get the Unit from UnitService
                     this._unitService.unit(this._unitID)
@@ -50,6 +51,9 @@ System.register(['angular2/core', 'angular2/router', './../../../services/unit.s
                         .catch(console.error);
                     this._unitService.freeUsers()
                         .then(function (userIDs) { return _this._freeUserIDs = userIDs; })
+                        .catch(console.error);
+                    this._unitService.freeUnits(this._unitID)
+                        .then(function (unitIDs) { return _this._freeUnitIDs = unitIDs; })
                         .catch(console.error);
                 };
                 UnitDetailComponent.prototype.submit_name_and_identifier = function () {
@@ -109,6 +113,27 @@ System.register(['angular2/core', 'angular2/router', './../../../services/unit.s
                             .catch(console.error);
                     })
                         .catch(console.error);
+                };
+                UnitDetailComponent.prototype.relateParent = function (parentUnit, childUnit) {
+                    var _this = this;
+                    this._unitService.relateParent(parentUnit, childUnit)
+                        .then(function () {
+                        _this._unitService.unit(_this._unitID)
+                            .then(function (unit) { return _this._unit = unit; })
+                            .catch(console.error);
+                    }).catch(console.error);
+                };
+                UnitDetailComponent.prototype.removeParent = function (parentUnit, childUnit) {
+                    var _this = this;
+                    this._unitService.removeParent(parentUnit, childUnit)
+                        .then(function () {
+                        _this._unitService.unit(_this._unitID)
+                            .then(function (unit) { return _this._unit = unit; })
+                            .catch(console.error);
+                        _this._unitService.freeUnits(_this._unitID)
+                            .then(function (unitIDs) { return _this._freeUnitIDs = unitIDs; })
+                            .catch(console.error);
+                    }).catch(console.error);
                 };
                 UnitDetailComponent.prototype.cancel = function () {
                     this._router.navigate(['UnitList']);

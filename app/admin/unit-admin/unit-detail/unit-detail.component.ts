@@ -27,13 +27,16 @@ export class UnitDetailComponent implements OnInit {
   private _unitUserIDs: string[]
   private _freeUserIDs: string[]
   
+  private _freeUnitIDs: string[]
+  
   constructor(private _router: Router, private _routeParams: RouteParams, private _unitService: UnitService) {}
   
   ngOnInit(): void {
     // Get a placeholder Unit to get around the undefined key bug.
     this._unit   = this._unitService.empty()
-    this._unitUserIDs = [];
-    this._freeUserIDs = [];
+    this._unitUserIDs = []
+    this._freeUserIDs = []
+    this._freeUnitIDs = []
     this._unitID = this._routeParams.get('id')
     
     // Get the Unit from UnitService
@@ -48,6 +51,10 @@ export class UnitDetailComponent implements OnInit {
     this._unitService.freeUsers()
         .then(userIDs => this._freeUserIDs = userIDs)
         .catch(console.error)
+    
+    this._unitService.freeUnits(this._unitID)
+        .then(unitIDs => this._freeUnitIDs = unitIDs)
+        .catch(console.error)
   }
   
   submit_name_and_identifier() {
@@ -56,7 +63,7 @@ export class UnitDetailComponent implements OnInit {
         .catch(console.error)
   }
   
-  relateUser(unitID, userID) {
+  relateUser(unitID: string, userID: string) {
     this._unitService.relateUser(unitID, userID)
         .then(() => {
           this._unitService.usersInUnit(this._unitID)
@@ -70,7 +77,7 @@ export class UnitDetailComponent implements OnInit {
         .catch(console.error)
   }
   
-  removeUser(unitID, userID) {
+  removeUser(unitID: string, userID: string) {
     this._unitService.removeUser(unitID, userID)
         .then(() => {
           this._unitService.usersInUnit(this._unitID)
@@ -110,6 +117,27 @@ export class UnitDetailComponent implements OnInit {
               .catch(console.error)
         })
         .catch(console.error)
+  }
+  
+  relateParent(parentUnit: string, childUnit: string) {
+    this._unitService.relateParent(parentUnit, childUnit)
+        .then(() => {
+          this._unitService.unit(this._unitID)
+              .then(unit => this._unit = unit)
+              .catch(console.error)
+        }).catch(console.error)
+  }
+  
+  removeParent(parentUnit: string, childUnit: string) {
+    this._unitService.removeParent(parentUnit, childUnit)
+        .then(() => {
+          this._unitService.unit(this._unitID)
+              .then(unit => this._unit = unit)
+              .catch(console.error)
+          this._unitService.freeUnits(this._unitID)
+              .then(unitIDs => this._freeUnitIDs = unitIDs)
+              .catch(console.error)
+        }).catch(console.error)
   }
   
   cancel() {

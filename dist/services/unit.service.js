@@ -184,6 +184,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                /**
+                 * Returns a list of users without unit.
+                 */
                 UnitService.prototype.freeUsers = function () {
                     var _this = this;
                     var headers = new http_1.Headers({
@@ -199,6 +202,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                /**
+                 * Returns a list of users belonging to the given unit.
+                 */
                 UnitService.prototype.usersInUnit = function (id) {
                     var _this = this;
                     var headers = new http_1.Headers({
@@ -214,6 +220,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                /**
+                 * Relate the user to the given unit.
+                 */
                 UnitService.prototype.relateUser = function (unitID, userID) {
                     var _this = this;
                     var headers = new http_1.Headers({
@@ -234,6 +243,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                /**
+                 * Remove the user from the given unit.
+                 */
                 UnitService.prototype.removeUser = function (unitID, userID) {
                     var _this = this;
                     var headers = new http_1.Headers({
@@ -254,6 +266,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                /**
+                 * Assign the given role of the given unit to the given user.
+                 */
                 UnitService.prototype.assignRole = function (unitID, userID, role) {
                     var _this = this;
                     var headers = new http_1.Headers({
@@ -275,6 +290,9 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .subscribe(resolve, reject);
                     });
                 };
+                /**
+                 * Deassign the given role of the given unit to the given user.
+                 */
                 UnitService.prototype.deassignRole = function (unitID, userID, role) {
                     var _this = this;
                     var headers = new http_1.Headers({
@@ -289,6 +307,73 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         user: userID,
                         unit: unitID,
                         role: role
+                    };
+                    var payloadString = JSON.stringify(payloadObject);
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(URL, payloadString, options)
+                            .subscribe(resolve, reject);
+                    });
+                };
+                /**
+                 * Returns a list of IDs of Units without parent unit.
+                 */
+                UnitService.prototype.freeUnits = function (id) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token()
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/freeUnits';
+                    return new Promise(function (resolve, reject) {
+                        _this._http.get(URL, options)
+                            .map(function (res) { return res.json(); })
+                            .subscribe(function (ids) {
+                            var data = ids.filter(function (x) { return x != id; });
+                            resolve(data);
+                        }, reject);
+                    });
+                };
+                /**
+                 * Relate the user to the given unit.
+                 */
+                UnitService.prototype.relateParent = function (parentID, childID) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token(),
+                        'Content-Type': 'application/json'
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/relateParent/';
+                    var payloadObject = {
+                        parent: parentID,
+                        child: childID
+                    };
+                    var payloadString = JSON.stringify(payloadObject);
+                    return new Promise(function (resolve, reject) {
+                        _this._http.put(URL, payloadString, options)
+                            .subscribe(resolve, reject);
+                    });
+                };
+                /**
+                 * Remove the user from the given unit.
+                 */
+                UnitService.prototype.removeParent = function (parentID, childID) {
+                    var _this = this;
+                    var headers = new http_1.Headers({
+                        token: this._authService.retrieve_token(),
+                        'Content-Type': 'application/json'
+                    });
+                    var options = {
+                        headers: headers
+                    };
+                    var URL = this._baseURL + '/removeParent/';
+                    var payloadObject = {
+                        parent: parentID,
+                        child: childID
                     };
                     var payloadString = JSON.stringify(payloadObject);
                     return new Promise(function (resolve, reject) {
