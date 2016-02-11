@@ -102,7 +102,6 @@ export class AuthService {
                 id: data._id,
                 email: data.email,
                 name: data.name,
-                title: data.title,
                 group: data.group,
                 unit: data.unit,
                 tokens: (<Array<any>>data.tokens).map(value => {

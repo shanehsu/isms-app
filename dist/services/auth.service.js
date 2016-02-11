@@ -111,7 +111,6 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1) {
                                     id: data._id,
                                     email: data.email,
                                     name: data.name,
-                                    title: data.title,
                                     group: data.group,
                                     unit: data.unit,
                                     tokens: data.tokens.map(function (value) {

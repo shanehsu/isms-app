@@ -20,7 +20,6 @@ export class UserService {
       id: '',
       email: '',
       name: '',
-      title: '',
       unit: '',
       group: 10,
       tokens: []
@@ -49,7 +48,6 @@ export class UserService {
                   id: user._id,
                   email: user.email,
                   name: user.name,
-                  title: user.title,
                   unit: user.unit,
                   group: user.group,
                   tokens: (<any[]>user.tokens).map(value => {
@@ -79,7 +77,6 @@ export class UserService {
                 id: user._id,
                 email: user.email,
                 name: user.name,
-                title: user.title,
                 unit: user.unit,
                 group: user.group,
                 tokens: []
@@ -99,7 +96,6 @@ export class UserService {
       postObject = {
         email: '',
         name: '',
-        title: '',
         group: 10,
         tokens: []
       }

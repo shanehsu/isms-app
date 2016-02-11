@@ -37,7 +37,6 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         id: '',
                         email: '',
                         name: '',
-                        title: '',
                         unit: '',
                         group: 10,
                         tokens: []
@@ -64,7 +63,6 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                                         id: user._id,
                                         email: user.email,
                                         name: user.name,
-                                        title: user.title,
                                         unit: user.unit,
                                         group: user.group,
                                         tokens: user.tokens.map(function (value) {
@@ -90,7 +88,6 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                                 id: user._id,
                                 email: user.email,
                                 name: user.name,
-                                title: user.title,
                                 unit: user.unit,
                                 group: user.group,
                                 tokens: []
@@ -109,7 +106,6 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         postObject = {
                             email: '',
                             name: '',
-                            title: '',
                             group: 10,
                             tokens: []
                         };

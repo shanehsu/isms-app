@@ -11,10 +11,9 @@
 <table class="table table-striped">
       <thead>
           <tr>
-              <th style="width: 15%">姓名</th>
-              <th style="width: 15%">職位</th>
-              <th style="width: 30%">電子郵件</th>
-              <th style="width: 15%">單位</th>
+              <th style="width: 20%">姓名</th>
+              <th style="width: 35%">電子郵件</th>
+              <th style="width: 20%">單位</th>
               <th style="width: 15%">權限</th>
               <th style="width: 10%">動作</th>
           </tr>
@@ -22,7 +21,6 @@
       <tbody>
           <tr *ngFor="#user of _users">
               <td>{{user.name}}</td>
-              <td>{{user.title}}</td>
               <td>{{user.email}}</td>
               <td>{{user.unit | unitName}}</td>
               <td>{{user.group | groupName}}</td>
