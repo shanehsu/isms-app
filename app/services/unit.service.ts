@@ -32,7 +32,6 @@ import {Unit}  from './../types/unit'
  * This API design makes sure that no mistakes and assumptions are made, the admin
  * will not by accident remove a user with an important role from its unit. The
  * design also makes writing the backend and frontend super simple.
- * 
  */
 export class UnitService {
   

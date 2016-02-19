@@ -39,6 +39,12 @@ System.register([], function(exports_1) {
                         component: "UnitAdmin",
                         route: "/unit",
                         privilege: 1
+                    },
+                    {
+                        item: "表單",
+                        component: "FormAdmin",
+                        route: "/form",
+                        privilege: 1
                     }
                 ]
             });
