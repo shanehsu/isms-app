@@ -10,17 +10,20 @@ import {FormService} from './../../../services/form.service'
 // 基本型態
 import {Form, FormRevision} from './../../../types/types'
 
+// 子表單
+import {RevisionFormComponent} from './revision-form/revision-form.component'
+
 @Component({
   selector: 'form-detail',
   templateUrl: '/app/admin/form-admin/form-detail/form-detail.template.html',
-  providers: [FormService]
+  providers: [FormService],
+  directives: [RevisionFormComponent]
 })
 
 export class FormDetailComponent implements OnInit {
   private _id: string
   private _form: Form
   
-  private _currentRevision: string = ''
   private _revisions: FormRevision[] = []
   private _revision: FormRevision
   
@@ -28,35 +31,83 @@ export class FormDetailComponent implements OnInit {
               private _routeParams: RouteParams,
               private _router: Router) {}
   
-  refresh_data(): void {
+  /**
+   * reload_form() 函數
+   * 
+   * 根據 `_id` 取得表單資料，並存入 `_form` 變數。
+   * 
+   * 依照指定的參數，可能更動 `_currentRevision`, `_revisions`,
+   * `_revision` 這三個與表單版本有關的變數。
+   * 
+   * isInitialPull 將會載入表單版本，進行初始化設定並顯示表單版本的表單。
+   */
+  reload_form(isInitialPull: boolean = false): void {
     this._formService.form(this._id)
         .then(form => {
           this._form = form
-          
-          if (form.revisions.length == 0) this._revision = <FormRevision>{}
-          
-          // 若是重新更新
-          if (this._currentRevision == '') this._currentRevision = form.revisions[form.revisions.length - 1]
-          
-          // 載入表單版本
-          this._revisions = []
-          form.revisions.forEach((revisionID, index) => {
-            this._formService.revision(this._id, revisionID).then(revision => {
+          if (isInitialPull) {
+            this.reload_revisions(true)
+          }
+        }).catch(console.error)
+  }
+  
+  /**
+   * reload_revisions() 函數
+   * 
+   * 根據目前表單變數 `_form` 所提供的表單版本 ID，載入所有表單版本，
+   * 並儲存到 `_revisions` 變數中。
+   * 
+   * isInitialPull 進行初始化設定並顯示表單版本的表單。
+   */
+  reload_revisions(isInitialPull: boolean = false): void {
+    this._formService.form(this._id)
+      .then(form => {
+        let revisionIDs = form.revisions
+        this._revisions = []
+
+        revisionIDs.forEach((revisionID, index) => {
+          console.log(revisionID)
+          this._formService.revision(this._id, revisionID)
+            .then(revision => {
               this._revisions[index] = revision
-              if (revision._id == this._currentRevision) this._revision = this._revisions[index]
+
+              console.log(this._revisions)
+            
+              // 若需要初始化
+              if (isInitialPull && index == revisionIDs.length - 1) {
+                this._revision = this._revisions[index]
+              }
             }).catch(console.error)
-          })
         })
-        .catch(console.error)
+      }).catch(console.error)
+    
+    // 先清空
+    this._revisions = []
+  }
+  
+  /**
+   * 重新載入目前的表單版本
+   */
+  reload_revision(): void {
+    let index = this._revisions.findIndex(revision => revision._id == this._revision._id)
+    
+    this._formService.revision(this._id, this._revisions[index]._id)
+        .then(revision => {
+          this._revisions[index] = revision
+          this._revision = this._revisions[index]
+        }).catch(console.error)
   }
   
   ngOnInit() {
     // 載入空資料
     this._revision = <FormRevision>{}
     this._form = <Form>{}
+    
+    // 取得表單 ID
     this._id = this._routeParams.get('id')
     
-    this.refresh_data()
+    // 取得表單資訊
+    this.reload_form(true)
   }
   
   submit(): void {
@@ -71,37 +122,20 @@ export class FormDetailComponent implements OnInit {
   
   // 表單版本操作
   
-  isActiveRevision(id: string): boolean {
-    return id == this._currentRevision
+  // 選單列樣式判斷
+  isActiveRevision(revision: FormRevision): boolean {
+    return revision == this._revision
+  }
+  
+  // 選擇成為目前表單版本
+  select_revision(revision: FormRevision) {
+    this._revision = revision
   }
   
   new_revision(): void {
     this._formService.newRevision(this._id)
         .then((id) => {
-          this.refresh_data()
-          this._currentRevision = id
-        })
-        .catch(console.error)
-  }
-  
-  edit_revision(id: string): void {
-    this._currentRevision = id
-    let index = this._revisions.findIndex(revision => revision._id == this._currentRevision)
-    this._revision = this._revisions[index]
-  }
-  
-  submit_revision(): void {
-    let index = this._revisions.findIndex(revision => revision._id == this._currentRevision)
-    this._formService.updateRevision(this._id, this._revisions[index])
-        .then(() => this.refresh_data())
-        .catch(console.error)
-  }
-  
-  delete_revision(): void {
-    // this._revisions = []
-    this._formService.deleteRevision(this._id, this._currentRevision).then(() => {
-      this._currentRevision = ''
-      this.refresh_data()
-    }).catch(console.error)
+          this.reload_revisions(true)
+        }).catch(console.error)
   }
 }

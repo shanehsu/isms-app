@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="date" class="col-sm-2 form-control-label">表單 ID</label>
+        <label for="identifier" class="col-sm-2 form-control-label">表單 ID</label>
         <div class="col-sm-10">
           <input type="text" class="form-control" [(ngModel)]="_form.identifier" ngControl="identifier" required>
         </div>
@@ -40,28 +40,26 @@
     <ul class="nav nav-tabs">
       <template ngFor #revision [ngForOf]="_revisions">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="isActiveRevision(revision?._id)" (click)="edit_revision(revision._id)">{{revision?.revision}}</a>
+          <a class="nav-link" [class.active]="isActiveRevision(revision)" (click)="select_revision(revision)">{{revision?.revision}}</a>
         </li>
       </template>
       <li class="nav-item">
         <a class="nav-link" (click)="new_revision()"><i class="fa fa-plus"></i></a>
       </li>
     </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" role="tabpanel">
-        <form (ngSubmit)="submit_revision()" #revisionForm="ngForm">
-          <p>{{_revision | json}}</p>
-          
-          <br>
-          
-          <button type="button" class="btn btn-danger" (click)="delete_revision()">刪除</button>
-
-          <div class="pull-xs-right">
-            <button type="submit" [disabled]="!revisionForm.form.valid" class="btn btn-primary">更新</button>
-          </div>
-        </form>
-      </div>
+    <p></p>
+    
+    <div class="container" [ngSwitch]="_revisions.length">
+      <p class="card-text text-muted" *ngSwitchWhen="0"><small>目前沒有表單版本。</small></p>
+      <revision-form [form-id]="_id" [revision]="_revision" (revisionDidUpdate)="reload_revision()" (formDidUpdate)="reload_revisions(true)" *ngSwitchDefault>
+      </revision-form>
     </div>
+  </div>
+  
+  <div class="card-block">
+    <h4 class="card-title">表單欄位</h4>
+    <p class="card-text text-muted"><small>表單的欄位是存在表單版本內的。</small></p>
+    
   </div>
 </div>
 
@@ -76,3 +74,5 @@
     {{_revisions | json}}
   </div>
 </div>
+
+{{_currentRevision}}

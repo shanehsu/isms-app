@@ -34,8 +34,8 @@
   <div class="card-block">
     <h3 class="card-title">人員資訊</h3>
     <br>
-    <div class="row">
-      <div class="col-sm-6">
+    <div class="card-deck-wrapper">
+      <div class="card-deck">
         <div class="card card-block">
           <h4 class="card-title">單位內人員</h4>
           <p class="card-text" *ngFor="#userID of _unitUserIDs">
@@ -45,8 +45,6 @@
             <small class="text-muted">點選以移出單位</small>
           </p>
         </div>
-      </div>
-      <div class="col-sm-6">
         <div class="card card-block">
           <h4 class="card-title">無單位歸屬人員</h4>
           <p class="card-text" *ngFor="#userID of _freeUserIDs">
@@ -65,8 +63,8 @@
   <div class="card-block">
     <h3 class="card-title">角色資訊</h3>
     <br>
-    <div class="row">
-      <div class="col-sm-4">
+    <div class="card-deck-wrapper">
+      <div class="card-deck">
         <div class="card card-block">
           <h4 class="card-title">主管</h4>
           <div *ngIf="_unit.manager">
@@ -86,8 +84,6 @@
             </p>
           </div>
         </div>
-      </div>
-      <div class="col-sm-4">
         <div class="card card-block">
           <h4 class="card-title">文管人員</h4>
           <div *ngIf="_unit.docsControl">
@@ -107,8 +103,6 @@
             </p>
           </div>
         </div>
-      </div>
-      <div class="col-sm-4">
         <div class="card card-block">
           <h4 class="card-title">承辦人</h4>
           <div *ngIf="_unit.agents.length > 0">
@@ -143,8 +137,8 @@
   <div class="card-block">
     <h3 class="card-title">單位結構</h3>
     <br>
-    <div class="row">
-      <div class="col-sm-6">
+    <div class="card-deck-wrapper">
+      <div class="card-deck">
         <div class="card card-block">
           <h4 class="card-title">母單位</h4>
           <div *ngIf="_unit.parentUnit">
@@ -164,8 +158,6 @@
             </p>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6">
         <div class="card card-block">
           <h4 class="card-title">子單位</h4>
           <p class="card-text" *ngFor="#childUnit of _unit.childUnits">
