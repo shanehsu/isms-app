@@ -4,6 +4,7 @@ import {Router, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {NavigationComponent} from './isms-nav/navigation.component'
 import {AdminIndexComponent} from './admin/isms-admin-index/admin-index.component'
 import {NewsComponent}       from './isms-news/news.component'
+import {FormIndexComponent}  from './isms-form/form-index.component'
 
 @Component({
     selector: 'isms-app',
@@ -21,7 +22,13 @@ import {NewsComponent}       from './isms-news/news.component'
     name: 'News',
     component: NewsComponent,
     useAsDefault: true
-  }, {
+  },
+  {
+    path:'/form',
+    name: 'Form',
+    component: FormIndexComponent
+  }, 
+  {
     path: '/admin/...',
     name: 'Admin',
     component: AdminIndexComponent

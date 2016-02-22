@@ -15,6 +15,12 @@ System.register([], function(exports_1) {
                         privilege: 4
                     },
                     {
+                        item: "表單",
+                        component: "Form",
+                        route: "/form",
+                        privilege: 3
+                    },
+                    {
                         item: "管理",
                         component: "Admin",
                         route: "/admin",
