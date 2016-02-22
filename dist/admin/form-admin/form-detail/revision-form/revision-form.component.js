@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../../../../services/form.service'], function(exports_1) {
+System.register(['angular2/core', './../../../../services/form.service', './../field-form/field-form.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, form_service_1;
+    var core_1, form_service_1, field_form_component_1;
     var RevisionFormComponent;
     return {
         setters:[
@@ -17,12 +17,17 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
             },
             function (form_service_1_1) {
                 form_service_1 = form_service_1_1;
+            },
+            function (field_form_component_1_1) {
+                field_form_component_1 = field_form_component_1_1;
             }],
         execute: function() {
             RevisionFormComponent = (function () {
                 // 服務
+                // 簡單初始化
                 function RevisionFormComponent(_formService) {
                     this._formService = _formService;
+                    // 輸出
                     this._revisionDidUpdate = new core_1.EventEmitter();
                     this._formDidUpdate = new core_1.EventEmitter();
                 }
@@ -44,6 +49,21 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
                         .then(function () { return _this._formDidUpdate.emit(null); })
                         .catch(console.error);
                 };
+                /// 欄位相關
+                RevisionFormComponent.prototype.reload_fields = function () {
+                    var _this = this;
+                    var revisionID = this._revision._id;
+                    this._formService.revision(this._formID, revisionID)
+                        .then(function (revision) { return _this._revision.fields = revision.fields; })
+                        .catch(console.error);
+                };
+                RevisionFormComponent.prototype.new_field = function () {
+                    var _this = this;
+                    var revisionID = this._revision._id;
+                    this._formService.newField(this._formID, revisionID)
+                        .then(function () { return _this.reload_fields(); })
+                        .catch(console.error);
+                };
                 __decorate([
                     core_1.Input('form-id'), 
                     __metadata('design:type', String)
@@ -63,7 +83,8 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
                 RevisionFormComponent = __decorate([
                     core_1.Component({
                         selector: 'revision-form',
-                        templateUrl: '/app/admin/form-admin/form-detail/revision-form/revision-form.template.html'
+                        templateUrl: '/app/admin/form-admin/form-detail/revision-form/revision-form.template.html',
+                        directives: [field_form_component_1.FieldFormComponent]
                     }), 
                     __metadata('design:paramtypes', [form_service_1.FormService])
                 ], RevisionFormComponent);

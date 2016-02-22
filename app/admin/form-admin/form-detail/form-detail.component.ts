@@ -66,12 +66,9 @@ export class FormDetailComponent implements OnInit {
         this._revisions = []
 
         revisionIDs.forEach((revisionID, index) => {
-          console.log(revisionID)
           this._formService.revision(this._id, revisionID)
             .then(revision => {
               this._revisions[index] = revision
-
-              console.log(this._revisions)
             
               // 若需要初始化
               if (isInitialPull && index == revisionIDs.length - 1) {

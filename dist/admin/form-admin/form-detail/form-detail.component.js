@@ -69,11 +69,9 @@ System.register(['angular2/core', 'angular2/router', './../../../services/form.s
                         var revisionIDs = form.revisions;
                         _this._revisions = [];
                         revisionIDs.forEach(function (revisionID, index) {
-                            console.log(revisionID);
                             _this._formService.revision(_this._id, revisionID)
                                 .then(function (revision) {
                                 _this._revisions[index] = revision;
-                                console.log(_this._revisions);
                                 // 若需要初始化
                                 if (isInitialPull && index == revisionIDs.length - 1) {
                                     _this._revision = _this._revisions[index];

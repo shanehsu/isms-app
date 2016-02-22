@@ -309,7 +309,7 @@ export class FormService {
     let options = {
       headers: headers
     }
-    let URL = this._baseURL + '/revisions/fields' + formID + '/' + revisionID + '/' + fieldID 
+    let URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID 
     
     return new Promise<void>((resolve, reject) => {
       this._http.delete(URL, options)

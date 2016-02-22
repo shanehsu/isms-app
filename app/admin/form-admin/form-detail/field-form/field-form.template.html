@@ -1,0 +1,94 @@
+<div class="list-group-item" style="margin-bottom: -1px !important;">
+  <form (ngSubmit)="submit_field()" #fieldForm="ngForm">
+    <div class="form-group row">
+      <label for="id" class="col-sm-2 form-control-label">ID</label>
+      <div class="col-sm-10">
+        <p class="form-control-static">{{_fieldID}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="name" class="col-sm-2 form-control-label">名稱</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="_field.name" ngControl="name" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="type" class="col-sm-2 form-control-label">類型</label>
+      <div class="col-sm-10">
+        <label class="radio-inline" *ngFor="#fieldType of fieldTypes">
+          <input type="radio" name="typeRadio" [value]="fieldType.value" [checked]="_field.type == fieldType.value" (change)="_field.type = fieldType.value"> {{fieldType.label}}
+        </label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="name" class="col-sm-2 form-control-label">提醒文字</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="_field.hint" ngControl="hint">
+      </div>
+    </div>
+
+    <div class="form-group row" style="width: 90% !important; margin: auto;">
+      <hr class="divider">
+    </div>
+
+    <!--跟類型有關係的選項-->
+    <div [ngSwitch]="_field.type">
+      <div *ngSwitchWhen="'shortText'">
+
+      </div>
+      <div *ngSwitchWhen="'longText'">
+
+      </div>
+      <div *ngSwitchWhen="'date'">
+
+      </div>
+      <div *ngSwitchWhen="'options'">
+        <div class="form-group row">
+          <label for="type" class="col-sm-2 form-control-label">類型</label>
+          <div class="col-sm-10">
+            <label class="radio-inline" *ngFor="#optionType of optionTypes">
+              <input type="radio" name="optionTypeRadio" [value]="optionType.value" [checked]="_field.metadata.presentation == optionType.value"
+              (change)="_field.metadata.presentation = optionType.value"> {{optionType.label}}
+            </label>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="type" class="col-sm-2 form-control-label">選項</label>
+          <div class="col-sm-10">
+            <div class="list-group">
+              <div class="list-group-item" *ngFor="#option of _field.metadata.options">
+                {{option}}
+              </div>
+              <div class="list-group-item">
+                <div class="form-group row">
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="選項" #option>
+                  </div>
+                  <div class="col-sm-3">
+                    <button type="submit" class="btn btn-primary" (click)="pushOption(option.value)"><i class="fa fa-plus"></i> 新增選項</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchWhen="'table'">
+
+      </div>
+      <div class="form-group row" *ngSwitchDefault>
+        <div class="alert alert-danger" role="alert">
+          <strong>不支援的欄位類型</strong>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-danger" (click)="delete_field()">刪除</button>
+    <div class="pull-xs-right">
+      <button type="submit" [disabled]="!fieldForm.form.valid" class="btn btn-primary">更新</button>
+    </div>
+  </form>
+
+  {{_field | json}}
+
+</div>

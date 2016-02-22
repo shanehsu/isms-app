@@ -302,7 +302,7 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                     var options = {
                         headers: headers
                     };
-                    var URL = this._baseURL + '/revisions/fields' + formID + '/' + revisionID + '/' + fieldID;
+                    var URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID;
                     return new Promise(function (resolve, reject) {
                         _this._http.delete(URL, options)
                             .subscribe(resolve, reject);
