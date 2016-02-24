@@ -7,48 +7,20 @@ import {FormService} from './../../../../services/form.service'
 // 基本型態
 import {Field} from './../../../../types/types'
 
+// 常數
+import {FieldTypes} from './constants'
+
+// 子元件
+import {FieldOptionComponent} from './field-option/field-option.component'
+
 @Component({
   selector: 'field-form',
-  templateUrl: '/app/admin/form-admin/form-detail/field-form/field-form.template.html'
+  templateUrl: '/app/admin/form-admin/form-detail/field-form/field-form.template.html',
+  directives: [FieldOptionComponent]
 })
 
 export class FieldFormComponent implements OnInit {
-  private fieldTypes = [
-    {
-      label: '單行文字',
-      value: 'shortText'
-    },
-    {
-      label: '多行文字',
-      value: 'longText'
-    },
-    {
-      label: '日期',
-      value: 'date'
-    },
-    {
-      label: '選擇',
-      value: 'options'
-    },
-    {
-      label: '表格',
-      value: 'table'
-    }
-  ]
-  private optionTypes = [
-    {
-      label: '單選',
-      value: 'radio'
-    },
-    {
-      label: '多選',
-      value: 'checkbox'
-    },
-    {
-      label: '下拉式',
-      value: 'option'
-    }
-  ]
+  private fieldTypes = FieldTypes // 從 constants 來的常數值
   
   // 輸入
   @Input('field') _fieldID: string

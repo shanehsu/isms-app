@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../../../../services/form.service'], function(exports_1) {
+System.register(['angular2/core', './../../../../services/form.service', './constants', './field-option/field-option.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, form_service_1;
+    var core_1, form_service_1, constants_1, field_option_component_1;
     var FieldFormComponent;
     return {
         setters:[
@@ -17,48 +17,19 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
             },
             function (form_service_1_1) {
                 form_service_1 = form_service_1_1;
+            },
+            function (constants_1_1) {
+                constants_1 = constants_1_1;
+            },
+            function (field_option_component_1_1) {
+                field_option_component_1 = field_option_component_1_1;
             }],
         execute: function() {
             FieldFormComponent = (function () {
                 // 服務
                 function FieldFormComponent(_formService) {
                     this._formService = _formService;
-                    this.fieldTypes = [
-                        {
-                            label: '單行文字',
-                            value: 'shortText'
-                        },
-                        {
-                            label: '多行文字',
-                            value: 'longText'
-                        },
-                        {
-                            label: '日期',
-                            value: 'date'
-                        },
-                        {
-                            label: '選擇',
-                            value: 'options'
-                        },
-                        {
-                            label: '表格',
-                            value: 'table'
-                        }
-                    ];
-                    this.optionTypes = [
-                        {
-                            label: '單選',
-                            value: 'radio'
-                        },
-                        {
-                            label: '多選',
-                            value: 'checkbox'
-                        },
-                        {
-                            label: '下拉式',
-                            value: 'option'
-                        }
-                    ];
+                    this.fieldTypes = constants_1.FieldTypes; // 從 constants 來的常數值
                     // 輸出
                     this._fieldDidDelete = new core_1.EventEmitter();
                 }
@@ -94,6 +65,7 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
                     this._field.metadata.options.push(item);
                 };
                 __decorate([
+                    // 從 constants 來的常數值
                     core_1.Input('field'), 
                     __metadata('design:type', String)
                 ], FieldFormComponent.prototype, "_fieldID", void 0);
@@ -112,7 +84,8 @@ System.register(['angular2/core', './../../../../services/form.service'], functi
                 FieldFormComponent = __decorate([
                     core_1.Component({
                         selector: 'field-form',
-                        templateUrl: '/app/admin/form-admin/form-detail/field-form/field-form.template.html'
+                        templateUrl: '/app/admin/form-admin/form-detail/field-form/field-form.template.html',
+                        directives: [field_option_component_1.FieldOptionComponent]
                     }), 
                     __metadata('design:paramtypes', [form_service_1.FormService])
                 ], FieldFormComponent);
