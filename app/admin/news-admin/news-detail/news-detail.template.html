@@ -8,7 +8,7 @@
   <div class="form-group row">
     <label for="date" class="col-sm-2 form-control-label">日期</label>
     <div class="col-sm-10">
-      <datepicker [(ngModel)]="_piece.date" required></datepicker>
+      <datepicker [(ngModel)]="_piece.date" required #control></datepicker>
     </div>
   </div>
   <div class="form-group row">
@@ -29,11 +29,11 @@
       <input type="text" class="form-control" [(ngModel)]="_piece.link" ngControl="link">
     </div>
   </div>
-  
+
   <br>
-  
+
   <button type="button" class="btn btn-secondary" (click)="cancel()">取消</button>
-  
+
   <div class="pull-xs-right">
     <button type="submit" [disabled]="!pieceForm.form.valid" class="btn btn-primary">更新</button>
   </div>

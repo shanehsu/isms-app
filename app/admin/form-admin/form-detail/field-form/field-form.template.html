@@ -31,14 +31,15 @@
       <hr class="divider">
     </div>
     
-    <field-option [field-type]="_field.type"></field-option>
-
+    <field-option [field-type]="_field.type" [(ngModel)]="_field.metadata"></field-option>
+    
     <button type="button" class="btn btn-danger" (click)="delete_field()">刪除</button>
     <div class="pull-xs-right">
       <button type="submit" [disabled]="!fieldForm.form.valid" class="btn btn-primary">更新</button>
     </div>
   </form>
+</div>
 
-  {{_field | json}}
-
+<div class="container">
+{{_field | json}}
 </div>

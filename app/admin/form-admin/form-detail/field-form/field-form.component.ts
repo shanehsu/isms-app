@@ -12,11 +12,12 @@ import {FieldTypes} from './constants'
 
 // 子元件
 import {FieldOptionComponent} from './field-option/field-option.component'
+import {FieldOptionValueAccessor} from './field-option/field-option-value-accessor.directive'
 
 @Component({
   selector: 'field-form',
   templateUrl: '/app/admin/form-admin/form-detail/field-form/field-form.template.html',
-  directives: [FieldOptionComponent]
+  directives: [FieldOptionComponent, FieldOptionValueAccessor]
 })
 
 export class FieldFormComponent implements OnInit {
@@ -61,12 +62,5 @@ export class FieldFormComponent implements OnInit {
     this._formService.deleteField(this._formID, this._revisionID, this._fieldID)
       .then(() => this._fieldDidDelete.emit(null))
       .catch(console.error)
-  }
-  
-  pushOption(item: string): void {
-    if (!this._field.metadata.options) {
-      this._field.metadata.options = []
-    }
-    this._field.metadata.options.push(item)
   }
 }
