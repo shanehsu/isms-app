@@ -42,10 +42,13 @@
         <input type="radio" name="secrecyLevelRadio" value="1" [checked]="_revision.secrecyLevel == 1" (change)="_revision.secrecyLevel = 1"> 機密
       </label>
       <label class="radio-inline">
-        <input type="radio" name="secrecyLevelRadio" value="2" [checked]="_revision.secrecyLevel == 2" (change)="_revision.secrecyLevel = 2"> 限閱
+        <input type="radio" name="secrecyLevelRadio" value="2" [checked]="_revision.secrecyLevel == 2" (change)="_revision.secrecyLevel = 2"> 敏感
       </label>
       <label class="radio-inline">
-        <input type="radio" name="secrecyLevelRadio" value="3" [checked]="_revision.secrecyLevel == 3" (change)="_revision.secrecyLevel = 3"> 一般
+        <input type="radio" name="secrecyLevelRadio" value="3" [checked]="_revision.secrecyLevel == 3" (change)="_revision.secrecyLevel = 3"> 限閱
+      </label>
+      <label class="radio-inline">
+        <input type="radio" name="secrecyLevelRadio" value="4" [checked]="_revision.secrecyLevel == 4" (change)="_revision.secrecyLevel = 4"> 一般
       </label>
     </div>
   </div>

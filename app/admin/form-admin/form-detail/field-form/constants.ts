@@ -12,6 +12,10 @@ export let FieldTypes = [
     value: 'date'
   },
   {
+    label: '時間',
+    value: 'time'
+  },
+  {
     label: '選擇',
     value: 'options'
   },
