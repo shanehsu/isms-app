@@ -8,27 +8,50 @@
   <div *ngSwitchWhen="'date'">
 
   </div>
+  <div *ngSwitchWhen="'time'">
+
+  </div>
   <div *ngSwitchWhen="'options'">
+    <div class="form-group row">
+      <label for="type" class="col-sm-2 form-control-label">呈現方式</label>
+      <div class="col-sm-10">
+        <label class="radio-inline">
+          <input type="radio" name="presentationRadio" value="radio" [checked]="_metadata.presentation == 'radio'" (change)="_metadata.presentation = 'radio'"> 單選
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="presentationRadio" value="checkbox" [checked]="_metadata.presentation == 'checkbox'" (change)="_metadata.presentation = 'checkbox'"> 多選
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="presentationRadio" value="select" [checked]="_metadata.presentation == 'select'" (change)="_metadata.presentation = 'select'"> 下拉式選單
+        </label>
+      </div>
+    </div>
     <div class="form-group row">
       <label for="type" class="col-sm-2 form-control-label">選項</label>
       <div class="col-sm-10">
         <div class="list-group">
           <div class="list-group-item form-group row" *ngFor="#option of _metadata.options; #i = index" #cont>
             <div class="col-sm-9">
-              <input-text-editable [ngModel]="_metadata.options[i]" (editing-will-end)="_metadata.options[i] = $event"></input-text-editable>
+              <input-text-editable [ngModel]="_metadata.options[i].value" (editing-will-end)="_metadata.options[i].value = $event"></input-text-editable>
             </div>
             <div class="col-sm-3">
-              <a (click)="edit_option(i)"><i class="fa fa-fw fa-pencil-square-o"></i>編輯</a>
               <a (click)="pull_option(i)"><i class="fa fa-fw fa-times"></i>刪除</a>
+            </div>
+            <div class="row" style="margin-top: 2.5em !important;">
+              <div class="col-sm-12">
+                <div class="card card-block">
+                  <fields-form [id]="'field-' + _uid + '-' + i"></fields-form>
+                </div>
+              </div>
             </div>
           </div>
           <div class="list-group-item form-group row" style="height: 4em">
-              <div class="col-sm-11">
-                <input type="text" class="form-control" placeholder="選項" (blur)="touched()" #option>
-              </div>
-              <div class="col-sm-1">
-                <a class="btn btn-primary" (click)="push_option(option.value, option)"><i class="fa fa-plus"></i></a>
-              </div>
+            <div class="col-sm-11">
+              <input type="text" class="form-control" placeholder="選項" (blur)="touched()" #option>
+            </div>
+            <div class="col-sm-1">
+              <a class="btn btn-primary" (click)="push_option(option.value, option)"><i class="fa fa-plus"></i></a>
+            </div>
           </div>
         </div>
       </div>

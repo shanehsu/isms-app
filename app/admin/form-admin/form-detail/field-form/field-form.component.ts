@@ -21,46 +21,33 @@ import {FieldOptionValueAccessor} from './field-option/field-option-value-access
 })
 
 export class FieldFormComponent implements OnInit {
+  @Output('field-changed') _metadataChanged = new EventEmitter<Field>()
+  @Output('control-touched') _controlTouched = new EventEmitter<void>()
+  
+  @Output('update') _update = new EventEmitter<Field>()
+  @Output('delete') _delete = new EventEmitter<void>()
+  
   private fieldTypes = FieldTypes // 從 constants 來的常數值
   
-  // 輸入
-  @Input('field') _fieldID: string
-  @Input('revision') _revisionID: string
-  @Input('form') _formID: string
-  
-  // 輸出
-  @Output('fieldDidDelete') _fieldDidDelete = new EventEmitter<void>()
-  
   // 表單模型
-  private _field: Field
+  private _field: Field = <Field>{}
   
   // 服務
-  constructor(private _formService: FormService) { }
+  constructor(private _formService: FormService) {}
   
   // 初始化
-  ngOnInit(): void {
-    // 空資料
-    this._field = <Field>{}
-    
-    // 取得資料
-    this.reload_field()
+  ngOnInit(): void {}
+  
+  setValue(value: Field): void {
+    this._field = value
   }
-
-  reload_field(): void {
-    this._formService.field(this._formID, this._revisionID, this._fieldID)
-      .then(field => this._field = field)
-      .catch(console.error)
-  }
-
+  
+  // 更新與刪除
   submit_field(): void {
-    this._formService.updateField(this._formID, this._revisionID, this._field)
-      .then(() => this.reload_field())
-      .catch(console.error)
+    this._update.emit(this._field)
   }
-
+  
   delete_field(): void {
-    this._formService.deleteField(this._formID, this._revisionID, this._fieldID)
-      .then(() => this._fieldDidDelete.emit(null))
-      .catch(console.error)
+    this._delete.emit(null)
   }
 }

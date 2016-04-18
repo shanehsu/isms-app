@@ -58,16 +58,15 @@
     <button type="submit" [disabled]="!revisionForm.form.valid" class="btn btn-primary">更新</button>
   </div>
 </form>
+
 <p></p>
+
 <div class="card">
   <div class="card-block">
     <h4 class="card-title">表單欄位</h4>
     <p class="card-text text-muted"><small>表單欄位是存在表單版本內的。</small></p>
   </div>
   <div class="list-group list-group-flush">
-    <field-form *ngFor="#field of _revision.fields" [form]="_formID" [revision]="_revision._id" [field]="field" (fieldDidDelete)="reload_fields()"></field-form>
-  </div>
-  <div class="card-block text-xs-center">
-    <a class="btn btn-primary" (click)="new_field()">新增欄位</a>
+    <fields-form [form-id]="_formID" [revision-id]="_revision._id" (shouldUpdate)="reload_fields()" [(ngModel)]="_fields"></fields-form>
   </div>
 </div>

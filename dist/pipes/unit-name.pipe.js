@@ -1,4 +1,6 @@
-System.register(['angular2/core', './../services/unit.service'], function(exports_1) {
+System.register(['angular2/core', './../services/unit.service'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24,8 +26,8 @@ System.register(['angular2/core', './../services/unit.service'], function(export
                     var _this = this;
                     this._units = {};
                     unitService.units().then(function (units) {
-                        for (var _i = 0; _i < units.length; _i++) {
-                            var unit = units[_i];
+                        for (var _i = 0, units_1 = units; _i < units_1.length; _i++) {
+                            var unit = units_1[_i];
                             _this._units[unit.id] = unit.name;
                         }
                     });
@@ -51,7 +53,7 @@ System.register(['angular2/core', './../services/unit.service'], function(export
                     __metadata('design:paramtypes', [unit_service_1.UnitService])
                 ], UnitNamePipe);
                 return UnitNamePipe;
-            })();
+            }());
             exports_1("UnitNamePipe", UnitNamePipe);
         }
     }

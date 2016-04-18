@@ -1,0 +1,11 @@
+<div *ngFor="#field of _fields; #i = index">
+  <field-form [(ngModel)]="_fields[i]" (update)="update_field(i)" (delete)="delete_field(i)"></field-form>
+</div>
+
+<div class="card-block text-xs-center">
+  <a class="btn btn-primary" (click)="new_field()">新增欄位</a>
+</div>
+
+<div *ngIf="_fields">
+  {{_fields | json}}
+</div>

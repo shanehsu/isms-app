@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/http', './auth.service'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', './auth.service'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -48,8 +50,8 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                             .map(function (response) { return response.json(); })
                             .subscribe(function (data) {
                             var pieces = [];
-                            for (var _i = 0; _i < data.length; _i++) {
-                                var piece = data[_i];
+                            for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+                                var piece = data_1[_i];
                                 pieces.push({
                                     id: piece._id,
                                     date: new Date(piece.date),
@@ -75,8 +77,8 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                         }).map(function (response) { return response.json(); })
                             .subscribe(function (data) {
                             var pieces = [];
-                            for (var _i = 0; _i < data.length; _i++) {
-                                var piece = data[_i];
+                            for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+                                var piece = data_2[_i];
                                 pieces.push({
                                     id: piece._id,
                                     date: new Date(piece.date),
@@ -179,7 +181,7 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                     __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService, Object])
                 ], NewsService);
                 return NewsService;
-            })();
+            }());
             exports_1("NewsService", NewsService);
         }
     }

@@ -1,4 +1,6 @@
-System.register(['angular2/core', './../services/user.service'], function(exports_1) {
+System.register(['angular2/core', './../services/user.service'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24,8 +26,8 @@ System.register(['angular2/core', './../services/user.service'], function(export
                     var _this = this;
                     this._users = {};
                     userService.get().then(function (users) {
-                        for (var _i = 0; _i < users.length; _i++) {
-                            var user = users[_i];
+                        for (var _i = 0, users_1 = users; _i < users_1.length; _i++) {
+                            var user = users_1[_i];
                             _this._users[user.id] = user.name;
                         }
                     });
@@ -38,7 +40,7 @@ System.register(['angular2/core', './../services/user.service'], function(export
                     __metadata('design:paramtypes', [user_service_1.UserService])
                 ], UserNamePipe);
                 return UserNamePipe;
-            })();
+            }());
             exports_1("UserNamePipe", UserNamePipe);
         }
     }

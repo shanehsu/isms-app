@@ -1,4 +1,6 @@
-System.register(['angular2/core', './../../../../../controls/editable-text-input/editable-text-input.component', './../../../../../controls/editable-text-input/editable-text-input-value-accessor.directive'], function(exports_1) {
+System.register(['angular2/core', './../../../../../controls/editable-text-input/editable-text-input.component', './../../../../../controls/editable-text-input/editable-text-input-value-accessor.directive', './../../fields-form/fields-form.component'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,8 +10,8 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, editable_text_input_component_1, editable_text_input_value_accessor_directive_1;
-    var FieldOptionComponent;
+    var core_1, editable_text_input_component_1, editable_text_input_value_accessor_directive_1, fields_form_component_1;
+    var FieldOptionComponent, randomString;
     return {
         setters:[
             function (core_1_1) {
@@ -20,15 +22,41 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
             },
             function (editable_text_input_value_accessor_directive_1_1) {
                 editable_text_input_value_accessor_directive_1 = editable_text_input_value_accessor_directive_1_1;
+            },
+            function (fields_form_component_1_1) {
+                fields_form_component_1 = fields_form_component_1_1;
             }],
         execute: function() {
             FieldOptionComponent = (function () {
-                function FieldOptionComponent() {
+                function FieldOptionComponent(_dcl, _injector, elementRef) {
+                    this._dcl = _dcl;
+                    this._injector = _injector;
+                    this.elementRef = elementRef;
                     this._metadataChanged = new core_1.EventEmitter();
                     this._controlTouched = new core_1.EventEmitter();
+                    this._uid = randomString(5);
                 }
                 FieldOptionComponent.prototype.setValue = function (value) {
+                    var _this = this;
                     this._metadata = value;
+                    if (this._fieldType == 'options' && this._metadata) {
+                        if (!this._metadata.options) {
+                            this._metadata.options = [];
+                        }
+                        var _loop_1 = function(index) {
+                            this_1._dcl.loadAsRoot(fields_form_component_1.FieldsFormComponent, '#field-' + this_1._uid + '-' + index, this_1._injector).then(function (componentRef) {
+                                var instance = componentRef.instance;
+                                instance.setValue(_this._metadata.options[index].fields);
+                                instance.setMode('inline');
+                                // 加入 Change Detection
+                                componentRef.location._appElement.parentView.changeDetector.ref.detectChanges();
+                            });
+                        };
+                        var this_1 = this;
+                        for (var index = 0; index < this._metadata.options.length; ++index) {
+                            _loop_1(index);
+                        }
+                    }
                 };
                 FieldOptionComponent.prototype.pull_option = function (index) {
                     this._metadata.options = this._metadata.options.filter(function (value, i) {
@@ -44,7 +72,10 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                         this._metadata.options = [];
                     }
                     if (option != "")
-                        this._metadata.options.push(option);
+                        (this._metadata.options).push({
+                            value: option,
+                            fields: []
+                        });
                     optionControl.value = '';
                     this.changed();
                 };
@@ -54,8 +85,7 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                 FieldOptionComponent.prototype.touched = function () {
                     this._controlTouched.emit(null);
                 };
-                FieldOptionComponent.prototype.ngOnInit = function () {
-                };
+                FieldOptionComponent.prototype.ngOnInit = function () { };
                 FieldOptionComponent.prototype.log = function (value) {
                     console.dir(value);
                 };
@@ -77,11 +107,19 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                         templateUrl: '/app/admin/form-admin/form-detail/field-form/field-option/field-option.template.html',
                         directives: [editable_text_input_component_1.EditableTextInputComponent, editable_text_input_value_accessor_directive_1.EditableTextInputValueAccessor]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [core_1.DynamicComponentLoader, core_1.Injector, core_1.ElementRef])
                 ], FieldOptionComponent);
                 return FieldOptionComponent;
-            })();
+            }());
             exports_1("FieldOptionComponent", FieldOptionComponent);
+            randomString = function (length) {
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                for (var i = 0; i < length; i++) {
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+                }
+                return text;
+            };
         }
     }
 });

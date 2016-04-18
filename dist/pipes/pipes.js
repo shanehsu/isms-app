@@ -1,4 +1,6 @@
-System.register(['./group-name.pipe', './unit-name.pipe', './user-name.pipe', './chinese-date.pipe'], function(exports_1) {
+System.register(['./group-name.pipe', './unit-name.pipe', './user-name.pipe', './chinese-date.pipe'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     return {
         setters:[
             function (group_name_pipe_1_1) {

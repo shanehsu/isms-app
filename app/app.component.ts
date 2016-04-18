@@ -6,6 +6,9 @@ import {AdminIndexComponent} from './admin/isms-admin-index/admin-index.componen
 import {NewsComponent}       from './isms-news/news.component'
 import {FormIndexComponent}  from './isms-form/form-index.component'
 
+import {FieldsFormComponent} from './admin/form-admin/form-detail/fields-form/fields-form.component'
+import {FieldsFormValueAccessor} from './admin/form-admin/form-detail/fields-form/fields-form-value-accessor.directive'
+
 @Component({
     selector: 'isms-app',
     template:`

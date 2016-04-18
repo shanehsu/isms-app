@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/router', './../../../services/user.service', './../../../services/unit.service', './../../../pipes/pipes'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './../../../services/user.service', './../../../services/unit.service', './../../../pipes/pipes'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -68,7 +70,7 @@ System.register(['angular2/core', 'angular2/router', './../../../services/user.s
                     __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
                 ], UserListComponent);
                 return UserListComponent;
-            })();
+            }());
             exports_1("UserListComponent", UserListComponent);
         }
     }

@@ -42,8 +42,7 @@ export class EditableTextInputComponent {
   }
   
   keydown(event: KeyboardEvent): void {
-    if (event.key === "Enter" || event.keyCode === 13 || event.which === 123) {
-      console.log('Enter pressed')
+    if (event.key === "Enter" || event.keyCode === 13 || event.which === 13) {
       this._editingWillEnd.emit(this._model)
       this._editing = false
       event.preventDefault()

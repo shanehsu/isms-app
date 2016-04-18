@@ -1,4 +1,6 @@
-System.register([], function(exports_1) {
+System.register([], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var FieldTypes, OptionsPresentationTypes;
     return {
         setters:[],
@@ -15,6 +17,10 @@ System.register([], function(exports_1) {
                 {
                     label: '日期',
                     value: 'date'
+                },
+                {
+                    label: '時間',
+                    value: 'time'
                 },
                 {
                     label: '選擇',
