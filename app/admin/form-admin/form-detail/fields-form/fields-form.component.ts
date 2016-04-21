@@ -57,7 +57,7 @@ export class FieldsFormComponent {
   
   delete_field(index: number): void {
     if (this._inline) {
-      delete this._fields[index]
+      this._fields = this._fields.splice(index, 1)
       
       this._elementRef._appElement.parentView.changeDetector.ref.detectChanges()
       return

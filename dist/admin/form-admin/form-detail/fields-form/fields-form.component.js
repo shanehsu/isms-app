@@ -58,7 +58,7 @@ System.register(['angular2/core', './../field-form/field-form.component', './../
                 FieldsFormComponent.prototype.delete_field = function (index) {
                     var _this = this;
                     if (this._inline) {
-                        delete this._fields[index];
+                        this._fields = this._fields.splice(index, 1);
                         this._elementRef._appElement.parentView.changeDetector.ref.detectChanges();
                         return;
                     }
