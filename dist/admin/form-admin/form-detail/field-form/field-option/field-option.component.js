@@ -28,15 +28,18 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
             }],
         execute: function() {
             FieldOptionComponent = (function () {
-                function FieldOptionComponent(_dcl, _injector, elementRef) {
+                function FieldOptionComponent(_dcl, _injector, elementRef, _changeDetectorRef) {
                     this._dcl = _dcl;
                     this._injector = _injector;
                     this.elementRef = elementRef;
+                    this._changeDetectorRef = _changeDetectorRef;
                     this._metadataChanged = new core_1.EventEmitter();
                     this._controlTouched = new core_1.EventEmitter();
                     this._uid = randomString(5);
                 }
                 FieldOptionComponent.prototype.setValue = function (value) {
+                    // console.log("在 FieldOption 裡，setValue 被呼叫了！value 的值：")
+                    // console.dir(value)
                     var _this = this;
                     this._metadata = value;
                     if (this._fieldType == 'options' && this._metadata) {
@@ -48,8 +51,6 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                                 var instance = componentRef.instance;
                                 instance.setValue(_this._metadata.options[index].fields);
                                 instance.setMode('inline');
-                                // 加入 Change Detection
-                                componentRef.location._appElement.parentView.changeDetector.ref.detectChanges();
                             });
                         };
                         var this_1 = this;
@@ -59,15 +60,12 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                     }
                 };
                 FieldOptionComponent.prototype.pull_option = function (index) {
-                    this._metadata.options = this._metadata.options.filter(function (value, i) {
-                        return index != i;
-                    });
+                    this._metadata.options.splice(index, 1);
+                    this._changeDetectorRef.detectChanges();
                     this.changed();
                 };
-                FieldOptionComponent.prototype.edit_option = function (index) {
-                    console.log('will edit option');
-                };
                 FieldOptionComponent.prototype.push_option = function (option, optionControl) {
+                    var _this = this;
                     if (!this._metadata.options) {
                         this._metadata.options = [];
                     }
@@ -78,6 +76,17 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                         });
                     optionControl.value = '';
                     this.changed();
+                    this._changeDetectorRef.detectChanges();
+                    // Dynamic Component Loader
+                    // 必須等待一段時間之後，DOM 更新，div 出現，才能進行 Loading
+                    setTimeout(function () {
+                        var index = _this._metadata.options.length - 1;
+                        _this._dcl.loadAsRoot(fields_form_component_1.FieldsFormComponent, '#field-' + _this._uid + '-' + index, _this._injector).then(function (componentRef) {
+                            var instance = componentRef.instance;
+                            instance.setValue(_this._metadata.options[index].fields);
+                            instance.setMode('inline');
+                        });
+                    }, 250);
                 };
                 FieldOptionComponent.prototype.changed = function () {
                     this._metadataChanged.emit(this._metadata);
@@ -107,7 +116,7 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                         templateUrl: '/app/admin/form-admin/form-detail/field-form/field-option/field-option.template.html',
                         directives: [editable_text_input_component_1.EditableTextInputComponent, editable_text_input_value_accessor_directive_1.EditableTextInputValueAccessor]
                     }), 
-                    __metadata('design:paramtypes', [core_1.DynamicComponentLoader, core_1.Injector, core_1.ElementRef])
+                    __metadata('design:paramtypes', [core_1.DynamicComponentLoader, core_1.Injector, core_1.ElementRef, core_1.ChangeDetectorRef])
                 ], FieldOptionComponent);
                 return FieldOptionComponent;
             }());

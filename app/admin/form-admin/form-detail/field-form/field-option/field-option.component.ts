@@ -1,5 +1,5 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit, Inject, Injector, DynamicComponentLoader, forwardRef, ElementRef} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit, Inject, Injector, DynamicComponentLoader, forwardRef, ElementRef, ChangeDetectorRef} from 'angular2/core'
 
 // 常數
 import {FieldTypes} from './../constants'
@@ -27,11 +27,14 @@ export class FieldOptionComponent implements OnInit {
   private _metadata: any
   private _uid: string
   
-  constructor(private _dcl: DynamicComponentLoader, private _injector: Injector, private elementRef: ElementRef) {
+  constructor(private _dcl: DynamicComponentLoader, private _injector: Injector, private elementRef: ElementRef, private _changeDetectorRef: ChangeDetectorRef) {
     this._uid = randomString(5)
   }
   
   setValue(value: any) {
+    // console.log("在 FieldOption 裡，setValue 被呼叫了！value 的值：")
+    // console.dir(value)
+    
     this._metadata = value
     
     if (this._fieldType == 'options' && this._metadata) {
@@ -43,24 +46,15 @@ export class FieldOptionComponent implements OnInit {
           let instance: FieldsFormComponent = <FieldsFormComponent>componentRef.instance
           instance.setValue(this._metadata.options[index].fields)
           instance.setMode('inline')
-          
-          // 加入 Change Detection
-          componentRef.location._appElement.parentView.changeDetector.ref.detectChanges()
         })
       }
     }
   }
   
   pull_option(index: number): void {
-    this._metadata.options = (<string[]>this._metadata.options).filter((value, i) => {
-      return index != i
-    })
-    
+    this._metadata.options.splice(index, 1)
+    this._changeDetectorRef.detectChanges();
     this.changed()
-  }
-  
-  edit_option(index: number): void {
-    console.log('will edit option')
   }
   
   push_option(option: string, optionControl: HTMLInputElement): void {
@@ -75,6 +69,17 @@ export class FieldOptionComponent implements OnInit {
     optionControl.value = ''
     
     this.changed()
+    this._changeDetectorRef.detectChanges();
+    // Dynamic Component Loader
+    // 必須等待一段時間之後，DOM 更新，div 出現，才能進行 Loading
+    setTimeout(() => {
+      let index = this._metadata.options.length - 1
+      this._dcl.loadAsRoot(FieldsFormComponent, '#field-' + this._uid + '-' + index, this._injector).then(componentRef => {
+        let instance: FieldsFormComponent = <FieldsFormComponent>componentRef.instance
+        instance.setValue(this._metadata.options[index].fields)
+        instance.setMode('inline')
+      })
+    }, 250)
   }
   
   changed(): void {

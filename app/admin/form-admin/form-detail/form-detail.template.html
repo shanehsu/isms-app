@@ -40,7 +40,7 @@
     <ul class="nav nav-tabs">
       <template ngFor #revision [ngForOf]="_revisions">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="isActiveRevision(revision)" (click)="select_revision(revision)">{{revision?.revision}}</a>
+          <a class="nav-link" [class.active]="isActiveRevision(revision)" (click)="select_revision(revision)">{{revision?.revision.toFixed(1)}}</a>
         </li>
       </template>
       <li class="nav-item">
@@ -56,12 +56,6 @@
     </div>
   </div>
   
-</div>
-
-<div class="card">
-  <div class="card-block">
-    {{_form | json}}
-  </div>
 </div>
 
 

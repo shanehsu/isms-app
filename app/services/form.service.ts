@@ -192,6 +192,7 @@ export class FormService {
     let payloadObject = {
       revision: revision.revision,
       signatures: revision.signatures,
+      officerSignature: revision.officerSignature,
       group: revision.group,
       secrecyLevel: revision.secrecyLevel
     }

@@ -28,27 +28,33 @@ System.register(['angular2/core', './../field-form/field-form.component', './../
             }],
         execute: function() {
             FieldsFormComponent = (function () {
-                function FieldsFormComponent(_elementRef, _formService) {
+                function FieldsFormComponent(_elementRef, _formService, detRef) {
                     this._elementRef = _elementRef;
                     this._formService = _formService;
+                    this.detRef = detRef;
                     // 與 Value Accessor 有關的
                     this._fieldsChanged = new core_1.EventEmitter();
                     this._controlTouched = new core_1.EventEmitter();
                     this._change = new core_1.EventEmitter();
                     this._inline = false;
+                    this._detectorRef = detRef;
                 }
                 // 與 Value Accessor 有關的
                 FieldsFormComponent.prototype.setValue = function (value) {
                     this._fields = value;
+                    this._detectorRef.detectChanges();
                 };
                 FieldsFormComponent.prototype.setMode = function (mode) {
                     if (mode == 'inline') {
                         this._inline = true;
+                        this._detectorRef.detectChanges();
                     }
                 };
                 FieldsFormComponent.prototype.update_field = function (index) {
                     var _this = this;
                     if (this._inline) {
+                        this._fieldsChanged.emit(this._fields);
+                        this._detectorRef.detectChanges();
                         return;
                     }
                     this._formService.updateField(this._formID, this._revisionID, this._fields[index])
@@ -57,9 +63,11 @@ System.register(['angular2/core', './../field-form/field-form.component', './../
                 };
                 FieldsFormComponent.prototype.delete_field = function (index) {
                     var _this = this;
+                    console.log("index = " + index);
                     if (this._inline) {
-                        this._fields = this._fields.splice(index, 1);
-                        this._elementRef._appElement.parentView.changeDetector.ref.detectChanges();
+                        this._fields.splice(index, 1);
+                        this._fieldsChanged.emit(this._fields);
+                        this._detectorRef.detectChanges();
                         return;
                     }
                     this._formService.deleteField(this._formID, this._revisionID, this._fields[index]._id)
@@ -75,7 +83,8 @@ System.register(['angular2/core', './../field-form/field-form.component', './../
                             type: 'shortText',
                             metadata: {}
                         });
-                        this._elementRef._appElement.parentView.changeDetector.ref.detectChanges();
+                        this._fieldsChanged.emit(this._fields);
+                        this._detectorRef.detectChanges();
                         return;
                     }
                     this._formService.newField(this._formID, this._revisionID)
@@ -108,7 +117,7 @@ System.register(['angular2/core', './../field-form/field-form.component', './../
                         templateUrl: '/app/admin/form-admin/form-detail/fields-form/fields-form.template.html',
                         directives: [field_form_component_1.FieldFormComponent, field_form_value_accessor_directive_1.FieldFormValueAccessor]
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef, form_service_1.FormService])
+                    __metadata('design:paramtypes', [core_1.ElementRef, form_service_1.FormService, core_1.ChangeDetectorRef])
                 ], FieldsFormComponent);
                 return FieldsFormComponent;
             }());

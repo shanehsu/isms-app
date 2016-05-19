@@ -1,5 +1,5 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit, ChangeDetectorRef} from 'angular2/core'
 
 // 服務
 import {FormService} from './../../../../services/form.service'
@@ -27,13 +27,15 @@ export class FieldFormComponent implements OnInit {
   @Output('update') _update = new EventEmitter<Field>()
   @Output('delete') _delete = new EventEmitter<void>()
   
+  @Input('inline') _inline: boolean = false
+  
   private fieldTypes = FieldTypes // 從 constants 來的常數值
   
   // 表單模型
   private _field: Field = <Field>{}
   
   // 服務
-  constructor(private _formService: FormService) {}
+  constructor(private _formService: FormService, private _changeDetector: ChangeDetectorRef) {}
   
   // 初始化
   ngOnInit(): void {}
@@ -49,5 +51,9 @@ export class FieldFormComponent implements OnInit {
   
   delete_field(): void {
     this._delete.emit(null)
+  }
+  
+  detectChanges(): void {
+    this._changeDetector.detectChanges()
   }
 }

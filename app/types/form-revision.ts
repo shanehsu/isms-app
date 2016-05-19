@@ -1,7 +1,8 @@
 export interface FormRevision {
   _id: string
   revision: number
-  signatures: number
+  signatures: boolean
+  officerSignature: boolean
   group: number
   secrecyLevel: number
   template: string

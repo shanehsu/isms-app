@@ -32,12 +32,14 @@ System.register(['angular2/core', './../../../../services/form.service', './cons
         execute: function() {
             FieldFormComponent = (function () {
                 // 服務
-                function FieldFormComponent(_formService) {
+                function FieldFormComponent(_formService, _changeDetector) {
                     this._formService = _formService;
+                    this._changeDetector = _changeDetector;
                     this._metadataChanged = new core_1.EventEmitter();
                     this._controlTouched = new core_1.EventEmitter();
                     this._update = new core_1.EventEmitter();
                     this._delete = new core_1.EventEmitter();
+                    this._inline = false;
                     this.fieldTypes = constants_1.FieldTypes; // 從 constants 來的常數值
                     // 表單模型
                     this._field = {};
@@ -53,6 +55,9 @@ System.register(['angular2/core', './../../../../services/form.service', './cons
                 };
                 FieldFormComponent.prototype.delete_field = function () {
                     this._delete.emit(null);
+                };
+                FieldFormComponent.prototype.detectChanges = function () {
+                    this._changeDetector.detectChanges();
                 };
                 __decorate([
                     core_1.Output('field-changed'), 
@@ -70,13 +75,17 @@ System.register(['angular2/core', './../../../../services/form.service', './cons
                     core_1.Output('delete'), 
                     __metadata('design:type', Object)
                 ], FieldFormComponent.prototype, "_delete", void 0);
+                __decorate([
+                    core_1.Input('inline'), 
+                    __metadata('design:type', Boolean)
+                ], FieldFormComponent.prototype, "_inline", void 0);
                 FieldFormComponent = __decorate([
                     core_1.Component({
                         selector: 'field-form',
                         templateUrl: '/app/admin/form-admin/form-detail/field-form/field-form.template.html',
                         directives: [field_option_component_1.FieldOptionComponent, field_option_value_accessor_directive_1.FieldOptionValueAccessor]
                     }), 
-                    __metadata('design:paramtypes', [form_service_1.FormService])
+                    __metadata('design:paramtypes', [form_service_1.FormService, core_1.ChangeDetectorRef])
                 ], FieldFormComponent);
                 return FieldFormComponent;
             }());

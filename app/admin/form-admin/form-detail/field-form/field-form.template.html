@@ -16,7 +16,7 @@
       <label for="type" class="col-sm-2 form-control-label">類型</label>
       <div class="col-sm-10">
         <label class="radio-inline" *ngFor="#fieldType of fieldTypes">
-          <input type="radio" name="typeRadio" [value]="fieldType.value" [checked]="_field.type == fieldType.value" (change)="_field.type = fieldType.value"> {{fieldType.label}}
+          <input type="radio" name="typeRadio" [value]="fieldType.value" [checked]="_field.type == fieldType.value" (change)="_field.type = fieldType.value; detectChanges()"> {{fieldType.label}}
         </label>
       </div>
     </div>
@@ -33,13 +33,9 @@
     
     <field-option [field-type]="_field.type" [(ngModel)]="_field.metadata"></field-option>
     
-    <button type="button" class="btn btn-danger" (click)="delete_field()">刪除</button>
-    <div class="pull-xs-right">
+    <button type="button" class="btn btn-danger" (click)="delete_field()" *ngIf="!_inline">刪除</button>
+    <div class="pull-xs-right" *ngIf="!_inline">
       <button type="submit" [disabled]="!fieldForm.form.valid" class="btn btn-primary">更新</button>
     </div>
   </form>
-</div>
-
-<div class="container">
-{{_field | json}}
 </div>

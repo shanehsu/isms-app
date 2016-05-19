@@ -194,6 +194,7 @@ System.register(['angular2/core', 'angular2/http', './auth.service'], function(e
                     var payloadObject = {
                         revision: revision.revision,
                         signatures: revision.signatures,
+                        officerSignature: revision.officerSignature,
                         group: revision.group,
                         secrecyLevel: revision.secrecyLevel
                     };
