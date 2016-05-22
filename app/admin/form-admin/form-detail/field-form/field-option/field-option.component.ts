@@ -49,6 +49,17 @@ export class FieldOptionComponent implements OnInit {
         })
       }
     }
+    
+    if (this._fieldType == 'table' && this._metadata) {
+      if (!this._metadata.fields) {
+        this._metadata.fields = []
+      }
+      this._dcl.loadAsRoot(FieldsFormComponent, '#field-' + this._uid, this._injector).then(componentRef => {
+        let instance: FieldsFormComponent = <FieldsFormComponent>componentRef.instance
+        instance.setValue(this._metadata.fields)
+        instance.setMode('inline')
+      })
+    }
   }
   
   pull_option(index: number): void {

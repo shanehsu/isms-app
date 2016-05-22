@@ -11,34 +11,30 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var ChineseDatePipe;
+    var PrettyPrintPipe;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            ChineseDatePipe = (function () {
-                function ChineseDatePipe() {
+            PrettyPrintPipe = (function () {
+                function PrettyPrintPipe() {
                 }
-                ChineseDatePipe.prototype.transform = function (value, args) {
-                    if (args.indexOf("builtin") < 0) {
-                        var year = value.getFullYear();
-                        var month = value.getMonth() + 1;
-                        var date = value.getDate();
-                        return year + ' 年 ' + month + ' 月 ' + date + ' 日';
-                    }
-                    var formatter = Intl.DateTimeFormat("zh-Hant-TW", { year: 'numeric', month: 'long', day: 'numeric' });
-                    return formatter.format(value);
+                PrettyPrintPipe.prototype.transform = function (val) {
+                    console.log(JSON.stringify(val, null, 4).replace);
+                    return JSON.stringify(val, null, 2).replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
                 };
-                ChineseDatePipe = __decorate([
-                    core_1.Pipe({ name: 'chineseDate' }), 
+                PrettyPrintPipe = __decorate([
+                    core_1.Pipe({
+                        name: 'prettyprint'
+                    }), 
                     __metadata('design:paramtypes', [])
-                ], ChineseDatePipe);
-                return ChineseDatePipe;
+                ], PrettyPrintPipe);
+                return PrettyPrintPipe;
             }());
-            exports_1("ChineseDatePipe", ChineseDatePipe);
+            exports_1("PrettyPrintPipe", PrettyPrintPipe);
         }
     }
 });
-//# sourceMappingURL=chinese-date.pipe.js.map
+//# sourceMappingURL=prettyprint.pipe.js.map

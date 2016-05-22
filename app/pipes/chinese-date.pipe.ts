@@ -3,11 +3,17 @@ import {Pipe, PipeTransform} from 'angular2/core';
 @Pipe({name: 'chineseDate'})
 
 export class ChineseDatePipe implements PipeTransform {
-  transform(value: Date): string {
-    let year  = value.getFullYear();
-    let month = value.getMonth() + 1;
-    let date  = value.getDate();
+  transform(value: Date, args: string[]): string {
+    if (args.indexOf("builtin") < 0) {
+      let year  = value.getFullYear();
+      let month = value.getMonth() + 1;
+      let date  = value.getDate();
+      
+      return year + ' 年 ' + month + ' 月 ' + date + ' 日';  
+    }
     
-    return year + ' 年 ' + month + ' 月 ' + date + ' 日';
+    let formatter = Intl.DateTimeFormat("zh-Hant-TW", {year: 'numeric', month: 'long', day: 'numeric'})
+    
+    return formatter.format(value)
   }
 }

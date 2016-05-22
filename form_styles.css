@@ -5,3 +5,8 @@ input.ng-valid[required] {
 .ng-invalid {
   border-left: 5px solid #a94442 !important;
 }
+
+div.checkbox.form-control,
+div.radio.form-control {
+  border: none;
+}

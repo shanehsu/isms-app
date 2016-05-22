@@ -26,14 +26,10 @@
         <input type="text" class="form-control" [(ngModel)]="_field.hint" ngControl="hint">
       </div>
     </div>
-
-    <div class="form-group row" style="width: 90% !important; margin: auto;">
-      <hr class="divider">
-    </div>
     
     <field-option [field-type]="_field.type" [(ngModel)]="_field.metadata"></field-option>
     
-    <button type="button" class="btn btn-danger" (click)="delete_field()" *ngIf="!_inline">刪除</button>
+    <button type="button" class="btn btn-danger" (click)="delete_field()">刪除</button>
     <div class="pull-xs-right" *ngIf="!_inline">
       <button type="submit" [disabled]="!fieldForm.form.valid" class="btn btn-primary">更新</button>
     </div>

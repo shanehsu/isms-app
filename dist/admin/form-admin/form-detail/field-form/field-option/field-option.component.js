@@ -58,6 +58,16 @@ System.register(['angular2/core', './../../../../../controls/editable-text-input
                             _loop_1(index);
                         }
                     }
+                    if (this._fieldType == 'table' && this._metadata) {
+                        if (!this._metadata.fields) {
+                            this._metadata.fields = [];
+                        }
+                        this._dcl.loadAsRoot(fields_form_component_1.FieldsFormComponent, '#field-' + this._uid, this._injector).then(function (componentRef) {
+                            var instance = componentRef.instance;
+                            instance.setValue(_this._metadata.fields);
+                            instance.setMode('inline');
+                        });
+                    }
                 };
                 FieldOptionComponent.prototype.pull_option = function (index) {
                     this._metadata.options.splice(index, 1);
