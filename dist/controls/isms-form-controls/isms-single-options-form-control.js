@@ -37,6 +37,9 @@ System.register(['angular2/core', 'angular2/common', 'angular2/src/facade/lang',
                     this._uid = randomString(7);
                     console.dir("我是 SingleOptionsFormControl，我的 constructor 被呼叫了呦！");
                 }
+                SingleOptionsFormControl.prototype.ngOnInit = function () {
+                    // console.dir(FormFields)
+                };
                 // 與 Value Accessor 有關的
                 // 從 Value Accessor 接收資料
                 SingleOptionsFormControl.prototype.setValue = function (value) {
@@ -62,7 +65,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/src/facade/lang',
                 SingleOptionsFormControl = __decorate([
                     core_1.Component({
                         selector: 'form-control[type=options][presentation=single]',
-                        template: "<template ngFor #item [ngForOf]=\"_metadata.options\" #i=\"index\">\n    <div class=\"radio form-control\">\n      <label>\n        <input [name]=\"_uid\" type=\"radio\" (change)=\"select(i)\" [checked]=\"_dataModel.selected[i]\">\n        {{item.value}}\n      </label>\n      <div *ngIf=\"_dataModel.selected[i]\">\n        <isms-form-fields [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></isms-form-fields>\n      </div>\n    </div>\n  </template>",
+                        template: "<template ngFor #item [ngForOf]=\"_metadata.options\" #i=\"index\">\n    <div class=\"radio form-control\">\n      <label>\n        <input [name]=\"_uid\" type=\"radio\" (change)=\"select(i)\" [checked]=\"_dataModel.selected[i]\">\n        {{item.value}}\n      </label>\n      <div *ngIf=\"_dataModel.selected[i]\">\n        <isms-form-fields></isms-form-fields>\n      </div>\n    </div>\n  </template>",
                         directives: [core_2.forwardRef(function () { return form_fields_1.FormFields; }), core_2.forwardRef(function () { return form_fields_1.FormFieldsValueAccessor; })]
                     }), 
                     __metadata('design:paramtypes', [])

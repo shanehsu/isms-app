@@ -16,14 +16,14 @@ import {FormFields, FormFieldsValueAccessor} from './../../isms-form/form-fields
         {{item.value}}
       </label>
       <div *ngIf="_dataModel.selected[i]">
-        <isms-form-fields [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel.values[i]"></isms-form-fields>
+        <isms-form-fields></isms-form-fields>
       </div>
     </div>
-  </template>`,
+  </template>`, // [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel.values[i]"
   directives: [forwardRef(() => FormFields), forwardRef(() => FormFieldsValueAccessor)]
 })
 
-export class SingleOptionsFormControl {
+export class SingleOptionsFormControl implements OnInit {
   @Input('metadata') _metadata: any
   
   // 推送資料
@@ -33,6 +33,10 @@ export class SingleOptionsFormControl {
   
   private _dataModel: any
   private _uid: string
+  
+  ngOnInit(): void {
+    // console.dir(FormFields)
+  }
   
   constructor() {
     this._uid = randomString(7)
