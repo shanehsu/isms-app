@@ -24,7 +24,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="#piece of _pieces">
+          <tr *ngFor="let piece of _pieces">
               <td>{{piece.date | chineseDate}}</td>
               <td>{{piece.source}}</td>
               <td>{{piece.summary}}</td>

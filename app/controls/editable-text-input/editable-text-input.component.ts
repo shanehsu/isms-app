@@ -1,5 +1,5 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit} from '@angular/core'
 
 @Component({
   selector: 'input-text-editable',

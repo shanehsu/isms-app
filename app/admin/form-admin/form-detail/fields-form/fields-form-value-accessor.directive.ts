@@ -1,6 +1,5 @@
-import {Directive, Provider, forwardRef} from 'angular2/core'
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from 'angular2/common'
-import {CONST_EXPR} from 'angular2/src/facade/lang'
+import {Directive, Provider, forwardRef} from '@angular/core'
+import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/common'
 
 // 控制的元件
 import {FieldsFormComponent} from './fields-form.component'
@@ -8,9 +7,11 @@ import {FieldsFormComponent} from './fields-form.component'
 // 資料型態
 import {Field} from './../../../../types/types'
 
-const CUSTOM_VALUE_ACCESSOR = CONST_EXPR(new Provider(
-  NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => FieldsFormValueAccessor), multi: true}
-))
+const CUSTOM_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => FieldsFormValueAccessor),
+  multi: true
+}
 
 @Directive({
   selector: 'fields-form',

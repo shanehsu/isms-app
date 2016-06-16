@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from 'angular2/core'
-import {ControlContainer, NgForm, ControlValueAccessor, NgControl, Control, Validators}    from 'angular2/common';
+import {Component, OnInit, Input, Output, EventEmitter, ElementRef} from '@angular/core'
+import {ControlContainer, NgForm, ControlValueAccessor, NgControl, Control, Validators}    from '@angular/common';
 
 @Component({
   selector: 'datepicker',

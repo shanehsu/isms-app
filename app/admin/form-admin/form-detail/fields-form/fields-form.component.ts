@@ -1,5 +1,5 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit, ElementRef, ChangeDetectorRef} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit, ElementRef, ChangeDetectorRef} from '@angular/core'
 
 import {FieldFormComponent} from './../field-form/field-form.component'
 import {FieldFormValueAccessor} from './../field-form/field-form-value-accessor.directive'

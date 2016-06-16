@@ -38,7 +38,7 @@
     <h3 class="card-title">表單版本</h3>
     <br>
     <ul class="nav nav-tabs">
-      <template ngFor #revision [ngForOf]="_revisions">
+      <template ngFor let-revision [ngForOf]="_revisions">
         <li class="nav-item">
           <a class="nav-link" [class.active]="isActiveRevision(revision)" (click)="select_revision(revision)">{{revision?.revision.toFixed(1)}}</a>
         </li>

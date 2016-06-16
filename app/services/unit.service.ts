@@ -1,5 +1,5 @@
-import {Inject, Injectable} from 'angular2/core'
-import {Http, Headers} from 'angular2/http'
+import {Inject, Injectable} from '@angular/core'
+import {Http, Headers} from '@angular/http'
 import {AuthService}   from './auth.service'
 
 import {User}  from './../types/user'
@@ -182,7 +182,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payload, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -202,7 +202,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.delete(URL, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -264,7 +264,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payloadString, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -288,7 +288,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payloadString, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -313,7 +313,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payloadString, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -338,7 +338,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payloadString, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -384,7 +384,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payloadString, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -408,7 +408,7 @@ export class UnitService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payloadString, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
 }

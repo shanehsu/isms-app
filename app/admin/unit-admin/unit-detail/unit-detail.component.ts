@@ -1,7 +1,7 @@
 // Angular 2
-import {Component, OnInit}   from 'angular2/core'
-import {NgForm}              from 'angular2/common';
-import {Router, RouteParams} from 'angular2/router'
+import {Component, OnInit}   from '@angular/core'
+import {NgForm}              from '@angular/common';
+import {Router, RouteSegment} from '@angular/router'
 
 // Services
 import {UnitService} from './../../../services/unit.service'
@@ -29,7 +29,7 @@ export class UnitDetailComponent implements OnInit {
   
   private _freeUnitIDs: string[]
   
-  constructor(private _router: Router, private _routeParams: RouteParams, private _unitService: UnitService) {}
+  constructor(private _router: Router, private _routeSegment: RouteSegment, private _unitService: UnitService) {}
   
   ngOnInit(): void {
     // Get a placeholder Unit to get around the undefined key bug.
@@ -37,7 +37,7 @@ export class UnitDetailComponent implements OnInit {
     this._unitUserIDs = []
     this._freeUserIDs = []
     this._freeUnitIDs = []
-    this._unitID = this._routeParams.get('id')
+    this._unitID = this._routeSegment.getParam('id')
     
     // Get the Unit from UnitService
     this._unitService.unit(this._unitID)
@@ -59,7 +59,7 @@ export class UnitDetailComponent implements OnInit {
   
   submit_name_and_identifier() {
     this._unitService.update(this._unit)
-        .then(() => this._router.navigate(['UnitList']))
+        .then(() => this._router.navigate(['/']))
         .catch(console.error)
   }
   
@@ -141,6 +141,6 @@ export class UnitDetailComponent implements OnInit {
   }
   
   cancel() {
-    this._router.navigate(['UnitList']);
+    this._router.navigate(['/']);
   }
 }

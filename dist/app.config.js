@@ -1,61 +1,45 @@
-System.register([], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
-    var config;
-    return {
-        setters:[],
-        execute: function() {
-            exports_1("config", config = {
-                // endpoint: 'http://infinite-temple-3140.herokuapp.com',
-                endpoint: 'http://localhost:3000',
-                navigationItems: [
-                    {
-                        item: "最新消息",
-                        component: "News",
-                        route: "/news",
-                        privilege: 4
-                    },
-                    {
-                        item: "表單",
-                        component: "Form",
-                        route: "/form",
-                        privilege: 3
-                    },
-                    {
-                        item: "管理",
-                        component: "Admin",
-                        route: "/admin",
-                        privilege: 1
-                    }
-                ],
-                adminItems: [
-                    {
-                        item: "最新消息",
-                        component: "NewsAdmin",
-                        route: "/news",
-                        privilege: 1
-                    },
-                    {
-                        item: "使用者",
-                        component: "UserAdmin",
-                        route: "/user",
-                        privilege: 1
-                    },
-                    {
-                        item: "單位",
-                        component: "UnitAdmin",
-                        route: "/unit",
-                        privilege: 1
-                    },
-                    {
-                        item: "表單",
-                        component: "FormAdmin",
-                        route: "/form",
-                        privilege: 1
-                    }
-                ]
-            });
+"use strict";
+exports.config = {
+    // endpoint: 'http://infinite-temple-3140.herokuapp.com',
+    endpoint: 'http://localhost:3000',
+    navigationItems: [
+        {
+            name: "最新消息",
+            path: "/news",
+            group: 4
+        },
+        {
+            name: "表單",
+            path: "/form",
+            group: 3
+        },
+        {
+            name: "管理",
+            path: "/admin",
+            group: 1
         }
-    }
-});
+    ],
+    adminItems: [
+        {
+            name: "最新消息",
+            path: "/news",
+            group: 1
+        },
+        {
+            name: "使用者",
+            path: "/user",
+            group: 1
+        },
+        {
+            name: "單位",
+            path: "/unit",
+            group: 1
+        },
+        {
+            name: "表單",
+            path: "/form",
+            group: 1
+        }
+    ]
+};
 //# sourceMappingURL=app.config.js.map

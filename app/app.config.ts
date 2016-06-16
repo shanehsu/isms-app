@@ -1,6 +1,5 @@
 "use strict"
 
-import {NavigationItem} from './types/navigation-item'
 import {Config} from './types/config'
 
 export var config: Config = {
@@ -8,48 +7,41 @@ export var config: Config = {
   endpoint: 'http://localhost:3000',
   navigationItems: [
     {
-      item: "最新消息",
-      component: "News",
-      route: "/news",
-      privilege: 4
+      name: "最新消息",
+      path: "/news",
+      group: 4
     },
     {
-      item: "表單",
-      component: "Form",
-      route: "/form",
-      privilege: 3
+      name: "表單",
+      path: "/form",
+      group: 3
     },
     {
-      item: "管理",
-      component: "Admin",
-      route: "/admin",
-      privilege: 1
+      name: "管理",
+      path: "/admin",
+      group: 1
     }
   ],
   adminItems: [
     {
-      item: "最新消息",
-      component: "NewsAdmin",
-      route: "/news",
-      privilege: 1
+      name: "最新消息",
+      path: "/news",
+      group: 1
     },
     {
-      item: "使用者",
-      component: "UserAdmin",
-      route: "/user",
-      privilege: 1
+      name: "使用者",
+      path: "/user",
+      group: 1
     },
     {
-      item: "單位",
-      component: "UnitAdmin",
-      route: "/unit",
-      privilege: 1
+      name: "單位",
+      path: "/unit",
+      group: 1
     },
     {
-      item: "表單",
-      component: "FormAdmin",
-      route: "/form",
-      privilege: 1
+      name: "表單",
+      path: "/form",
+      group: 1
     }
   ]
 }

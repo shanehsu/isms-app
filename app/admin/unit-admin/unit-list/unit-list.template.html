@@ -22,7 +22,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="#unit of _units">
+          <tr *ngFor="let unit of _units">
               <td>{{unit.name}}</td>
               <td>{{unit.identifier}}</td>
               <td>{{unit.parentUnit | unitName:'silent'}}</td>

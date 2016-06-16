@@ -1,6 +1,5 @@
 export interface NavigationItem {
-  item: string;
-  component: string;
-  route: string;
-  privilege: number;
+  name: string;
+  path: string;
+  group: number;
 }

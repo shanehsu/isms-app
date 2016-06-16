@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {Routes, ROUTER_DIRECTIVES} from '@angular/router';
 
 import {NewsListComponent} from './news-list/news-list.component'
 import {NewsDetailComponent} from './news-detail/news-detail.component'
@@ -10,16 +10,13 @@ import {NewsDetailComponent} from './news-detail/news-detail.component'
     directives: [ROUTER_DIRECTIVES]
 })
 
-@RouteConfig([
+@Routes([
   {
     path: '/',
-    name: 'NewsList',
     component: NewsListComponent,
-    useAsDefault: true
   },
   {
     path: '/:id',
-    name: 'NewsDetail',
     component: NewsDetailComponent
   }
 ])

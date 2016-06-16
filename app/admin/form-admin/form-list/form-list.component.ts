@@ -1,8 +1,8 @@
 // Angular 2
-import {Component, OnInit} from 'angular2/core'
+import {Component, OnInit} from '@angular/core'
 
 // 路由器
-import {Router} from 'angular2/router'
+import {Router, RouteSegment} from '@angular/router'
 
 // 服務
 import {FormService} from './../../../services/form.service'
@@ -31,12 +31,12 @@ export class FormListComponent implements OnInit {
   
   new() {
     this._formService.new()
-        .then(id => this._router.navigate(['FormDetail', {'id': id}]))
+        .then(id => this._router.navigate([id], this.routeSegment))
         .catch(console.error)
   }
   
   edit(id: string) {
-    this._router.navigate(['FormDetail', {'id': id}])
+    this._router.navigate([id], this.routeSegment)
   }
   
   delete(id: string) {
@@ -46,5 +46,6 @@ export class FormListComponent implements OnInit {
   }
   
   constructor(private _formService: FormService,
-              private _router: Router) {}
+              private _router: Router,
+              private routeSegment: RouteSegment) {}
 }

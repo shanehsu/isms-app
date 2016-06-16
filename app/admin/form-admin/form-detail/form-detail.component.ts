@@ -1,8 +1,8 @@
 // Angular 2
-import {Input, Component, OnInit} from 'angular2/core'
+import {Input, Component, OnInit} from '@angular/core'
 
 // 路由器
-import {Router, RouteParams} from 'angular2/router'
+import {Router, RouteSegment} from '@angular/router'
 
 // 服務
 import {FormService} from './../../../services/form.service'
@@ -28,7 +28,7 @@ export class FormDetailComponent implements OnInit {
   private _revision: FormRevision
   
   constructor(private _formService: FormService,
-              private _routeParams: RouteParams,
+              private _routeSegment: RouteSegment,
               private _router: Router) {}
   
   /**
@@ -101,7 +101,7 @@ export class FormDetailComponent implements OnInit {
     this._form = <Form>{}
     
     // 取得表單 ID
-    this._id = this._routeParams.get('id')
+    this._id = this._routeSegment.getParam('id')
     
     // 取得表單資訊
     this.reload_form(true)
@@ -109,12 +109,12 @@ export class FormDetailComponent implements OnInit {
   
   submit(): void {
     this._formService.update(this._form)
-        .then(() => this._router.navigate(['FormList']))
+        .then(() => this._router.navigate(['/admin/form']))
         .catch(console.error)
   }
   
   cancel(): void {
-    this._router.navigate(['FormList'])
+    this._router.navigate(['/admin/form'])
   }
   
   // 表單版本操作
