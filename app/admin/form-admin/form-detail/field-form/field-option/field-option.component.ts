@@ -1,5 +1,5 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit, Inject, Injector, DynamicComponentLoader, forwardRef, ElementRef, ChangeDetectorRef} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit, Inject, Injector, DynamicComponentLoader, forwardRef, ElementRef, ChangeDetectorRef} from '@angular/core'
 
 // 常數
 import {FieldTypes} from './../constants'

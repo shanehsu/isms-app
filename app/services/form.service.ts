@@ -1,5 +1,5 @@
-import {Inject, Injectable} from 'angular2/core'
-import {Http, Headers} from 'angular2/http'
+import {Inject, Injectable} from '@angular/core'
+import {Http, Headers} from '@angular/http'
 
 // 登入服務
 import {AuthService}   from './auth.service'
@@ -109,7 +109,7 @@ export class FormService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payload, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -127,7 +127,7 @@ export class FormService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.delete(URL, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -200,7 +200,7 @@ export class FormService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payload, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -218,7 +218,7 @@ export class FormService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.delete(URL, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -296,7 +296,7 @@ export class FormService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.put(URL, payload, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
   
@@ -314,7 +314,7 @@ export class FormService {
     
     return new Promise<void>((resolve, reject) => {
       this._http.delete(URL, options)
-          .subscribe(resolve, reject)
+          .subscribe(() => resolve(), reject)
     })
   }
 }

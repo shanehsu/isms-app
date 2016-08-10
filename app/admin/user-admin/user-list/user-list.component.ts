@@ -1,7 +1,7 @@
 // Angular 2
-import {Component, OnInit} from 'angular2/core';
-import {Pipe, PipeTransform} from 'angular2/core';
-import {Router}            from 'angular2/router'
+import {Component, OnInit} from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
+import {Router}            from '@angular/router'
 
 // Services
 import {UserService} from './../../../services/user.service'
@@ -36,7 +36,7 @@ export class UserListComponent implements OnInit {
   }
   
   edit(id: string) : void {
-    this._router.navigate(['UserDetail', {id: id}]);
+    this._router.navigate(['/', id]);
   }
   
   delete(id: string) : void {

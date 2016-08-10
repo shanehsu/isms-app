@@ -1,9 +1,8 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit} from '@angular/core'
 
-import {Directive, Provider, forwardRef} from 'angular2/core'
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from 'angular2/common'
-import {CONST_EXPR} from 'angular2/src/facade/lang'
+import {Directive, Provider, forwardRef, Self} from '@angular/core'
+import {NG_VALUE_ACCESSOR, ControlValueAccessor, NgModel} from '@angular/common'
 
 interface InternalTimeDataFormat {
   hour: number
@@ -14,32 +13,32 @@ interface InternalTimeDataFormat {
   selector: 'form-control[type=time]',
   template: `<p *ngIf="!_editing" class="form-control-static" style="color: #0275d8;" (click)="edit()">{{_dataModel.hour + ' 時 ' + _dataModel.minute + ' 分'}}</p>
   <div class="form-inline" *ngIf="_editing">
-    <input type="number" class="form-control" style="width: 4em; text-align: center;" [(ngModel)]="_dataModel.hour" min="0" max="23" (blur)="_touched.emit()" (change)="validate(hour, minute)" #hour>
+    <input type="number" class="form-control" style="width: 4em; text-align: center;" [(ngModel)]="_dataModel.hour" min="0" max="23" (blur)="_onTouched()" (change)="validate(hour, minute)" #hour>
     <label>時</label>
-    <input type="number" class="form-control" style="width: 4em; text-align: center;" [(ngModel)]="_dataModel.minute" min="0" max="59" (blur)="_touched.emit()" (change)="validate(hour, minute)" #minute>
+    <input type="number" class="form-control" style="width: 4em; text-align: center;" [(ngModel)]="_dataModel.minute" min="0" max="59" (blur)="_onTouched()" (change)="validate(hour, minute)" #minute>
     <label>分</label>
     <p class="form-control-static" style="color: #0275d8;" (click)="doneEdit()">完成</p>
   </div>`
 })
 
-export class TimeFormControl {
-  // 推送資料
-  @Output('control-changed') _changed = new EventEmitter<InternalTimeDataFormat>()
-  // 當焦點離開
-  @Output('control-touched') _touched = new EventEmitter<void>()
+export class TimeFormControl implements ControlValueAccessor {
+  private _onChanged = (_) => {}
+  private _onTouched = () => {}
+  private cd: NgModel
   
   private _dataModel: InternalTimeDataFormat
   private _editing: Boolean
   
-  constructor() {
-    console.dir("我是 TimeFormControl，我的 constructor 被呼叫了呦！")
+  constructor(@Self() cd: NgModel) {
+    this.cd = cd
+    cd.valueAccessor = this
     this._editing = false
   }
   
   // 與 Value Accessor 有關的
   
   // 從 Value Accessor 接收資料
-  setValue(value: InternalTimeDataFormat): void {
+  writeValue(value: InternalTimeDataFormat): void {
     this._dataModel = value
   }
   
@@ -60,33 +59,7 @@ export class TimeFormControl {
     if (!(minute.valueAsNumber >= 0 && minute.valueAsNumber <= 59)) {
       minute.value = "0"
     }
-    this._changed.emit(this._dataModel)
-  }
-}
-
-const CUSTOM_VALUE_ACCESSOR = CONST_EXPR(new Provider(
-  NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => TimeFormControlValueAccessor), multi: true}
-))
-
-@Directive({
-  selector: 'form-control[type=time]',
-  host: {
-    '(control-changed)': '_onChanged($event)',
-    '(control-touched)': '_onTouched()'
-  },
-  providers: [CUSTOM_VALUE_ACCESSOR]
-})
-
-export class TimeFormControlValueAccessor implements ControlValueAccessor {
-  private _onChanged = (_) => {}
-  private _onTouched = () => {}
-
-  constructor(private _host: TimeFormControl) {
-    console.dir("我是 TimeFormControlValueAccessor，我的 constructor 被呼叫了呦！")
-  }
-
-  writeValue(value: any): void {
-    this._host.setValue(value)
+    this._onChanged(this._dataModel)
   }
   
   registerOnChange(fn: (_: any) => void): void {

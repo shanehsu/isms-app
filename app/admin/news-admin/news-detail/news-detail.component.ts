@@ -1,18 +1,18 @@
-import {Component, OnInit} from 'angular2/core'
-import {NgForm}    from 'angular2/common';
+import {Component, OnInit} from '@angular/core'
+import {NgForm}    from '@angular/common';
 
 import {Piece}             from './../../../types/piece'
 
 import {NewsService}       from './../../../services/news.service'
 
-import {Router, RouteParams} from 'angular2/router'
+import {Router, RouteSegment} from '@angular/router'
 
-import {DatePicker}        from './../../../controls/datepicker/datepicker.component'
+import {DateFormControl}        from './../../../controls/isms-form-controls'
 
 @Component({
     selector: 'news-detail',
     templateUrl: '/app/admin/news-admin/news-detail/news-detail.template.html',
-    directives: [DatePicker]
+    directives: [DateFormControl]
 })
 
 export class NewsDetailComponent implements OnInit {
@@ -21,18 +21,18 @@ export class NewsDetailComponent implements OnInit {
   
   ngOnInit() {
     this._piece = this._newsService.fake();
-    this._id = this._routeParams.get('id')
+    this._id = this._routeSegment.getParam('id')
     this._newsService.retrievePiece(this._id).then(piece => this._piece = piece);
   }
   
   submit() {
-    this._newsService.update(this._piece).then(piece => this._router.navigate(['NewsList']))
+    this._newsService.update(this._piece).then(piece => this._router.navigate(['/admin/news']))
                                          .catch(err => console.error(err));
   }
   
   cancel() {
-    this._router.navigate(['NewsList']);
+    this._router.navigate(['/admin/news']);
   }
   
-  constructor(private _router: Router, private _routeParams: RouteParams, private _newsService: NewsService) {}
+  constructor(private _router: Router, private _routeSegment: RouteSegment, private _newsService: NewsService) {}
 }

@@ -1,6 +1,6 @@
-import {Component, OnInit} from 'angular2/core'
-import {Pipe}              from 'angular2/core';
-import {Router}            from 'angular2/router'
+import {Component, OnInit} from '@angular/core'
+import {Pipe}              from '@angular/core';
+import {Router, RouteSegment}            from '@angular/router'
 
 import {Piece}             from './../../../types/piece'
 import {ChineseDatePipe}   from './../../../pipes/pipes'
@@ -63,7 +63,7 @@ export class NewsListComponent implements OnInit {
   }
   
   edit(id: string) {
-    this._router.navigate(['NewsDetail', {'id': id}]);
+    this._router.navigate([id], this.routeSegment);
   }
   
   delete(id: string) {
@@ -74,5 +74,5 @@ export class NewsListComponent implements OnInit {
     }
   }
   
-  constructor(private _router: Router, private _newsService: NewsService) {}
+  constructor(private _router: Router, private _newsService: NewsService, private routeSegment: RouteSegment) {}
 }

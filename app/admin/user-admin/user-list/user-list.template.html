@@ -19,7 +19,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="#user of _users">
+          <tr *ngFor="let user of _users">
               <td>{{user.name}}</td>
               <td>{{user.email}}</td>
               <td>{{user.unit | unitName}}</td>

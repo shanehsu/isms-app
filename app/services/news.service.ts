@@ -1,5 +1,5 @@
-import {Inject, Injectable} from 'angular2/core';
-import {Http, Headers, URLSearchParams} from 'angular2/http';
+import {Inject, Injectable} from '@angular/core';
+import {Http, Headers, URLSearchParams} from '@angular/http';
 import {Piece} from './../types/piece';
 
 import {AuthService} from './auth.service'

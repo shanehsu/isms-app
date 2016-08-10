@@ -1,5 +1,6 @@
-import {Component, OnInit, Inject, Input} from 'angular2/core';
-import {Router, Location, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, OnInit, Inject, Input} from '@angular/core';
+import {Location} from '@angular/common'
+import {Router, Routes, ROUTER_DIRECTIVES} from '@angular/router';
 
 import {NavigationItem} from './../../types/navigation-item'
 import {Config}         from './../../types/config'
@@ -17,26 +18,21 @@ import {FormAdminComponent} from './../form-admin/form-admin.component'
     directives: [ROUTER_DIRECTIVES]
 })
 
-@RouteConfig([
+@Routes([
   {
-    path: '/news/...',
-    name: 'NewsAdmin',
+    path: '/news',
     component: NewsAdminComponent,
-    useAsDefault: true
   },
   {
-    path: '/user/...',
-    name: 'UserAdmin',
+    path: '/user',
     component: UserAdminComponent
   },
   {
-    path: '/unit/...',
-    name: 'UnitAdmin',
+    path: '/unit',
     component: UnitAdminComponent
   },
   {
-    path: '/form/...',
-    name: 'FormAdmin',
+    path: '/form',
     component: FormAdminComponent
   }
 ])
@@ -50,15 +46,19 @@ export class AdminIndexComponent implements OnInit {
     this.adminItems =  this._config.adminItems;
     
     this._authService.privilege().then(p => this.privilege = p);
+    
+    if (this.location.path() == "/admin") {
+       this.router.navigate(['/admin/news'])
+    }
   }
   
   isActive(item): boolean {
-    return this._location.path().startsWith('/admin' + item.route);
+    return this.location.path().startsWith('/admin' + item.path)
   }
   
   navigate(item) {
-    this._router.navigate([item.component]);
+    this.router.navigate(['/admin' + item.path]);
   }
   
-  constructor(private _router: Router, private _authService: AuthService, private _location: Location, @Inject('app.config') private _config: Config) {}
+  constructor(private router: Router, private location: Location, private _authService: AuthService, @Inject('app.config') private _config: Config) {}
 }

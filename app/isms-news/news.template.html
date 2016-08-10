@@ -10,7 +10,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="#piece of piecesView">
+          <tr *ngFor="let piece of piecesView">
               <td>{{piece.date | chineseDate}}</td>
               <td>{{piece.source}}</td>
               <td><a [href]="piece.link">{{piece.summary}}</a></td>

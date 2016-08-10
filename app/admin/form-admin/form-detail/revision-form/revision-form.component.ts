@@ -1,5 +1,5 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit, OnChanges, forwardRef} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit, OnChanges, forwardRef} from '@angular/core'
 
 // 服務
 import {FormService} from './../../../../services/form.service'

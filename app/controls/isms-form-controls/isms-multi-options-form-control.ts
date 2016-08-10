@@ -1,60 +1,54 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit} from '@angular/core'
 
-import {Directive, Provider, forwardRef} from 'angular2/core'
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from 'angular2/common'
-import {CONST_EXPR} from 'angular2/src/facade/lang'
+import {Directive, Provider, forwardRef, Self} from '@angular/core'
+import {NG_VALUE_ACCESSOR, ControlValueAccessor, NgModel} from '@angular/common'
+
+import {FormFields} from './../../isms-form/form-fields'
 
 @Component({
   selector: 'form-control[type=options][presentation=multi]',
-  template: `我是多選`
+  template: `<template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+    <div class="checkbox form-control">
+      <label>
+        <input type="checkbox" (change)="select(i)" [checked]="_dataModel.selected[i]">
+        {{item.value}}
+      </label>
+      <div *ngIf="_dataModel.selected[i]">
+        <isms-form-fields [inline]="true" [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel.values[i]"></isms-form-fields>
+      </div>
+    </div>
+  </template>`,
+  directives: [forwardRef(() => FormFields)]
 })
 
-export class MultiOptionsFormControl {
+export class MultiOptionsFormControl implements ControlValueAccessor {
+  private _onChanged = (_) => {}
+  private _onTouched = () => {}
+  private cd: NgModel
+  
   @Input('metadata') _metadata: any
   
-  // 推送資料
-  @Output('control-changed') _changed = new EventEmitter<string>()
-  // 當焦點離開
-  @Output('control-touched') _touched = new EventEmitter<void>()
+  private _dataModel: any
   
-  private _dataModel: string
-  
-  constructor() {
-    console.dir("我是 MultiOptionsFormControl，我的 constructor 被呼叫了呦！")
+  constructor(@Self() cd: NgModel) {
+    this.cd = cd
+    cd.valueAccessor = this
   }
   
   // 與 Value Accessor 有關的
   
   // 從 Value Accessor 接收資料
-  setValue(value: string): void {
+  writeValue(value: any): void {
     this._dataModel = value
   }
-}
-
-const CUSTOM_VALUE_ACCESSOR = CONST_EXPR(new Provider(
-  NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => MultiOptionsFormControlValueAccessor), multi: true}
-))
-
-@Directive({
-  selector: 'form-control[type=options][presentation=multi]',
-  host: {
-    '(control-changed)': '_onChanged($event)',
-    '(control-touched)': '_onTouched()'
-  },
-  providers: [CUSTOM_VALUE_ACCESSOR]
-})
-
-export class MultiOptionsFormControlValueAccessor implements ControlValueAccessor {
-  private _onChanged = (_) => {}
-  private _onTouched = () => {}
-
-  constructor(private _host: MultiOptionsFormControl) {
-    console.dir("我是 MultiOptionsFormControlValueAccessor，我的 constructor 被呼叫了呦！")
-  }
-
-  writeValue(value: any): void {
-    this._host.setValue(value)
+  
+  select(index: number): void {
+    console.log(index + " is selected!")
+    
+    this._dataModel.selected[index] = !this._dataModel.selected[index]
+    
+    this._onChanged(this._dataModel)
   }
   
   registerOnChange(fn: (_: any) => void): void {

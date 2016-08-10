@@ -1,60 +1,58 @@
 // Angular 2
-import {Input, Output, Component, EventEmitter, OnInit} from 'angular2/core'
+import {Input, Output, Component, EventEmitter, OnInit} from '@angular/core'
 
-import {Directive, Provider, forwardRef} from 'angular2/core'
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from 'angular2/common'
-import {CONST_EXPR} from 'angular2/src/facade/lang'
+import {Directive, Provider, forwardRef, Self} from '@angular/core'
+import {NG_VALUE_ACCESSOR, ControlValueAccessor, NgModel} from '@angular/common'
+
+import {FormFields} from './../../isms-form/form-fields'
 
 @Component({
   selector: 'form-control[type=options][presentation=dropdown]',
-  template: `我是下拉式`
+  template: `<div class="radio form-control">
+      <select (change)="select($event)" class="form-control">
+        <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+          <option [value]="i" [selected]="_dataModel.selected[i]">{{item.value}}</option>
+        </template>
+      </select>
+      <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+        <div *ngIf="_dataModel.selected[i]">
+          <isms-form-fields [inline]="true" [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel.values[i]"></isms-form-fields>
+        </div>
+      </template>
+    </div>`,
+  directives: [forwardRef(() => FormFields)]
 })
 
-export class DropdownOptionsFormControl {
+export class DropdownOptionsFormControl implements ControlValueAccessor {
+  private _onChanged = (_) => {}
+  private _onTouched = () => {}
+  
   @Input('metadata') _metadata: any
   
-  // 推送資料
-  @Output('control-changed') _changed = new EventEmitter<string>()
-  // 當焦點離開
-  @Output('control-touched') _touched = new EventEmitter<void>()
+  private _dataModel: any
   
-  private _dataModel: string
+  private cd: NgModel
+  constructor(@Self() cd:NgModel) {
+    this.cd = cd
+    cd.valueAccessor = this
+  }
   
-  constructor() {
-    console.dir("我是 DropdownOptionsFormControl，我的 constructor 被呼叫了呦！")
+  select(event: Event): void {
+    let select = event.srcElement as HTMLSelectElement
+    let index = select.selectedIndex
+    
+    this._dataModel.selected = this._dataModel.selected.map(() => { return false })
+    
+    this._dataModel.selected[index] = !this._dataModel.selected[index]
+    
+    this._onChanged(this._dataModel)
   }
   
   // 與 Value Accessor 有關的
   
   // 從 Value Accessor 接收資料
-  setValue(value: string): void {
-    this._dataModel = value
-  }
-}
-
-const CUSTOM_VALUE_ACCESSOR = CONST_EXPR(new Provider(
-  NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => DropdownOptionsFormControlValueAccessor), multi: true}
-))
-
-@Directive({
-  selector: 'form-control[type=options][presentation=dropdown]',
-  host: {
-    '(control-changed)': '_onChanged($event)',
-    '(control-touched)': '_onTouched()'
-  },
-  providers: [CUSTOM_VALUE_ACCESSOR]
-})
-
-export class DropdownOptionsFormControlValueAccessor implements ControlValueAccessor {
-  private _onChanged = (_) => {}
-  private _onTouched = () => {}
-
-  constructor(private _host: DropdownOptionsFormControl) {
-    console.dir("我是 DropdownOptionsFormControlValueAccessor，我的 constructor 被呼叫了呦！")
-  }
-
   writeValue(value: any): void {
-    this._host.setValue(value)
+    this._dataModel = value
   }
   
   registerOnChange(fn: (_: any) => void): void {

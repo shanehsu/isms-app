@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Output} from 'angular2/core';
+import {Component, OnInit, EventEmitter, Output} from '@angular/core';
 
 import {AuthService}       from './../../services/auth.service'
 import {TokenService}      from './../../services/token.service'

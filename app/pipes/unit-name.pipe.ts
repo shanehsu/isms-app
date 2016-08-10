@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from 'angular2/core';
+import {Pipe, PipeTransform} from '@angular/core';
 import {Unit}                from './../types/unit'
 import {UnitService}         from './../services/unit.service'
 @Pipe({name: 'unitName', pure: false})
@@ -16,7 +16,7 @@ export class UnitNamePipe implements PipeTransform {
   
   transform(id: string, args: string[]): string {
     if (!id || id == '') {
-      if (args.indexOf('silent') < 0) {
+      if (!args || args.indexOf('silent') < 0) {
         return '未隸屬任何單位'
       } else {
         return ''

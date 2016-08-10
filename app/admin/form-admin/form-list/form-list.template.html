@@ -18,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="#form of _forms">
+    <tr *ngFor="let form of _forms">
       <td>{{form.identifier}}</td>
       <td>{{form.name}}</td>
       <td><a (click)="edit(form._id)">編輯</a>

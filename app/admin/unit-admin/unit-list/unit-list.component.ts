@@ -1,6 +1,6 @@
 // Angular 2
-import {Component, OnInit} from 'angular2/core'
-import {Router}            from 'angular2/router'
+import {Component, OnInit} from '@angular/core'
+import {Router}            from '@angular/router'
 
 // Services
 import {UnitService} from './../../../services/unit.service'
@@ -36,12 +36,12 @@ export class UnitListComponent implements OnInit {
   
   new(): void {
     this._unitService.new()
-        .then(newUnitID => this._router.navigate(["UnitDetail", {id: newUnitID}]))
+        .then(newUnitID => this._router.navigate(["/", newUnitID]))
         .catch(console.error)
   }
   
   edit(unitID: string): void {
-    this._router.navigate(["UnitDetail", {id: unitID}]);
+    this._router.navigate(["/", unitID]);
   }
   
   delete(unitID: string): void {
