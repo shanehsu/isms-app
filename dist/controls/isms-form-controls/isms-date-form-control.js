@@ -12,10 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
-var common_1 = require('@angular/common');
-var pipes_1 = require('./../../pipes/pipes');
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
+var common_1 = require("@angular/common");
+var pipes_1 = require("./../../pipes/pipes");
 var DateFormControl = (function () {
     function DateFormControl(cd) {
         // CVA
@@ -65,16 +65,16 @@ var DateFormControl = (function () {
     DateFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
-    DateFormControl = __decorate([
-        core_1.Component({
-            selector: 'form-control[type=date]',
-            pipes: [pipes_1.ChineseDatePipe],
-            template: "<p *ngIf=\"!_editing\" class=\"form-control-static\" style=\"color: #0275d8;\" (click)=\"edit()\">{{_dataModel | chineseDate}}</p>\n  <div class=\"form-inline\" *ngIf=\"_editing\">\n    <input type=\"number\" class=\"form-control\" style=\"width: 6em; text-align: center;\" [(ngModel)]=\"_year\" min=\"1900\" max=\"2999\" (blur)=\"_onTouched()\" (change)=\"validate(year, month, day)\" #year>\n    <label>\u5E74</label>\n    <input type=\"number\" class=\"form-control\" style=\"width: 4em; text-align: center;\" [(ngModel)]=\"_month\" min=\"1\" max=\"12\" (blur)=\"_onTouched()\" (change)=\"validate(year, month, day)\" #month>\n    <label>\u6708</label>\n    <input type=\"number\" class=\"form-control\" style=\"width: 4em; text-align: center;\" [(ngModel)]=\"_day\" min=\"1\" [max]=\"days(year.value, month.value)\" (blur)=\"_onTouched()\" (change)=\"validate(year, month, day)\" #day>\n    <label>\u65E5</label>\n    <p class=\"form-control-static\" style=\"color: #0275d8;\" (click)=\"doneEdit()\">\u5B8C\u6210</p>\n  </div>"
-        }),
-        __param(0, core_2.Self()), 
-        __metadata('design:paramtypes', [common_1.NgModel])
-    ], DateFormControl);
     return DateFormControl;
 }());
+DateFormControl = __decorate([
+    core_1.Component({
+        selector: 'form-control[type=date]',
+        pipes: [pipes_1.ChineseDatePipe],
+        template: "<a class=\"link\" *ngIf=\"!_editing\" (click)=\"edit()\">{{_dataModel | chineseDate}}</a>\n  <div class=\"inline fields\" *ngIf=\"_editing\">\n    <input type=\"number\" class=\"form-control\" style=\"width: 7em; text-align: center;\" [(ngModel)]=\"_year\" min=\"1900\" max=\"2999\" (blur)=\"_onTouched()\" (change)=\"validate(year, month, day)\" #year>\n    <label style=\"margin: 0 0.5em 0 0.5em;\">\u5E74</label>\n    <input type=\"number\" class=\"form-control\" style=\"width: 5em; text-align: center;\" [(ngModel)]=\"_month\" min=\"1\" max=\"12\" (blur)=\"_onTouched()\" (change)=\"validate(year, month, day)\" #month>\n    <label style=\"margin: 0 0.5em 0 0.5em;\">\u6708</label>\n    <input type=\"number\" class=\"form-control\" style=\"width: 5em; text-align: center;\" [(ngModel)]=\"_day\" min=\"1\" [max]=\"days(year.value, month.value)\" (blur)=\"_onTouched()\" (change)=\"validate(year, month, day)\" #day>\n    <label style=\"margin: 0 0.5em 0 0.5em;\">\u65E5</label>\n    <a class=\"link\" (click)=\"doneEdit()\">\u5B8C\u6210</a>\n  </div>"
+    }),
+    __param(0, core_2.Self()),
+    __metadata("design:paramtypes", [common_1.NgModel])
+], DateFormControl);
 exports.DateFormControl = DateFormControl;
 //# sourceMappingURL=isms-date-form-control.js.map

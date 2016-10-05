@@ -12,15 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
-var common_1 = require('@angular/common');
-var record_service_1 = require('./../../services/record.service');
-var isms_form_controls_1 = require('./../isms-form-controls');
-var isms_single_options_form_control_1 = require('./isms-single-options-form-control');
-var isms_multi_options_form_control_1 = require('./isms-multi-options-form-control');
-var isms_dropdown_options_form_control_1 = require('./isms-dropdown-options-form-control');
-// THIS WILL NOT EMIT VALUE BY DEFAULT, NEED TO BIND TO (change) EVENT!
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
+var common_1 = require("@angular/common");
+var record_service_1 = require("./../../services/record.service");
+var isms_form_controls_1 = require("./../isms-form-controls");
+var isms_single_options_form_control_1 = require("./isms-single-options-form-control");
+var isms_multi_options_form_control_1 = require("./isms-multi-options-form-control");
+var isms_dropdown_options_form_control_1 = require("./isms-dropdown-options-form-control");
 var TableFormControl = (function () {
     function TableFormControl(cd, recordService) {
         this.recordService = recordService;
@@ -43,26 +42,26 @@ var TableFormControl = (function () {
     TableFormControl.prototype.new = function () {
         this._dataModel.push(this.recordService.emptyRecordForFields(this._metadata.fields));
     };
-    __decorate([
-        core_1.Input('metadata'), 
-        __metadata('design:type', Object)
-    ], TableFormControl.prototype, "_metadata", void 0);
-    TableFormControl = __decorate([
-        core_1.Component({
-            selector: 'form-control[type=table]',
-            template: "<table class=\"table\">\n    <thead>\n      <tr>\n        <th *ngFor=\"let item of _metadata.fields\">{{item.name}}</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let record of _dataModel; let recordIndex = index\">\n        <td *ngFor=\"let item of _metadata.fields; let fieldIndex = index\" [ngSwitch]=\"item.type\">\n          <template ngSwitchWhen=\"shortText\">\n            <form-control type=\"text\" row=\"single\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n          </template>\n\n          <template ngSwitchWhen=\"longText\">\n            <form-control type=\"text\" row=\"multi\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n          </template>\n\n          <template ngSwitchWhen=\"date\">\n            <form-control type=\"date\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n          </template>\n\n          <template ngSwitchWhen=\"time\">\n            <form-control type=\"time\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n          </template>\n          \n          <template ngSwitchWhen=\"options\">\n            <div [ngSwitch]=\"item.metadata.presentation\">\n              <template ngSwitchWhen=\"radio\">\n                <form-control type=\"options\" presentation=\"single\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n              </template>\n              <template ngSwitchWhen=\"checkbox\">\n                <form-control type=\"options\" presentation=\"multi\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n              </template>\n              <template ngSwitchWhen=\"select\">\n                <form-control type=\"options\" presentation=\"dropdown\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n              </template>\n              <template ngSwitchDefault>\u9078\u64C7\u6B04\u4F4D\uFF1A\u4E0D\u652F\u63F4\u7684\u8868\u793A\u65B9\u6CD5</template>\n            </div>\n          </template>\n\n          <template ngSwitchWhen=\"table\">\n            <form-control type=\"table\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n          </template>\n          \n          <template ngSwitchDefault>\u4E0D\u652F\u63F4\u7684\u6B04\u4F4D\uFF0C\u8ACB\u806F\u7D61\u7BA1\u7406\u54E1\uFF01</template>\n        </td>\n      </tr>\n      <tr>\n        <td [attr.colspan]=\"_metadata.fields.length\">\n          <button type=\"button\" class=\"btn btn-primary btn-block\" (click)=\"new()\">\u65B0\u589E</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>",
-            directives: [core_2.forwardRef(function () { return isms_form_controls_1.SingleLineTextFormControl; }),
-                core_2.forwardRef(function () { return isms_form_controls_1.MultiLineTextFormControl; }),
-                core_2.forwardRef(function () { return isms_form_controls_1.DateFormControl; }),
-                core_2.forwardRef(function () { return isms_form_controls_1.TimeFormControl; }),
-                core_2.forwardRef(function () { return isms_single_options_form_control_1.SingleOptionsFormControl; }),
-                core_2.forwardRef(function () { return isms_multi_options_form_control_1.MultiOptionsFormControl; }),
-                core_2.forwardRef(function () { return isms_dropdown_options_form_control_1.DropdownOptionsFormControl; })]
-        }),
-        __param(0, core_2.Self()), 
-        __metadata('design:paramtypes', [common_1.NgModel, record_service_1.RecordService])
-    ], TableFormControl);
     return TableFormControl;
 }());
+__decorate([
+    core_1.Input('metadata'),
+    __metadata("design:type", Object)
+], TableFormControl.prototype, "_metadata", void 0);
+TableFormControl = __decorate([
+    core_1.Component({
+        selector: 'form-control[type=table]',
+        template: "\n  <table class=\"ui celled striped table\">\n    <thead>\n      <tr>\n        <th style=\"width: 3em; text-align: right;\">#</th>\n        <th *ngFor=\"let item of _metadata.fields\">{{item.name}}</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let record of _dataModel; let recordIndex = index\">\n        <td style=\"text-align: right;\">{{recordIndex + 1}}</td>\n        <td *ngFor=\"let item of _metadata.fields; let fieldIndex = index\">\n          <template [ngIf]=\"item.type == 'shortText'\">\n            <div class=\"field\">\n              <form-control type=\"text\" row=\"single\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n            </div>\n          </template>\n          \n          <template [ngIf]=\"item.type == 'longText'\">\n            <div class=\"field\">\n              <form-control type=\"text\" row=\"multi\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n            </div>\n          </template>\n          \n          <template [ngIf]=\"item.type == 'date'\">\n            <div class=\"field\">\n              <form-control type=\"date\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n            </div>\n          </template>\n          \n          <template [ngIf]=\"item.type == 'time'\">\n            <div class=\"field\">\n              <form-control type=\"time\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n            </div>\n          </template>\n          \n          <template [ngIf]=\"item.type == 'options'\">\n            <template [ngIf]=\"item.metadata.presentation == 'radio'\">\n              <div class=\"field\">\n                <form-control type=\"options\" presentation=\"single\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n              </div>\n            </template>\n            <template [ngIf]=\"item.metadata.presentation == 'checkbox'\">\n              <div class=\"field\">\n                <form-control type=\"options\" presentation=\"multi\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n              </div>\n            </template>\n            <template [ngIf]=\"item.metadata.presentation == 'select'\">\n              <div class=\"field\">\n                <form-control type=\"options\" presentation=\"dropdown\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n              </div>\n            </template>\n          </template>\n          \n          <template [ngIf]=\"item.type == 'table'\">\n            <div class=\"field\">\n              <form-control type=\"table\" [metadata]=\"item.metadata\" [(ngModel)]=\"_dataModel[recordIndex][fieldIndex]\"></form-control>\n            </div>\n          </template>\n        </td>\n      </tr>\n    </tbody>\n    <tfoot class=\"full-width\">\n      <tr>\n        <th [attr.colspan]=\"_metadata.fields.length + 1\">\n          <button type=\"button\" class=\"ui right floated blue labeled icon button\" (click)=\"new()\">\n            <i class=\"plus icon\"></i>\n            \u65B0\u589E\u4E00\u7B46\u8CC7\u6599\n          </button>\n        </th>\n      </tr>\n    </tfoot>\n  </table>",
+        directives: [core_2.forwardRef(function () { return isms_form_controls_1.SingleLineTextFormControl; }),
+            core_2.forwardRef(function () { return isms_form_controls_1.MultiLineTextFormControl; }),
+            core_2.forwardRef(function () { return isms_form_controls_1.DateFormControl; }),
+            core_2.forwardRef(function () { return isms_form_controls_1.TimeFormControl; }),
+            core_2.forwardRef(function () { return isms_single_options_form_control_1.SingleOptionsFormControl; }),
+            core_2.forwardRef(function () { return isms_multi_options_form_control_1.MultiOptionsFormControl; }),
+            core_2.forwardRef(function () { return isms_dropdown_options_form_control_1.DropdownOptionsFormControl; })]
+    }),
+    __param(0, core_2.Self()),
+    __metadata("design:paramtypes", [common_1.NgModel, record_service_1.RecordService])
+], TableFormControl);
 exports.TableFormControl = TableFormControl;
 //# sourceMappingURL=isms-table-form-control.js.map

@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var news_service_1 = require('./../services/news.service');
-var pipes_1 = require('../pipes/pipes');
+var core_1 = require("@angular/core");
+var news_service_1 = require("./../services/news.service");
+var pipes_1 = require("../pipes/pipes");
 var NewsComponent = (function () {
     function NewsComponent(_newsService) {
         this._newsService = _newsService;
@@ -42,15 +42,15 @@ var NewsComponent = (function () {
         this.hasNewer = this.currentPage > 1;
         this.piecesView = this.pieces.slice((this.currentPage - 1) * 10, this.currentPage * 10);
     };
-    NewsComponent = __decorate([
-        core_1.Component({
-            selector: 'isms-news',
-            templateUrl: '/app/isms-news/news.template.html',
-            pipes: [pipes_1.ChineseDatePipe]
-        }), 
-        __metadata('design:paramtypes', [news_service_1.NewsService])
-    ], NewsComponent);
     return NewsComponent;
 }());
+NewsComponent = __decorate([
+    core_1.Component({
+        selector: 'isms-news',
+        templateUrl: '/app/isms-news/news.template.html',
+        pipes: [pipes_1.ChineseDatePipe]
+    }),
+    __metadata("design:paramtypes", [news_service_1.NewsService])
+], NewsComponent);
 exports.NewsComponent = NewsComponent;
 //# sourceMappingURL=news.component.js.map

@@ -1,59 +1,54 @@
-// Angular 2
-import {Input, Output, Component, EventEmitter, OnInit} from '@angular/core'
+import {Component, Self, Input} from '@angular/core'
+import {ControlValueAccessor, NgModel} from '@angular/forms'
 
 @Component({
-  selector: 'input-text-editable',
+  selector: 'text-input[editable]',
   template: `
-  <span [ngSwitch]="_editing">
-    <template [ngSwitchWhen]="true">
-      <input type="text" class="form-control" [ngModel]="_model" (ngModelChange)="modelChange($event)"
-             (keydown)="keydown($event)" (blur)="touched()">
-    </template>
-    
-    <template [ngSwitchWhen]="false">
-      <a (click)="startEditing()">{{_model}}</a>
-    </template>
-    
-    <template ngSwitchDefault>EditableTextInputComponent：未知的編輯狀態</template>
-  </span>
+  <form class="ui form">
+    <div class="field">
+      <label (click)="isEditing = !isEditing;">{{label}}</label>
+      <p [style.display]="isEditing ? 'none' : undefined" (click)="isEditing = true;">{{text}}</p>
+      <input [style.display]="isEditing ? undefined : 'none'" type="text" (keypress)="keypress($event)" [(ngModel)]="text" name="value" (keyup)="emitValue()" />
+    </div>
+  </form>
   `
 })
-
-export class EditableTextInputComponent {
-  private _editing: boolean = false
-  private _model: string
+export class EditableTextInput implements ControlValueAccessor {
+  @Input('label') label: string = ""
+  private text: string = ""
+  private isEditing: boolean = false
   
-  @Output('control-changed') _changed = new EventEmitter<string>()
-  @Output('control-touched') _touched = new EventEmitter<void>()
+  // Angular 給我們的 Callback 函數
+  private change: (_: any) => void
+  private touched: () => void
   
-  @Output('editing-will-end') _editingWillEnd = new EventEmitter<string>()
-  
-  // 與 Value Accessor 有關的
-  setValue(value: string): void {
-    this._model = value
+  // 建構子
+  constructor(@Self() private model: NgModel) {
+    model.valueAccessor = this
   }
   
-  // 與 View 有關的
-  modelChange(value: string): void {
-    console.log('model change')
-    this._model = value
-    
-    this._changed.emit(value)
+  emitValue(): void {
+    this.change(this.text)
   }
   
-  keydown(event: KeyboardEvent): void {
-    if (event.key === "Enter" || event.keyCode === 13 || event.which === 13) {
-      this._editingWillEnd.emit(this._model)
-      this._editing = false
-      event.preventDefault()
+  // ControlValueAccessor - 註冊函數
+  registerOnChange(fn: (_: any) => void): void {
+    this.change = fn
+  }
+  registerOnTouched(fn: () => void): void {
+    this.touched = fn
+  }
+  
+  keypress(event: KeyboardEvent): boolean {
+    if (event.which == 13) {
+      this.isEditing = false
+      return false
+    } else {
+      return true
     }
   }
   
-  touched(): void {
-    this._touched.emit(null)
-  }
-  
-  startEditing(): void {
-    this._editing = true
+  writeValue(value: any): void {
+    this.text = value
   }
 }

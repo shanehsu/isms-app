@@ -48,6 +48,24 @@ export class FormService {
     })
   }
   
+  fillableForms(): Promise<Form[]> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token()
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/?type=fillable'
+    
+    return new Promise<Form[]>((resolve, reject) => {
+      this._http.get(URL, options).map(res => res.json())
+          .subscribe(forms => {
+            let array = <any[]> forms
+            resolve(array.map(element => <Form>element))
+          })
+    })
+  }
+  
   /**
    * 取得特定表單內容
    */
@@ -196,6 +214,28 @@ export class FormService {
       group: revision.group,
       secrecyLevel: revision.secrecyLevel
     }
+    let payload = JSON.stringify(payloadObject)
+    
+    return new Promise<void>((resolve, reject) => {
+      this._http.put(URL, payload, options)
+          .subscribe(() => resolve(), reject)
+    })
+  }
+  
+  /**
+   * 發佈版本
+   */
+  publishRevision(formID: string, revision: FormRevision): Promise<void> {
+    let headers = new Headers({
+      token: this._authService.retrieve_token(),
+      'Content-Type': 'application/json'
+    })
+    let options = {
+      headers: headers
+    }
+    let URL = this._baseURL + '/revisions/' + formID + '/' + revision._id + '/publish'
+    
+    let payloadObject = {}
     let payload = JSON.stringify(payloadObject)
     
     return new Promise<void>((resolve, reject) => {

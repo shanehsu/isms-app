@@ -11,14 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
-var router_1 = require('@angular/router');
-var auth_service_1 = require('./../../services/auth.service');
-var news_admin_component_1 = require('./../news-admin/news-admin.component');
-var user_admin_component_1 = require('./../user-admin/user-admin.component');
-var unit_admin_component_1 = require('./../unit-admin/unit-admin.component');
-var form_admin_component_1 = require('./../form-admin/form-admin.component');
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var router_1 = require("@angular/router");
+var auth_service_1 = require("./../../services/auth.service");
 var AdminIndexComponent = (function () {
     function AdminIndexComponent(router, location, _authService, _config) {
         this.router = router;
@@ -41,34 +37,15 @@ var AdminIndexComponent = (function () {
     AdminIndexComponent.prototype.navigate = function (item) {
         this.router.navigate(['/admin' + item.path]);
     };
-    AdminIndexComponent = __decorate([
-        core_1.Component({
-            selector: 'isms-admin-index',
-            templateUrl: '/app/admin/isms-admin-index/admin-index.template.html',
-            directives: [router_1.ROUTER_DIRECTIVES]
-        }),
-        router_1.Routes([
-            {
-                path: '/news',
-                component: news_admin_component_1.NewsAdminComponent,
-            },
-            {
-                path: '/user',
-                component: user_admin_component_1.UserAdminComponent
-            },
-            {
-                path: '/unit',
-                component: unit_admin_component_1.UnitAdminComponent
-            },
-            {
-                path: '/form',
-                component: form_admin_component_1.FormAdminComponent
-            }
-        ]),
-        __param(3, core_1.Inject('app.config')), 
-        __metadata('design:paramtypes', [router_1.Router, common_1.Location, auth_service_1.AuthService, Object])
-    ], AdminIndexComponent);
     return AdminIndexComponent;
 }());
+AdminIndexComponent = __decorate([
+    core_1.Component({
+        selector: 'isms-admin-index',
+        templateUrl: '/app/admin/isms-admin-index/admin-index.template.html',
+    }),
+    __param(3, core_1.Inject('app.config')),
+    __metadata("design:paramtypes", [router_1.Router, common_1.Location, auth_service_1.AuthService, Object])
+], AdminIndexComponent);
 exports.AdminIndexComponent = AdminIndexComponent;
 //# sourceMappingURL=admin-index.component.js.map

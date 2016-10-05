@@ -12,9 +12,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
-var common_1 = require('@angular/common');
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
+var common_1 = require("@angular/common");
 var TimeFormControl = (function () {
     function TimeFormControl(cd) {
         this._onChanged = function (_) { };
@@ -51,15 +51,15 @@ var TimeFormControl = (function () {
     TimeFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
-    TimeFormControl = __decorate([
-        core_1.Component({
-            selector: 'form-control[type=time]',
-            template: "<p *ngIf=\"!_editing\" class=\"form-control-static\" style=\"color: #0275d8;\" (click)=\"edit()\">{{_dataModel.hour + ' \u6642 ' + _dataModel.minute + ' \u5206'}}</p>\n  <div class=\"form-inline\" *ngIf=\"_editing\">\n    <input type=\"number\" class=\"form-control\" style=\"width: 4em; text-align: center;\" [(ngModel)]=\"_dataModel.hour\" min=\"0\" max=\"23\" (blur)=\"_onTouched()\" (change)=\"validate(hour, minute)\" #hour>\n    <label>\u6642</label>\n    <input type=\"number\" class=\"form-control\" style=\"width: 4em; text-align: center;\" [(ngModel)]=\"_dataModel.minute\" min=\"0\" max=\"59\" (blur)=\"_onTouched()\" (change)=\"validate(hour, minute)\" #minute>\n    <label>\u5206</label>\n    <p class=\"form-control-static\" style=\"color: #0275d8;\" (click)=\"doneEdit()\">\u5B8C\u6210</p>\n  </div>"
-        }),
-        __param(0, core_2.Self()), 
-        __metadata('design:paramtypes', [common_1.NgModel])
-    ], TimeFormControl);
     return TimeFormControl;
 }());
+TimeFormControl = __decorate([
+    core_1.Component({
+        selector: 'form-control[type=time]',
+        template: "<a *ngIf=\"!_editing\" class=\"link\" (click)=\"edit()\">{{_dataModel.hour + ' \u6642 ' + _dataModel.minute + ' \u5206'}}</a>\n  <div class=\"inline fields\" *ngIf=\"_editing\">\n    <input type=\"number\" style=\"width: 5em; text-align: center;\" [(ngModel)]=\"_dataModel.hour\" min=\"0\" max=\"23\" (blur)=\"_onTouched()\" (change)=\"validate(hour, minute)\" #hour>\n    <label style=\"margin: 0 0.5em 0 0.5em;\">\u6642</label>\n    <input type=\"number\" style=\"width: 5em; text-align: center;\" [(ngModel)]=\"_dataModel.minute\" min=\"0\" max=\"59\" (blur)=\"_onTouched()\" (change)=\"validate(hour, minute)\" #minute>\n    <label style=\"margin: 0 0.5em 0 0.5em;\">\u5206</label>\n    <a class=\"link\" (click)=\"doneEdit()\">\u5B8C\u6210</a>\n  </div>"
+    }),
+    __param(0, core_2.Self()),
+    __metadata("design:paramtypes", [common_1.NgModel])
+], TimeFormControl);
 exports.TimeFormControl = TimeFormControl;
 //# sourceMappingURL=isms-time-form-control.js.map

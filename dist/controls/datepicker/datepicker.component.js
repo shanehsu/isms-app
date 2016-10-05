@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
 var DatePicker = (function () {
     function DatePicker(_elementRef, _control) {
         this._elementRef = _elementRef;
@@ -62,22 +62,22 @@ var DatePicker = (function () {
         this._dateAsText = this.ngModel.getFullYear() + '-' + +(this.ngModel.getMonth() + 1) + '-' + +this.ngModel.getDate();
         this._chineseDate = this.ngModel.getFullYear() + ' 年 ' + (this.ngModel.getMonth() + 1) + ' 月 ' + this.ngModel.getDate() + ' 日';
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Date)
-    ], DatePicker.prototype, "ngModel", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], DatePicker.prototype, "ngModelChange", void 0);
-    DatePicker = __decorate([
-        core_1.Component({
-            selector: 'datepicker',
-            templateUrl: 'app/controls/datepicker/datepicker.template.html',
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, common_1.NgControl])
-    ], DatePicker);
     return DatePicker;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Date)
+], DatePicker.prototype, "ngModel", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], DatePicker.prototype, "ngModelChange", void 0);
+DatePicker = __decorate([
+    core_1.Component({
+        selector: 'datepicker',
+        templateUrl: 'app/controls/datepicker/datepicker.template.html',
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef, common_1.NgControl])
+], DatePicker);
 exports.DatePicker = DatePicker;
 //# sourceMappingURL=datepicker.component.js.map

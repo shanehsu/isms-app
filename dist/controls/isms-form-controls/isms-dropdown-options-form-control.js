@@ -12,17 +12,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
-var common_1 = require('@angular/common');
-var form_fields_1 = require('./../../isms-form/form-fields');
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
+var common_1 = require("@angular/common");
+var form_fields_1 = require("./../../isms-form/form-fields");
+var util_1 = require("./../../util");
 var DropdownOptionsFormControl = (function () {
     function DropdownOptionsFormControl(cd) {
+        this.cd = cd;
         this._onChanged = function (_) { };
         this._onTouched = function () { };
-        this.cd = cd;
+        this._uid = util_1.RandomString(10);
         cd.valueAccessor = this;
     }
+    DropdownOptionsFormControl.prototype.ngAfterViewInit = function () {
+        $('select#' + this._uid + '.ui.dropdown').dropdown();
+    };
     DropdownOptionsFormControl.prototype.select = function (event) {
         var select = event.srcElement;
         var index = select.selectedIndex;
@@ -41,20 +46,20 @@ var DropdownOptionsFormControl = (function () {
     DropdownOptionsFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
-    __decorate([
-        core_1.Input('metadata'), 
-        __metadata('design:type', Object)
-    ], DropdownOptionsFormControl.prototype, "_metadata", void 0);
-    DropdownOptionsFormControl = __decorate([
-        core_1.Component({
-            selector: 'form-control[type=options][presentation=dropdown]',
-            template: "<div class=\"radio form-control\">\n      <select (change)=\"select($event)\" class=\"form-control\">\n        <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n          <option [value]=\"i\" [selected]=\"_dataModel.selected[i]\">{{item.value}}</option>\n        </template>\n      </select>\n      <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n        <div *ngIf=\"_dataModel.selected[i]\">\n          <isms-form-fields [inline]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></isms-form-fields>\n        </div>\n      </template>\n    </div>",
-            directives: [core_2.forwardRef(function () { return form_fields_1.FormFields; })]
-        }),
-        __param(0, core_2.Self()), 
-        __metadata('design:paramtypes', [common_1.NgModel])
-    ], DropdownOptionsFormControl);
     return DropdownOptionsFormControl;
 }());
+__decorate([
+    core_1.Input('metadata'),
+    __metadata("design:type", Object)
+], DropdownOptionsFormControl.prototype, "_metadata", void 0);
+DropdownOptionsFormControl = __decorate([
+    core_1.Component({
+        selector: 'form-control[type=options][presentation=dropdown]',
+        template: "\n  <div>\n    <select [id]=\"_uid\" (change)=\"select($event)\" class=\"ui dropdown\">\n      <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n        <option [value]=\"i\" [selected]=\"_dataModel.selected[i]\">{{item.value}}</option>\n      </template>\n    </select>\n    <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n      <div *ngIf=\"_dataModel.selected[i]\" style=\"margin-left: 4em;\">\n        <isms-form-fields [nested]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></isms-form-fields>\n      </div>\n    </template>\n  </div>",
+        directives: [core_2.forwardRef(function () { return form_fields_1.FormFields; })]
+    }),
+    __param(0, core_2.Self()),
+    __metadata("design:paramtypes", [common_1.NgModel])
+], DropdownOptionsFormControl);
 exports.DropdownOptionsFormControl = DropdownOptionsFormControl;
 //# sourceMappingURL=isms-dropdown-options-form-control.js.map

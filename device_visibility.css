@@ -1,0 +1,63 @@
+/* Mobile */
+@media only screen and (max-width: 767px) {
+  .on.tablet:not(.on.mobile) {
+    display: none;
+  }
+  .on.small.screen:not(.on.mobile) {
+    display: none;
+  }
+  .on.large.screen:not(.on.mobile) {
+    display: none;
+  }
+  .breakpoint.debug::after {
+    content: 'Mobile';
+  }
+}
+
+/* Tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .on.mobile:not(.on.tablet) {
+    display: none;
+  }
+  .on.small.screen:not(.on.tablet) {
+    display: none;
+  }
+  .on.large.screen:not(.on.tablet) {
+    display: none;
+  }
+  .breakpoint.debug::after {
+    content: 'Tablet';
+  }
+}
+
+/* Small Monitor */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .on.mobile:not(.on.small.screen) {
+    display: none;
+  }
+  .on.tablet:not(.on.small.screen) {
+    display: none;
+  }
+  .on.large.screen:not(.on.small.screen) {
+    display: none;
+  }
+  .breakpoint.debug::after {
+    content: 'Small Screen';
+  }
+}
+
+/* Large Monitor */
+@media only screen and (min-width: 1200px) {
+  .on.mobile:not(.on.large.screen) {
+    display: none;
+  }
+  .on.tablet:not(.on.large.screen) {
+    display: none;
+  }
+  .on.small.screen:not(.on.large.screen) {
+    display: none;
+  }
+  .breakpoint.debug::after {
+    content: 'Large Screen';
+  }
+}

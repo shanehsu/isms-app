@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
 // 登入服務
-var auth_service_1 = require('./auth.service');
+var auth_service_1 = require("./auth.service");
 var FormService = (function () {
     function FormService(_authService, _config, _http) {
         this._authService = _authService;
@@ -37,6 +37,23 @@ var FormService = (function () {
             headers: headers
         };
         var URL = this._baseURL;
+        return new Promise(function (resolve, reject) {
+            _this._http.get(URL, options).map(function (res) { return res.json(); })
+                .subscribe(function (forms) {
+                var array = forms;
+                resolve(array.map(function (element) { return element; }));
+            });
+        });
+    };
+    FormService.prototype.fillableForms = function () {
+        var _this = this;
+        var headers = new http_1.Headers({
+            token: this._authService.retrieve_token()
+        });
+        var options = {
+            headers: headers
+        };
+        var URL = this._baseURL + '/?type=fillable';
         return new Promise(function (resolve, reject) {
             _this._http.get(URL, options).map(function (res) { return res.json(); })
                 .subscribe(function (forms) {
@@ -193,6 +210,26 @@ var FormService = (function () {
         });
     };
     /**
+     * 發佈版本
+     */
+    FormService.prototype.publishRevision = function (formID, revision) {
+        var _this = this;
+        var headers = new http_1.Headers({
+            token: this._authService.retrieve_token(),
+            'Content-Type': 'application/json'
+        });
+        var options = {
+            headers: headers
+        };
+        var URL = this._baseURL + '/revisions/' + formID + '/' + revision._id + '/publish';
+        var payloadObject = {};
+        var payload = JSON.stringify(payloadObject);
+        return new Promise(function (resolve, reject) {
+            _this._http.put(URL, payload, options)
+                .subscribe(function () { return resolve(); }, reject);
+        });
+    };
+    /**
      * 刪除表單版本
      */
     FormService.prototype.deleteRevision = function (formID, revisionID) {
@@ -299,12 +336,12 @@ var FormService = (function () {
                 .subscribe(function () { return resolve(); }, reject);
         });
     };
-    FormService = __decorate([
-        core_1.Injectable(),
-        __param(1, core_1.Inject("app.config")), 
-        __metadata('design:paramtypes', [auth_service_1.AuthService, Object, http_1.Http])
-    ], FormService);
     return FormService;
 }());
+FormService = __decorate([
+    core_1.Injectable(),
+    __param(1, core_1.Inject("app.config")),
+    __metadata("design:paramtypes", [auth_service_1.AuthService, Object, http_1.Http])
+], FormService);
 exports.FormService = FormService;
 //# sourceMappingURL=form.service.js.map

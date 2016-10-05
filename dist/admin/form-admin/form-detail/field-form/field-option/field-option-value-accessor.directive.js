@@ -41,9 +41,10 @@ var FieldOptionValueAccessor = (function () {
             },
             providers: [CUSTOM_VALUE_ACCESSOR]
         }), 
-        __metadata('design:paramtypes', [field_option_component_1.FieldOptionComponent])
+        __metadata('design:paramtypes', [(typeof (_a = typeof field_option_component_1.FieldOptionComponent !== 'undefined' && field_option_component_1.FieldOptionComponent) === 'function' && _a) || Object])
     ], FieldOptionValueAccessor);
     return FieldOptionValueAccessor;
+    var _a;
 }());
 exports.FieldOptionValueAccessor = FieldOptionValueAccessor;
 //# sourceMappingURL=field-option-value-accessor.directive.js.map

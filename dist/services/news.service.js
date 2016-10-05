@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-var auth_service_1 = require('./auth.service');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+var auth_service_1 = require("./auth.service");
 var NewsService = (function () {
     function NewsService(_http, _authService, _config) {
         this._http = _http;
@@ -162,12 +162,12 @@ var NewsService = (function () {
             }, function (err) { return reject(); });
         });
     };
-    NewsService = __decorate([
-        core_1.Injectable(),
-        __param(2, core_1.Inject("app.config")), 
-        __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService, Object])
-    ], NewsService);
     return NewsService;
 }());
+NewsService = __decorate([
+    core_1.Injectable(),
+    __param(2, core_1.Inject("app.config")),
+    __metadata("design:paramtypes", [http_1.Http, auth_service_1.AuthService, Object])
+], NewsService);
 exports.NewsService = NewsService;
 //# sourceMappingURL=news.service.js.map

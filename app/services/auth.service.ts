@@ -79,7 +79,8 @@ export class AuthService {
   
   remove_token() {
     if (this.has_token()) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('token')
+      localStorage.removeItem('userid')
     }
   }
   
@@ -90,14 +91,13 @@ export class AuthService {
       return new Promise<User>((resolve, reject) => {
         let endpoint = this._config.endpoint + '/users/me';
         var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         headers.append('token', this.retrieve_token());
         
         this._http.get(endpoint, {
           headers: headers
-        }).map(response => response.json())
-          .subscribe(
+        }).map(response => response.json()).subscribe(
             data => {
+              localStorage.setItem('userid', data._id)
               resolve({
                 id: data._id,
                 email: data.email,
@@ -117,7 +117,7 @@ export class AuthService {
             },
             err  => {
               console.error(err);
-              reject();
+              reject(err);
             }
           )
       })

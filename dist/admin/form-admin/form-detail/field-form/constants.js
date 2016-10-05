@@ -1,30 +1,4 @@
 "use strict";
-exports.FieldTypes = [
-    {
-        label: '單行文字',
-        value: 'shortText'
-    },
-    {
-        label: '多行文字',
-        value: 'longText'
-    },
-    {
-        label: '日期',
-        value: 'date'
-    },
-    {
-        label: '時間',
-        value: 'time'
-    },
-    {
-        label: '選擇',
-        value: 'options'
-    },
-    {
-        label: '表格',
-        value: 'table'
-    }
-];
 exports.OptionsPresentationTypes = [
     {
         label: '單選',

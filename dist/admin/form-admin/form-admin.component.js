@@ -9,33 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
 // 子元件
-var form_list_component_1 = require('./form-list/form-list.component');
-var form_detail_component_1 = require('./form-detail/form-detail.component');
+var form_list_component_1 = require("./form-list/form-list.component");
+var form_detail_component_1 = require("./form-detail/form-detail.component");
 var FormAdminComponent = (function () {
     function FormAdminComponent() {
     }
-    FormAdminComponent = __decorate([
-        core_1.Component({
-            selector: 'form-admin',
-            templateUrl: '/app/admin/form-admin/form-admin.template.html',
-            directives: [router_1.ROUTER_DIRECTIVES]
-        }),
-        router_1.Routes([
-            {
-                path: '/',
-                component: form_list_component_1.FormListComponent,
-            },
-            {
-                path: '/:id',
-                component: form_detail_component_1.FormDetailComponent
-            }
-        ]), 
-        __metadata('design:paramtypes', [])
-    ], FormAdminComponent);
     return FormAdminComponent;
 }());
+FormAdminComponent = __decorate([
+    core_1.Component({
+        selector: 'form-admin',
+        templateUrl: '/app/admin/form-admin/form-admin.template.html',
+        directives: [router_1.ROUTER_DIRECTIVES]
+    }),
+    Routes([
+        {
+            path: '/',
+            component: form_list_component_1.FormListComponent,
+        },
+        {
+            path: '/:id',
+            component: form_detail_component_1.FormDetailComponent
+        }
+    ]),
+    __metadata("design:paramtypes", [])
+], FormAdminComponent);
 exports.FormAdminComponent = FormAdminComponent;
 //# sourceMappingURL=form-admin.component.js.map

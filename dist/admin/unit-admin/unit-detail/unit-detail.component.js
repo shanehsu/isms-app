@@ -9,13 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
 // Services
-var unit_service_1 = require('./../../../services/unit.service');
-var user_service_1 = require('./../../../services/user.service');
+var unit_service_1 = require("./../../../services/unit.service");
+var user_service_1 = require("./../../../services/user.service");
 // Pipes
-var pipes_1 = require('./../../../pipes/pipes');
+var pipes_1 = require("./../../../pipes/pipes");
 var UnitDetailComponent = (function () {
     function UnitDetailComponent(_router, _routeSegment, _unitService) {
         this._router = _router;
@@ -44,10 +44,15 @@ var UnitDetailComponent = (function () {
             .then(function (unitIDs) { return _this._freeUnitIDs = unitIDs; })
             .catch(console.error);
     };
+    UnitDetailComponent.prototype.ngAfterViewInit = function () {
+        $('#update_button').popup({
+            inline: true
+        });
+    };
     UnitDetailComponent.prototype.submit_name_and_identifier = function () {
         var _this = this;
         this._unitService.update(this._unit)
-            .then(function () { return _this._router.navigate(['/']); })
+            .then(function () { return _this._router.navigate(['admin', 'unit']); })
             .catch(console.error);
     };
     UnitDetailComponent.prototype.relateUser = function (unitID, userID) {
@@ -124,18 +129,19 @@ var UnitDetailComponent = (function () {
         }).catch(console.error);
     };
     UnitDetailComponent.prototype.cancel = function () {
-        this._router.navigate(['/']);
+        this._router.navigate(['admin', 'unit']);
     };
-    UnitDetailComponent = __decorate([
-        core_1.Component({
-            selector: 'unit-detail',
-            templateUrl: '/app/admin/unit-admin/unit-detail/unit-detail.template.html',
-            providers: [unit_service_1.UnitService, user_service_1.UserService],
-            pipes: [pipes_1.UnitNamePipe, pipes_1.UserNamePipe]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.RouteSegment, unit_service_1.UnitService])
-    ], UnitDetailComponent);
     return UnitDetailComponent;
 }());
+UnitDetailComponent = __decorate([
+    core_1.Component({
+        selector: 'unit-detail',
+        templateUrl: '/app/admin/unit-admin/unit-detail/unit-detail.template.html',
+        providers: [unit_service_1.UnitService, user_service_1.UserService],
+        pipes: [pipes_1.UnitNamePipe, pipes_1.UserNamePipe]
+    }),
+    __metadata("design:paramtypes", [router_1.Router, typeof (_a = typeof router_1.RouteSegment !== "undefined" && router_1.RouteSegment) === "function" && _a || Object, unit_service_1.UnitService])
+], UnitDetailComponent);
 exports.UnitDetailComponent = UnitDetailComponent;
+var _a;
 //# sourceMappingURL=unit-detail.component.js.map

@@ -151,7 +151,7 @@ export class UnitService {
     
     return new Promise<string>((resolve, reject) => {
       this._http.post(URL, payload, options)
-          .map(res => res.text())
+          .map(res => {console.dir(res); return res.text()})
           .subscribe(resolve, reject)
     })
   }

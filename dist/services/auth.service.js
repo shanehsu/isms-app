@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
 var AuthService = (function () {
     function AuthService(_http, _config) {
         this._http = _http;
@@ -81,6 +81,7 @@ var AuthService = (function () {
     AuthService.prototype.remove_token = function () {
         if (this.has_token()) {
             localStorage.removeItem('token');
+            localStorage.removeItem('userid');
         }
     };
     AuthService.prototype.me = function () {
@@ -92,12 +93,11 @@ var AuthService = (function () {
             return new Promise(function (resolve, reject) {
                 var endpoint = _this._config.endpoint + '/users/me';
                 var headers = new http_1.Headers();
-                headers.append('Content-Type', 'application/json');
                 headers.append('token', _this.retrieve_token());
                 _this._http.get(endpoint, {
                     headers: headers
-                }).map(function (response) { return response.json(); })
-                    .subscribe(function (data) {
+                }).map(function (response) { return response.json(); }).subscribe(function (data) {
+                    localStorage.setItem('userid', data._id);
                     resolve({
                         id: data._id,
                         email: data.email,
@@ -116,7 +116,7 @@ var AuthService = (function () {
                     });
                 }, function (err) {
                     console.error(err);
-                    reject();
+                    reject(err);
                 });
             });
         }
@@ -127,12 +127,12 @@ var AuthService = (function () {
             _this.me().then(function (me) { return resolve(me.group); }).catch(reject);
         });
     };
-    AuthService = __decorate([
-        core_1.Injectable(),
-        __param(1, core_1.Inject("app.config")), 
-        __metadata('design:paramtypes', [http_1.Http, Object])
-    ], AuthService);
     return AuthService;
 }());
+AuthService = __decorate([
+    core_1.Injectable(),
+    __param(1, core_1.Inject("app.config")),
+    __metadata("design:paramtypes", [http_1.Http, Object])
+], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map
