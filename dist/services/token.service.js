@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-var auth_service_1 = require("./auth.service");
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
+var auth_service_1 = require('./auth.service');
 var TokenService = (function () {
     function TokenService(_authService, _http, _config) {
         this._authService = _authService;
@@ -36,12 +36,12 @@ var TokenService = (function () {
             });
         }
     };
+    TokenService = __decorate([
+        core_1.Injectable(),
+        __param(2, core_1.Inject("app.config")), 
+        __metadata('design:paramtypes', [auth_service_1.AuthService, http_1.Http, Object])
+    ], TokenService);
     return TokenService;
 }());
-TokenService = __decorate([
-    core_1.Injectable(),
-    __param(2, core_1.Inject("app.config")),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, http_1.Http, Object])
-], TokenService);
 exports.TokenService = TokenService;
 //# sourceMappingURL=token.service.js.map

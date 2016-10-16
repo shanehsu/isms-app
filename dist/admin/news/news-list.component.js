@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var news_service_1 = require("./../../services/news.service");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var news_service_1 = require('./../../services/news.service');
 var NewsListComponent = (function () {
     function NewsListComponent(router, route, newsService) {
         this.router = router;
@@ -70,13 +70,13 @@ var NewsListComponent = (function () {
                 .catch(function () { return _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); });
         }
     };
+    NewsListComponent = __decorate([
+        core_1.Component({
+            template: "\n  <div class=\"ui two column grid\">\n    <div class=\"ui form left aligned column\">\n      <div class=\"inline field\">\n        <div class=\"ui right labeled input\">\n          <div class=\"ui basic label\">\u7559\u4E0B\u6700\u65B0</div>\n          <input type=\"number\" style=\"width: 5em; text-align: center;\" min=\"1\" max=\"99\" id=\"amount\" [(ngModel)]=\"_piecesToKeep\">\n          <div class=\"ui basic label\">\u5247\u6D88\u606F</div>\n        </div>\n        <button class=\"ui red button\" (click)=\"deleteExcessive()\">\u522A\u9664</button>\n      </div>\n    </div>\n    <form class=\"ui form right aligned column\">\n      <button type=\"button\" class=\"ui right floated blue labeled icon button\" (click)=\"new()\">\n        <i class=\"plus icon\"></i>\n        \u65B0\u589E\u6D88\u606F\n      </button>\n    </form>\n  </div>\n  <table class=\"ui striped table\">\n    <thead>\n      <tr>\n        <th style=\"min-width: 10em;\">\u65E5\u671F</th>\n        <th style=\"min-width: 6em;\">\u4F86\u6E90</th>\n        <th style=\"width: 100%\">\u65B0\u805E\u7C21\u4ECB</th>\n        <th style=\"min-width: 12em;\">\u52D5\u4F5C</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let piece of _pieces\">\n        <td>{{piece.date | chineseDate}}</td>\n        <td>{{piece.source}}</td>\n        <td>{{piece.summary}}</td>\n        <td style=\"text-align: center;\">\n          <div class=\"small ui buttons\">\n            <button type=\"button\" class=\"ui basic teal button\" (click)=\"edit(piece.id)\">\u7DE8\u8F2F</button>\n            <button type=\"button\" class=\"ui basic red button\" (click)=\"delete(piece.id)\">\u522A\u9664</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>"
+        }), 
+        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, news_service_1.NewsService])
+    ], NewsListComponent);
     return NewsListComponent;
 }());
-NewsListComponent = __decorate([
-    core_1.Component({
-        template: "\n  <div class=\"ui two column grid\">\n    <div class=\"ui form left aligned column\">\n      <div class=\"inline field\">\n        <div class=\"ui right labeled input\">\n          <div class=\"ui basic label\">\u7559\u4E0B\u6700\u65B0</div>\n          <input type=\"number\" style=\"width: 5em; text-align: center;\" min=\"1\" max=\"99\" id=\"amount\" [(ngModel)]=\"_piecesToKeep\">\n          <div class=\"ui basic label\">\u5247\u6D88\u606F</div>\n        </div>\n        <button class=\"ui red button\" (click)=\"deleteExcessive()\">\u522A\u9664</button>\n      </div>\n    </div>\n    <form class=\"ui form right aligned column\">\n      <button type=\"button\" class=\"ui right floated blue labeled icon button\" (click)=\"new()\">\n        <i class=\"plus icon\"></i>\n        \u65B0\u589E\u6D88\u606F\n      </button>\n    </form>\n  </div>\n  <table class=\"ui striped table\">\n    <thead>\n      <tr>\n        <th style=\"min-width: 10em;\">\u65E5\u671F</th>\n        <th style=\"min-width: 6em;\">\u4F86\u6E90</th>\n        <th style=\"width: 100%\">\u65B0\u805E\u7C21\u4ECB</th>\n        <th style=\"min-width: 12em;\">\u52D5\u4F5C</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let piece of _pieces\">\n        <td>{{piece.date | chineseDate}}</td>\n        <td>{{piece.source}}</td>\n        <td>{{piece.summary}}</td>\n        <td style=\"text-align: center;\">\n          <div class=\"small ui buttons\">\n            <button type=\"button\" class=\"ui basic teal button\" (click)=\"edit(piece.id)\">\u7DE8\u8F2F</button>\n            <button type=\"button\" class=\"ui basic red button\" (click)=\"delete(piece.id)\">\u522A\u9664</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>"
-    }),
-    __metadata("design:paramtypes", [router_1.Router, router_1.ActivatedRoute, news_service_1.NewsService])
-], NewsListComponent);
 exports.NewsListComponent = NewsListComponent;
 //# sourceMappingURL=news-list.component.js.map

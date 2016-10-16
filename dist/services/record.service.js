@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-var auth_service_1 = require("./auth.service");
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
+var auth_service_1 = require('./auth.service');
 var RecordService = (function () {
     function RecordService(http, authService, config) {
         this.http = http;
@@ -188,12 +188,12 @@ var RecordService = (function () {
             }, reject);
         });
     };
+    RecordService = __decorate([
+        core_1.Injectable(),
+        __param(2, core_1.Inject("app.config")), 
+        __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService, Object])
+    ], RecordService);
     return RecordService;
 }());
-RecordService = __decorate([
-    core_1.Injectable(),
-    __param(2, core_1.Inject("app.config")),
-    __metadata("design:paramtypes", [http_1.Http, auth_service_1.AuthService, Object])
-], RecordService);
 exports.RecordService = RecordService;
 //# sourceMappingURL=record.service.js.map

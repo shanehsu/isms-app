@@ -8,24 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var form_list_component_1 = require("./form-list.component");
-var form_component_1 = require("./form.component");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var router_1 = require("@angular/router");
-var form_controls_module_1 = require("./../controls/form-controls.module");
+var core_1 = require('@angular/core');
+var form_list_component_1 = require('./form-list.component');
+var form_component_1 = require('./form.component');
+var common_1 = require('@angular/common');
+var forms_1 = require('@angular/forms');
+var router_1 = require('@angular/router');
+var form_controls_module_1 = require('./../controls/form-controls.module');
 var FormsComponent = (function () {
     function FormsComponent() {
     }
+    FormsComponent = __decorate([
+        core_1.Component({
+            template: "<router-outlet></router-outlet>"
+        }), 
+        __metadata('design:paramtypes', [])
+    ], FormsComponent);
     return FormsComponent;
 }());
-FormsComponent = __decorate([
-    core_1.Component({
-        template: "<router-outlet></router-outlet>"
-    }),
-    __metadata("design:paramtypes", [])
-], FormsComponent);
 var routes = [
     {
         path: 'forms',
@@ -40,24 +40,24 @@ var newsRoutingModule = router_1.RouterModule.forRoot(routes);
 var formsModule = (function () {
     function formsModule() {
     }
+    formsModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                FormsComponent,
+                form_list_component_1.FormListComponent,
+                form_component_1.FormComponent
+            ],
+            imports: [
+                common_1.CommonModule,
+                router_1.RouterModule,
+                forms_1.FormsModule,
+                newsRoutingModule,
+                form_controls_module_1.formControlsModule
+            ]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], formsModule);
     return formsModule;
 }());
-formsModule = __decorate([
-    core_1.NgModule({
-        declarations: [
-            FormsComponent,
-            form_list_component_1.FormListComponent,
-            form_component_1.FormComponent
-        ],
-        imports: [
-            common_1.CommonModule,
-            router_1.RouterModule,
-            forms_1.FormsModule,
-            newsRoutingModule,
-            form_controls_module_1.formControlsModule
-        ]
-    }),
-    __metadata("design:paramtypes", [])
-], formsModule);
 exports.formsModule = formsModule;
 //# sourceMappingURL=forms.module.js.map

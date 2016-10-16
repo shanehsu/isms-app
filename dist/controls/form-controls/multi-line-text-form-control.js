@@ -12,9 +12,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
-var forms_1 = require("@angular/forms");
+var core_1 = require('@angular/core');
+var core_2 = require('@angular/core');
+var forms_1 = require('@angular/forms');
 var MultiLineTextFormControl = (function () {
     function MultiLineTextFormControl(cd) {
         this._onChanged = function (_) { };
@@ -33,15 +33,15 @@ var MultiLineTextFormControl = (function () {
     MultiLineTextFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
+    MultiLineTextFormControl = __decorate([
+        core_1.Component({
+            selector: 'form-control[type=text][row=multi]',
+            template: "<textarea rows=\"3\" [(ngModel)]=\"_dataModel\" (keyup)=\"_onChanged(control.value)\" (blur)=\"_onTouched()\" #control></textarea>"
+        }),
+        __param(0, core_2.Self()), 
+        __metadata('design:paramtypes', [forms_1.NgModel])
+    ], MultiLineTextFormControl);
     return MultiLineTextFormControl;
 }());
-MultiLineTextFormControl = __decorate([
-    core_1.Component({
-        selector: 'form-control[type=text][row=multi]',
-        template: "<textarea rows=\"3\" [(ngModel)]=\"_dataModel\" (keyup)=\"_onChanged(control.value)\" (blur)=\"_onTouched()\" #control></textarea>"
-    }),
-    __param(0, core_2.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
-], MultiLineTextFormControl);
 exports.MultiLineTextFormControl = MultiLineTextFormControl;
 //# sourceMappingURL=multi-line-text-form-control.js.map

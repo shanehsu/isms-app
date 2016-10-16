@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var form_service_1 = require("./../services/form.service");
-var record_service_1 = require("./../services/record.service");
-var router_1 = require("@angular/router");
+var core_1 = require('@angular/core');
+var form_service_1 = require('./../services/form.service');
+var record_service_1 = require('./../services/record.service');
+var router_1 = require('@angular/router');
 var FormComponent = (function () {
     function FormComponent(formService, recordService, route, debug) {
         this.formService = formService;
@@ -44,14 +44,14 @@ var FormComponent = (function () {
             console.error(err);
         });
     };
+    FormComponent = __decorate([
+        core_1.Component({
+            template: "<div class=\"container\">\n    <div *ngIf=\"fields\">\n      <form class=\"ui form\">\n        <form-fields [fields]=\"fields\" [(ngModel)]=\"data\" name=\"fields\"></form-fields>\n        <div style=\"margin-top: 1em; text-align: right;\">\n          <button type=\"button\" (click)=\"submit()\" class=\"ui yellow button\">\u9001\u51FA</button>\n        </div> \n      </form>\n      \n      <div class=\"ui raised segment\" *ngIf=\"true || debug\">\n        <h2 class=\"ui header\">\u9664\u932F\u8CC7\u8A0A</h2>\n        <h3 class=\"ui header\">\u6B04\u4F4D JSON</h3>\n        <pre>{{fields | json}}</pre>\n      </div>\n    </div>\n    <div class=\"ui raised segment\" *ngIf=\"!_nested && debug\">\n      <h2 class=\"card-title\">\u9664\u932F\u8CC7\u8A0A</h2>\n      <h3 class=\"card-subtitle text-muted\">\u8868\u55AE JSON</h3>\n      <pre>{{data | json}}</pre>\n    </div>\n  </div>"
+        }),
+        __param(3, core_1.Inject("app.debug")), 
+        __metadata('design:paramtypes', [form_service_1.FormService, record_service_1.RecordService, router_1.ActivatedRoute, Object])
+    ], FormComponent);
     return FormComponent;
 }());
-FormComponent = __decorate([
-    core_1.Component({
-        template: "<div class=\"container\">\n    <div *ngIf=\"fields\">\n      <form class=\"ui form\">\n        <form-fields [fields]=\"fields\" [(ngModel)]=\"data\" name=\"fields\"></form-fields>\n        <div style=\"margin-top: 1em; text-align: right;\">\n          <button type=\"button\" (click)=\"submit()\" class=\"ui yellow button\">\u9001\u51FA</button>\n        </div> \n      </form>\n      \n      <div class=\"ui raised segment\" *ngIf=\"true || debug\">\n        <h2 class=\"ui header\">\u9664\u932F\u8CC7\u8A0A</h2>\n        <h3 class=\"ui header\">\u6B04\u4F4D JSON</h3>\n        <pre>{{fields | json}}</pre>\n      </div>\n    </div>\n    <div class=\"ui raised segment\" *ngIf=\"!_nested && debug\">\n      <h2 class=\"card-title\">\u9664\u932F\u8CC7\u8A0A</h2>\n      <h3 class=\"card-subtitle text-muted\">\u8868\u55AE JSON</h3>\n      <pre>{{data | json}}</pre>\n    </div>\n  </div>"
-    }),
-    __param(3, core_1.Inject("app.debug")),
-    __metadata("design:paramtypes", [form_service_1.FormService, record_service_1.RecordService, router_1.ActivatedRoute, Object])
-], FormComponent);
 exports.FormComponent = FormComponent;
 //# sourceMappingURL=form.component.js.map

@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
 var AuthService = (function () {
     function AuthService(_http, _config) {
         this._http = _http;
@@ -127,12 +127,12 @@ var AuthService = (function () {
             _this.me().then(function (me) { return resolve(me.group); }).catch(reject);
         });
     };
+    AuthService = __decorate([
+        core_1.Injectable(),
+        __param(1, core_1.Inject("app.config")), 
+        __metadata('design:paramtypes', [http_1.Http, Object])
+    ], AuthService);
     return AuthService;
 }());
-AuthService = __decorate([
-    core_1.Injectable(),
-    __param(1, core_1.Inject("app.config")),
-    __metadata("design:paramtypes", [http_1.Http, Object])
-], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

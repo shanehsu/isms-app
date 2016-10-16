@@ -9,11 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 // Angular 2
-var core_1 = require("@angular/core");
+var core_1 = require('@angular/core');
 // 路由器
-var router_1 = require("@angular/router");
+var router_1 = require('@angular/router');
 // 服務
-var form_service_1 = require("./../../services/form.service");
+var form_service_1 = require('./../../services/form.service');
 var FormDetailComponent = (function () {
     function FormDetailComponent(formService, route, router) {
         this.formService = formService;
@@ -130,16 +130,14 @@ var FormDetailComponent = (function () {
             console.error(err);
         });
     };
+    FormDetailComponent = __decorate([
+        core_1.Component({
+            selector: 'form-detail',
+            template: "\n  <form *ngIf=\"form\" class=\"ui padded raised form segment\" (ngSubmit)=\"submit()\" #formForm=\"ngForm\" [class.loading]=\"isLoadingForm\">\n    <h2 class=\"ui header\">\u57FA\u672C\u8CC7\u8A0A</h2>\n    <div class=\"field\">\n      <label>ID</label>\n      <p>{{form._id}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u8868\u55AE ID</label>\n      <input type=\"text\" [(ngModel)]=\"form.identifier\" name=\"identifier\" required>\n    </div>\n    <div class=\"field\">\n      <label>\u540D\u7A31</label>\n      <input type=\"text\" [(ngModel)]=\"form.name\" name=\"name\" required>\n    </div>\n\n    <div style=\"text-align: right;\">\n      <button type=\"button\" class=\"ui basic button\" (click)=\"cancel()\">\u8FD4\u56DE</button>\n      <button type=\"submit\" id=\"update_button\" class=\"ui basic button\" [class.green]=\"formForm.form.valid\" [class.red]=\"!formForm.form.valid\"\n        [disabled]=\"!formForm.form.valid\" data-content=\"\u8A72\u6309\u9215\u53EA\u80FD\u66F4\u65B0\u8868\u55AE ID \u4EE5\u53CA\u8868\u55AE\u540D\u7A31\u3002\" [class.loading]=\"isUpdating\">\u66F4\u65B0</button>\n    </div>\n  </form>\n\n  <div *ngIf=\"_revisions\" class=\"ui raised padded segment\" [class.loading]=\"_isLoadingRevisions\">\n    <h2 class=\"ui header\">\u7248\u672C</h2>\n    <div class=\"ui top attached tabular menu\">\n      <a *ngFor=\"let revision of _revisions\" class=\"link item\" [class.active]=\"isActiveRevision(revision)\" (click)=\"selectRevision(revision)\">\n        <i *ngIf=\"!revision\" class=\"notched circle loading icon\"></i>\n        <span>{{revision?.revision?.toFixed(1)}}</span>\n      </a>\n      <a class=\"link item\" (click)=\"newRevision()\">\n        <i *ngIf=\"requestingNewRevision\" class=\"notched circle loading icon\"></i>\n        <i *ngIf=\"!requestingNewRevision\" class=\"plus icon\"></i>\n      </a>\n    </div>\n    <div class=\"ui bottom attached segment\">\n      <p *ngIf=\"_revisions.length == 0\">\u6C92\u6709\u7248\u672C</p>\n      <revision *ngIf=\"_revisions.length != 0\" [form-id]=\"form._id\" [(ngModel)]=\"_selectedRevision\" (publish)=\"publishRevision($event)\" (update)=\"updateRevision($event)\" (delete)=\"deleteRevision()\"></revision>\n    </div>\n  </div>"
+        }), 
+        __metadata('design:paramtypes', [form_service_1.FormService, router_1.ActivatedRoute, router_1.Router])
+    ], FormDetailComponent);
     return FormDetailComponent;
 }());
-FormDetailComponent = __decorate([
-    core_1.Component({
-        selector: 'form-detail',
-        template: "\n  <form *ngIf=\"form\" class=\"ui padded raised form segment\" (ngSubmit)=\"submit()\" #formForm=\"ngForm\" [class.loading]=\"isLoadingForm\">\n    <h2 class=\"ui header\">\u57FA\u672C\u8CC7\u8A0A</h2>\n    <div class=\"field\">\n      <label>ID</label>\n      <p>{{form._id}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u8868\u55AE ID</label>\n      <input type=\"text\" [(ngModel)]=\"form.identifier\" name=\"identifier\" required>\n    </div>\n    <div class=\"field\">\n      <label>\u540D\u7A31</label>\n      <input type=\"text\" [(ngModel)]=\"form.name\" name=\"name\" required>\n    </div>\n\n    <div style=\"text-align: right;\">\n      <button type=\"button\" class=\"ui basic button\" (click)=\"cancel()\">\u8FD4\u56DE</button>\n      <button type=\"submit\" id=\"update_button\" class=\"ui basic button\" [class.green]=\"formForm.form.valid\" [class.red]=\"!formForm.form.valid\"\n        [disabled]=\"!formForm.form.valid\" data-content=\"\u8A72\u6309\u9215\u53EA\u80FD\u66F4\u65B0\u8868\u55AE ID \u4EE5\u53CA\u8868\u55AE\u540D\u7A31\u3002\" [class.loading]=\"isUpdating\">\u66F4\u65B0</button>\n    </div>\n  </form>\n\n  <div *ngIf=\"_revisions\" class=\"ui raised padded segment\" [class.loading]=\"_isLoadingRevisions\">\n    <h2 class=\"ui header\">\u7248\u672C</h2>\n    <div class=\"ui top attached tabular menu\">\n      <a *ngFor=\"let revision of _revisions\" class=\"link item\" [class.active]=\"isActiveRevision(revision)\" (click)=\"selectRevision(revision)\">\n        <i *ngIf=\"!revision\" class=\"notched circle loading icon\"></i>\n        <span>{{revision?.revision?.toFixed(1)}}</span>\n      </a>\n      <a class=\"link item\" (click)=\"newRevision()\">\n        <i *ngIf=\"requestingNewRevision\" class=\"notched circle loading icon\"></i>\n        <i *ngIf=\"!requestingNewRevision\" class=\"plus icon\"></i>\n      </a>\n    </div>\n    <div class=\"ui bottom attached segment\">\n      <p *ngIf=\"_revisions.length == 0\">\u6C92\u6709\u7248\u672C</p>\n      <revision *ngIf=\"_revisions.length != 0\" [form-id]=\"form._id\" [(ngModel)]=\"_selectedRevision\" (publish)=\"publishRevision($event)\" (update)=\"updateRevision($event)\" (delete)=\"deleteRevision()\"></revision>\n    </div>\n  </div>"
-    }),
-    __metadata("design:paramtypes", [form_service_1.FormService,
-        router_1.ActivatedRoute,
-        router_1.Router])
-], FormDetailComponent);
 exports.FormDetailComponent = FormDetailComponent;
 //# sourceMappingURL=form-detail.component.js.map

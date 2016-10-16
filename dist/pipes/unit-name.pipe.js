@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var unit_service_1 = require("./../services/unit.service");
+var core_1 = require('@angular/core');
+var unit_service_1 = require('./../services/unit.service');
 var UnitNamePipe = (function () {
     function UnitNamePipe(unitService) {
         var _this = this;
@@ -37,11 +37,11 @@ var UnitNamePipe = (function () {
             return 'ID 屬於不存在的單位';
         }
     };
+    UnitNamePipe = __decorate([
+        core_1.Pipe({ name: 'unitName', pure: false }), 
+        __metadata('design:paramtypes', [unit_service_1.UnitService])
+    ], UnitNamePipe);
     return UnitNamePipe;
 }());
-UnitNamePipe = __decorate([
-    core_1.Pipe({ name: 'unitName', pure: false }),
-    __metadata("design:paramtypes", [unit_service_1.UnitService])
-], UnitNamePipe);
 exports.UnitNamePipe = UnitNamePipe;
 //# sourceMappingURL=unit-name.pipe.js.map

@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var record_service_1 = require("./../services/record.service");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var record_service_1 = require('./../services/record.service');
 function merge(schema, data) {
     for (var _i = 0, schema_1 = schema; _i < schema_1.length; _i++) {
         var field = schema_1[_i];
@@ -125,18 +125,18 @@ var RecordComponent = (function () {
             _this.ngOnInit();
         });
     };
+    RecordComponent = __decorate([
+        core_1.Component({
+            template: "\n  <h3 class=\"ui header\">ID</h3>\n  <div><pre>{{id | json}}</pre></div>\n  \n  <table id=\"record_display\" class=\"ui table\">\n    <tbody>\n      <tr *ngFor=\"let field of merged\">\n        <th>{{field.title}}</th>\n        <td>\n          <p *ngIf=\"field.value && !field.value.titles && !field.value.selectedValues\">{{field.value}}</p>\n          <p *ngIf=\"field.value.titles || field.value.titles\">\n            <record-data-display [(ngModel)]=\"field.value\"></record-data-display>\n          </p>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <h3 class=\"ui header\">\u7C3D\u6838\u72C0\u6CC1</h3>\n  <table class=\"ui table\">\n    <tbody>\n      <tr *ngIf=\"record && record.signatures\">\n        <td *ngFor=\"let signature of record.signatures\">\n          <div class=\"ui list\">\n            <div class=\"item\">\n              <i class=\"user icon\"></i>\n              <div class=\"content\">{{signature.personnel.name}}</div>\n            </div>\n            <div class=\"item\">\n              <i class=\"users icon\"></i>\n              <div class=\"content\">{{signature.unit}} \u7684 {{signature.role}}</div>\n            </div>\n            <div *ngIf=\"signature.signed\" class=\"item\">\n              <i class=\"calendar icon\"></i>\n              <div class=\"content\">{{signature.timestamp | date}}</div>\n            </div>\n            <button *ngIf=\"canSign(signature)\" type=\"button\" class=\"ui button\" (click)=\"sign()\" [class.loading]=\"isSigning\">\u7C3D\u7AE0</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  \n  <h3 class=\"ui header\">Merged</h3>\n  <div><pre>{{merged | json}}</pre></div>\n  <h3 class=\"ui header\">Schema</h3>\n  <div><pre>{{schema | json}}</pre></div>\n  <h3 class=\"ui header\">Record</h3>\n  <div><pre>{{record | json}}</pre></div>\n  <h3 class=\"ui header\">Record Data</h3>\n  <div><pre>{{data | json}}</pre></div>\n  ",
+            styles: [
+                '#record_display th:first-child { width: 12em; }',
+                '#record_display > tbody > tr { vertical-align: initial; }',
+                '#record_display > tbody > tr > th { color: initial; }'
+            ]
+        }), 
+        __metadata('design:paramtypes', [router_1.ActivatedRoute, record_service_1.RecordService])
+    ], RecordComponent);
     return RecordComponent;
 }());
-RecordComponent = __decorate([
-    core_1.Component({
-        template: "\n  <h3 class=\"ui header\">ID</h3>\n  <div><pre>{{id | json}}</pre></div>\n  \n  <table id=\"record_display\" class=\"ui table\">\n    <tbody>\n      <tr *ngFor=\"let field of merged\">\n        <th>{{field.title}}</th>\n        <td>\n          <p *ngIf=\"field.value && !field.value.titles && !field.value.selectedValues\">{{field.value}}</p>\n          <p *ngIf=\"field.value.titles || field.value.titles\">\n            <record-data-display [(ngModel)]=\"field.value\"></record-data-display>\n          </p>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <h3 class=\"ui header\">\u7C3D\u6838\u72C0\u6CC1</h3>\n  <table class=\"ui table\">\n    <tbody>\n      <tr *ngIf=\"record && record.signatures\">\n        <td *ngFor=\"let signature of record.signatures\">\n          <div class=\"ui list\">\n            <div class=\"item\">\n              <i class=\"user icon\"></i>\n              <div class=\"content\">{{signature.personnel.name}}</div>\n            </div>\n            <div class=\"item\">\n              <i class=\"users icon\"></i>\n              <div class=\"content\">{{signature.unit}} \u7684 {{signature.role}}</div>\n            </div>\n            <div *ngIf=\"signature.signed\" class=\"item\">\n              <i class=\"calendar icon\"></i>\n              <div class=\"content\">{{signature.timestamp | date}}</div>\n            </div>\n            <button *ngIf=\"canSign(signature)\" type=\"button\" class=\"ui button\" (click)=\"sign()\" [class.loading]=\"isSigning\">\u7C3D\u7AE0</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  \n  <h3 class=\"ui header\">Merged</h3>\n  <div><pre>{{merged | json}}</pre></div>\n  <h3 class=\"ui header\">Schema</h3>\n  <div><pre>{{schema | json}}</pre></div>\n  <h3 class=\"ui header\">Record</h3>\n  <div><pre>{{record | json}}</pre></div>\n  <h3 class=\"ui header\">Record Data</h3>\n  <div><pre>{{data | json}}</pre></div>\n  ",
-        styles: [
-            '#record_display th:first-child { width: 12em; }',
-            '#record_display > tbody > tr { vertical-align: initial; }',
-            '#record_display > tbody > tr > th { color: initial; }'
-        ]
-    }),
-    __metadata("design:paramtypes", [router_1.ActivatedRoute, record_service_1.RecordService])
-], RecordComponent);
 exports.RecordComponent = RecordComponent;
 //# sourceMappingURL=record.component.js.map

@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var auth_service_1 = require("./../services/auth.service");
+var core_1 = require('@angular/core');
+var auth_service_1 = require('./../services/auth.service');
 var AdminComponent = (function () {
     function AdminComponent(authService, config) {
         this.authService = authService;
@@ -24,14 +24,14 @@ var AdminComponent = (function () {
         this.adminItems = this.config.adminItems;
         this.authService.privilege().then(function (p) { return _this.privilege = p; });
     };
+    AdminComponent = __decorate([
+        core_1.Component({
+            template: "\n  <h2 class=\"ui header\">\u7BA1\u7406\u5340</h2>\n  <div class=\"ui grid\">\n    <div class=\"sixteen wide mobile two wide computer column\">\n      <div class=\"ui secondary stacking fluid vertical pointing menu\">\n        <template ngFor let-item [ngForOf]=\"adminItems\">\n          <a class=\"active item\" *ngIf=\"privilege <= item.group\" [routerLink]=\"item.path\" routerLinkActive=\"active\">\n            {{item.name}}\n          </a>\n        </template>\n      </div>\n    </div>\n    <div id=\"content\" class=\"sixteen wide mobile fourteen wide computer column\">\n      <router-outlet></router-outlet>\n    </div>\n  </div>"
+        }),
+        __param(1, core_1.Inject('app.config')), 
+        __metadata('design:paramtypes', [auth_service_1.AuthService, Object])
+    ], AdminComponent);
     return AdminComponent;
 }());
-AdminComponent = __decorate([
-    core_1.Component({
-        template: "\n  <h2 class=\"ui header\">\u7BA1\u7406\u5340</h2>\n  <div class=\"ui grid\">\n    <div class=\"sixteen wide mobile two wide computer column\">\n      <div class=\"ui secondary stacking fluid vertical pointing menu\">\n        <template ngFor let-item [ngForOf]=\"adminItems\">\n          <a class=\"active item\" *ngIf=\"privilege <= item.group\" [routerLink]=\"item.path\" routerLinkActive=\"active\">\n            {{item.name}}\n          </a>\n        </template>\n      </div>\n    </div>\n    <div id=\"content\" class=\"sixteen wide mobile fourteen wide computer column\">\n      <router-outlet></router-outlet>\n    </div>\n  </div>"
-    }),
-    __param(1, core_1.Inject('app.config')),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, Object])
-], AdminComponent);
 exports.AdminComponent = AdminComponent;
 //# sourceMappingURL=admin.component.js.map

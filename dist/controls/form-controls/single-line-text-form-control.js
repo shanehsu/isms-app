@@ -12,9 +12,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
-var forms_1 = require("@angular/forms");
+var core_1 = require('@angular/core');
+var core_2 = require('@angular/core');
+var forms_1 = require('@angular/forms');
 var SingleLineTextFormControl = (function () {
     function SingleLineTextFormControl(cd) {
         this._onChanged = function (_) { };
@@ -33,15 +33,15 @@ var SingleLineTextFormControl = (function () {
     SingleLineTextFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
+    SingleLineTextFormControl = __decorate([
+        core_1.Component({
+            selector: 'form-control[type=text][row=single]',
+            template: "<input type=\"text\" [(ngModel)]=\"_dataModel\" (blur)=\"_onTouched()\" (keyup)=\"_onChanged(control.value)\" #control/>"
+        }),
+        __param(0, core_2.Self()), 
+        __metadata('design:paramtypes', [forms_1.NgModel])
+    ], SingleLineTextFormControl);
     return SingleLineTextFormControl;
 }());
-SingleLineTextFormControl = __decorate([
-    core_1.Component({
-        selector: 'form-control[type=text][row=single]',
-        template: "<input type=\"text\" [(ngModel)]=\"_dataModel\" (blur)=\"_onTouched()\" (keyup)=\"_onChanged(control.value)\" #control/>"
-    }),
-    __param(0, core_2.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
-], SingleLineTextFormControl);
 exports.SingleLineTextFormControl = SingleLineTextFormControl;
 //# sourceMappingURL=single-line-text-form-control.js.map

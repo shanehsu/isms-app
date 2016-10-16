@@ -8,40 +8,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var group_name_pipe_1 = require("./group-name.pipe");
-var unit_name_pipe_1 = require("./unit-name.pipe");
-var user_name_pipe_1 = require("./user-name.pipe");
-var chinese_date_pipe_1 = require("./chinese-date.pipe");
-var group_name_pipe_2 = require("./group-name.pipe");
+var core_1 = require('@angular/core');
+var group_name_pipe_1 = require('./group-name.pipe');
+var unit_name_pipe_1 = require('./unit-name.pipe');
+var user_name_pipe_1 = require('./user-name.pipe');
+var chinese_date_pipe_1 = require('./chinese-date.pipe');
+var group_name_pipe_2 = require('./group-name.pipe');
 exports.GroupNamePipe = group_name_pipe_2.GroupNamePipe;
-var unit_name_pipe_2 = require("./unit-name.pipe");
+var unit_name_pipe_2 = require('./unit-name.pipe');
 exports.UnitNamePipe = unit_name_pipe_2.UnitNamePipe;
-var user_name_pipe_2 = require("./user-name.pipe");
+var user_name_pipe_2 = require('./user-name.pipe');
 exports.UserNamePipe = user_name_pipe_2.UserNamePipe;
-var chinese_date_pipe_2 = require("./chinese-date.pipe");
+var chinese_date_pipe_2 = require('./chinese-date.pipe');
 exports.ChineseDatePipe = chinese_date_pipe_2.ChineseDatePipe;
 var pipesModule = (function () {
     function pipesModule() {
     }
+    pipesModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                chinese_date_pipe_1.ChineseDatePipe,
+                group_name_pipe_1.GroupNamePipe,
+                unit_name_pipe_1.UnitNamePipe,
+                user_name_pipe_1.UserNamePipe
+            ],
+            exports: [
+                chinese_date_pipe_1.ChineseDatePipe,
+                group_name_pipe_1.GroupNamePipe,
+                unit_name_pipe_1.UnitNamePipe,
+                user_name_pipe_1.UserNamePipe
+            ]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], pipesModule);
     return pipesModule;
 }());
-pipesModule = __decorate([
-    core_1.NgModule({
-        declarations: [
-            chinese_date_pipe_1.ChineseDatePipe,
-            group_name_pipe_1.GroupNamePipe,
-            unit_name_pipe_1.UnitNamePipe,
-            user_name_pipe_1.UserNamePipe
-        ],
-        exports: [
-            chinese_date_pipe_1.ChineseDatePipe,
-            group_name_pipe_1.GroupNamePipe,
-            unit_name_pipe_1.UnitNamePipe,
-            user_name_pipe_1.UserNamePipe
-        ]
-    }),
-    __metadata("design:paramtypes", [])
-], pipesModule);
 exports.pipesModule = pipesModule;
 //# sourceMappingURL=pipes.module.js.map

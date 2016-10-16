@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var user_service_1 = require("./../services/user.service");
+var core_1 = require('@angular/core');
+var user_service_1 = require('./../services/user.service');
 var UserNamePipe = (function () {
     function UserNamePipe(userService) {
         var _this = this;
@@ -24,11 +24,11 @@ var UserNamePipe = (function () {
     UserNamePipe.prototype.transform = function (id) {
         return this._users[id];
     };
+    UserNamePipe = __decorate([
+        core_1.Pipe({ name: 'userName', pure: false }), 
+        __metadata('design:paramtypes', [user_service_1.UserService])
+    ], UserNamePipe);
     return UserNamePipe;
 }());
-UserNamePipe = __decorate([
-    core_1.Pipe({ name: 'userName', pure: false }),
-    __metadata("design:paramtypes", [user_service_1.UserService])
-], UserNamePipe);
 exports.UserNamePipe = UserNamePipe;
 //# sourceMappingURL=user-name.pipe.js.map

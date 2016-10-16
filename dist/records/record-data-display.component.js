@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
+var core_1 = require('@angular/core');
+var forms_1 = require('@angular/forms');
 var RecordDataDisplay = (function () {
     function RecordDataDisplay(model) {
         this.model = model;
@@ -29,18 +29,18 @@ var RecordDataDisplay = (function () {
     RecordDataDisplay.prototype.registerOnTouched = function (fn) {
         this.touched = fn;
     };
+    RecordDataDisplay = __decorate([
+        core_1.Component({
+            selector: 'record-data-display',
+            template: "\n  <div *ngIf=\"value && value.selectedValues\">\n    <div *ngFor=\"let selectedValue of value.selectedValues; let i = index;\">\n      <p>{{selectedValue}}</p>\n      <div class=\"sub-fields\">\n        <div *ngFor=\"let nestedValue of value.nestedValues[i]; let j = index;\">\n          {{nestedValue.title}}\n          <record-data-display [(ngModel)]=\"value.nestedValues[i][j].value\"></record-data-display>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div *ngIf=\"value && value.titles\">\n    <table class=\"ui compact basic table\">\n      <thead>\n        <tr>\n          <td *ngFor=\"let title of value.titles\">{{title}}</td>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let _ of value.values; let i = index;\">\n          <td *ngFor=\"let _ of value.values[i]; let j = index;\">\n            <record-data-display [(ngModel)]=\"value.values[i][j]\"></record-data-display>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n  <p *ngIf=\"value && !value.titles && !value.selectedValues\">{{value}}</p>\n  ",
+            styles: [
+                'div.sub-fields { padding-left: 1em; }'
+            ]
+        }),
+        __param(0, core_1.Self()), 
+        __metadata('design:paramtypes', [forms_1.NgModel])
+    ], RecordDataDisplay);
     return RecordDataDisplay;
 }());
-RecordDataDisplay = __decorate([
-    core_1.Component({
-        selector: 'record-data-display',
-        template: "\n  <div *ngIf=\"value && value.selectedValues\">\n    <div *ngFor=\"let selectedValue of value.selectedValues; let i = index;\">\n      <p>{{selectedValue}}</p>\n      <div class=\"sub-fields\">\n        <div *ngFor=\"let nestedValue of value.nestedValues[i]; let j = index;\">\n          {{nestedValue.title}}\n          <record-data-display [(ngModel)]=\"value.nestedValues[i][j].value\"></record-data-display>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div *ngIf=\"value && value.titles\">\n    <table class=\"ui compact basic table\">\n      <thead>\n        <tr>\n          <td *ngFor=\"let title of value.titles\">{{title}}</td>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let _ of value.values; let i = index;\">\n          <td *ngFor=\"let _ of value.values[i]; let j = index;\">\n            <record-data-display [(ngModel)]=\"value.values[i][j]\"></record-data-display>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n  <p *ngIf=\"value && !value.titles && !value.selectedValues\">{{value}}</p>\n  ",
-        styles: [
-            'div.sub-fields { padding-left: 1em; }'
-        ]
-    }),
-    __param(0, core_1.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
-], RecordDataDisplay);
 exports.RecordDataDisplay = RecordDataDisplay;
 //# sourceMappingURL=record-data-display.component.js.map
