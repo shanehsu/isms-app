@@ -63,7 +63,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     // 一開始假設 尚未登入
     this.user = undefined
-    this.navigationItems = this.config.navigationItems.filter(item => item.group >= 4)
+    this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
     this.loading = false
 
     // 獲取登入狀況
@@ -77,7 +77,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
       this.authService.me().then(user => {
         this.user = user
         this.loading = false
-        this.navigationItems = this.config.navigationItems.filter(item => item.group >= user.group)
+        this.navigationItems = this.config.navigationItems.filter(item => item.group.includes(user.group))
       }).catch(error => {
         console.warn('原本有的 Token 已經失效或是不存在')
         this.loading = false
@@ -93,12 +93,12 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
         // 成功登入、獲取帳號資料
         this.loading = false
         this.user = user
-        this.navigationItems = this.config.navigationItems.filter(item => item.group >= user.group)
+        this.navigationItems = this.config.navigationItems.filter(item => item.group.includes(user.group))
       }).catch(err => {
         // 獲取帳號資料失敗
         this.loading = false
         this.user = undefined
-        this.navigationItems = this.config.navigationItems.filter(item => item.group >= 4)
+        this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
 
         console.error(err)
         console.warn("認證成功，但是獲取帳號資訊失敗，請重新整理。")
@@ -107,7 +107,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
       // 登入失敗
       this.loading = false
       this.user = undefined
-      this.navigationItems = this.config.navigationItems.filter(item => item.group >= 4)
+      this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
 
       console.warn("登入失敗，請檢查電子郵件")
     });
@@ -141,7 +141,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
 
     this.user = undefined
 
-    this.navigationItems = this.config.navigationItems.filter(item => item.group >= 4)
+    this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
   }
 
   constructor(private authService: AuthService, private tokenService: TokenService, @Inject('app.config') private config: Config) { }

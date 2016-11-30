@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var record_service_1 = require('./../services/record.service');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var record_service_1 = require("./../services/record.service");
 var RecordsListComponent = (function () {
     function RecordsListComponent(recordService, router, route) {
         this.recordService = recordService;
@@ -137,13 +137,13 @@ var RecordsListComponent = (function () {
     RecordsListComponent.prototype.view = function (record) {
         this.router.navigate([record.id], { relativeTo: this.route });
     };
-    RecordsListComponent = __decorate([
-        core_1.Component({
-            template: "\n  <h2 class=\"ui header\">\u7D00\u9304</h2>\n  <div class=\"ui basic segment\" style=\"padding: 0;\" [class.loading]=\"isLoadingRecords\">\n    <table class=\"ui sortable selectable striped table\">\n      <thead>\n        <tr>\n          <th (click)=\"sortBy('identifier')\" [ngClass]=\"styleClasses('identifier')\" #identifier>\u6D41\u6C34\u865F</th>\n          <th (click)=\"sortBy('form.name')\" [ngClass]=\"styleClasses('form.name')\" #form>\u8868\u55AE</th>\n          <th (click)=\"sortBy('filled')\" [ngClass]=\"styleClasses('filled')\" [class]=\"\" #date>\u586B\u8868\u65E5\u671F</th>\n          <th (click)=\"sortBy('owner.name')\" [ngClass]=\"styleClasses('owner.name')\" #filler>\u586B\u8868\u4EBA</th>\n          <th (click)=\"sortBy('signatures.signed')\" [ngClass]=\"styleClasses('signatures.signed')\" #status>\u7C3D\u6838\u72C0\u6CC1</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let record of records\" (click)=\"view(record)\">\n          <td>{{record.identifier}}</td>\n          <td>{{record.formDisplayName}}</td>\n          <td>{{record.filled | date}}</td>\n          <td>{{record.owner.name}}</td>\n          <td>{{record.signatures.signed}}/{{record.signatures.signed + record.signatures.unsigned}}</td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n  "
-        }), 
-        __metadata('design:paramtypes', [record_service_1.RecordService, router_1.Router, router_1.ActivatedRoute])
-    ], RecordsListComponent);
     return RecordsListComponent;
 }());
+RecordsListComponent = __decorate([
+    core_1.Component({
+        template: "\n  <h2 class=\"ui header\">\u7D00\u9304</h2>\n  <div class=\"ui basic segment\" style=\"padding: 0;\" [class.loading]=\"isLoadingRecords\">\n    <table class=\"ui sortable selectable striped table\">\n      <thead>\n        <tr>\n          <th (click)=\"sortBy('identifier')\" [ngClass]=\"styleClasses('identifier')\" #identifier>\u6D41\u6C34\u865F</th>\n          <th (click)=\"sortBy('form.name')\" [ngClass]=\"styleClasses('form.name')\" #form>\u8868\u55AE</th>\n          <th (click)=\"sortBy('filled')\" [ngClass]=\"styleClasses('filled')\" [class]=\"\" #date>\u586B\u8868\u65E5\u671F</th>\n          <th (click)=\"sortBy('owner.name')\" [ngClass]=\"styleClasses('owner.name')\" #filler>\u586B\u8868\u4EBA</th>\n          <th (click)=\"sortBy('signatures.signed')\" [ngClass]=\"styleClasses('signatures.signed')\" #status>\u7C3D\u6838\u72C0\u6CC1</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let record of records\" (click)=\"view(record)\">\n          <td>{{record.identifier}}</td>\n          <td>{{record.formDisplayName}}</td>\n          <td>{{record.filled | date}}</td>\n          <td>{{record.owner.name}}</td>\n          <td>{{record.signatures.signed}}/{{record.signatures.signed + record.signatures.unsigned}}</td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n  "
+    }),
+    __metadata("design:paramtypes", [record_service_1.RecordService, router_1.Router, router_1.ActivatedRoute])
+], RecordsListComponent);
 exports.RecordsListComponent = RecordsListComponent;
 //# sourceMappingURL=records-list.component.js.map

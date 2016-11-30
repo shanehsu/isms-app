@@ -44,7 +44,7 @@ export class NewsDetailComponent implements OnInit {
   private piece: Piece;
   
   ngOnInit() {
-    this.piece = this.newsService.fake()
+    this.piece = this.newsService.placeholder()
     this.id = this.route.snapshot.params['id']
     this.newsService.retrievePiece(this.id).then(piece => this.piece = piece)
   }

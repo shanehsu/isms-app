@@ -2,51 +2,53 @@
 
 import {Config} from './types/config'
 
+// export type Group = "admins" | "securityPersonnel" | "users" | "vendors" | "guests"
+
 export var config: Config = {
   // endpoint: 'http://infinite-temple-3140.herokuapp.com',
-  endpoint: 'http://localhost:3000',
+  endpoint: 'http://localhost:3000/api/v2',
   navigationItems: [
     {
       name: "最新消息",
       path: "news",
-      group: 4
+      group: ["guests", "vendors", "users", "securityPersonnel", "admins"]
     },
     {
       name: "表單",
       path: "forms",
-      group: 3
+      group: ["vendors", "users", "securityPersonnel", "admins"]
     },
     {
       name: "紀錄",
       path: "records",
-      group: 3
+      group: ["vendors", "users", "securityPersonnel", "admins"]
     },
     {
       name: "管理",
       path: "admin",
-      group: 1
+      group: ["admins"]
     }
   ],
   adminItems: [
     {
       name: "最新消息",
       path: "news",
-      group: 1
+      group: ["admins"]
     },
     {
       name: "使用者",
       path: "users",
-      group: 1
+      group: ["admins"]
     },
     {
       name: "單位",
       path: "units",
-      group: 1
+      group: ["admins"]
     },
     {
       name: "表單",
       path: "forms",
-      group: 1
+      group: ["admins"]
     }
   ]
 }

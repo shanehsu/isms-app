@@ -9,112 +9,52 @@ export class NewsService {
   private _baseURL: string;
 
   constructor(private _http: Http, private _authService: AuthService, @Inject("app.config") private _config) {
-    this._baseURL = _config.endpoint + '/pieces';
+    this._baseURL = _config.endpoint + '/news';
   }
   
-  fake() : Piece {
-    return {
-      id: '',
-      date: new Date(),
-      summary: '',
-      source: '',
-      link: ''
-    }
+  placeholder() : Piece {
+    return new Piece({
+      _id: '4e7020cb7cac81af7136236b', date: new Date(),
+      summary: '新聞簡述', source: '新聞來源', link: 'http://www.google.com/'
+    })
   }
 
   retrieve() {
     return new Promise<Piece[]>((resolve, reject) =>
       this._http.get(this._baseURL)
-        .map(response => response.json())
-        .subscribe(
-          function(data) {
-            var pieces: Piece[] = [];
-            for (var piece of data) {
-              pieces.push({
-                id: piece._id,
-                date: new Date(piece.date),
-                summary: piece.summary,
-                source: piece.source,
-                link: piece.link
-              });
-            }
-            resolve(pieces);
-          },
-          err  => {
-            reject();
-            console.error(err)
-          }
-        )
-    );
+        .map(res => res.json())
+        .subscribe((data: any[]) => resolve(data.map(p => new Piece(p))), err => reject(err))
+    )
   }
 
-  retrieveFromDate(fromDate: Date) {
-    let params = new URLSearchParams();
-    params.set('fromDate', fromDate.toISOString());
+  retrievePage(page: number) {
+    let params = new URLSearchParams()
+    params.set('page', page.toString());
 
     return new Promise<Piece[]>((resolve, reject) =>
       this._http.get(this._baseURL, {
         search: params
-      }).map(response => response.json())
-        .subscribe(
-          function(data) {
-            var pieces: Piece[] = [];
-            for (var piece of data) {
-              pieces.push({
-                id: piece._id,
-                date: new Date(piece.date),
-                summary: piece.summary,
-                source: piece.source,
-                link: piece.link
-              });
-            }
-            resolve(pieces);
-          },
-          err  => {
-            reject();
-            console.error(err)
-          }
-        )
-    );
+      }).map(res => res.json())
+        .subscribe((data: any[]) => resolve(data.map(p => new Piece(p))), err => reject(err))
+    )
   }
   
   retrievePiece(id: string) : Promise<Piece> {
     return new Promise<Piece>((resolve, reject) =>
       this._http.get(this._baseURL + '/' + id)
         .map(response => response.json())
-        .subscribe(
-          function(piece) {
-            resolve({
-                id: piece._id,
-                date: new Date(piece.date),
-                summary: piece.summary,
-                source: piece.source,
-                link: piece.link
-              });
-          },
-          err  => {
-            reject();
-            console.error(err)
-          }
-        )
+        .subscribe(data => resolve(new Piece(data)), err  => reject(err))
     );
   }
   
   create(piece: Piece) {
     return new Promise<string>((resolve, reject) => {
-      let object = {
-        date: piece.date.toISOString(),
-        summary: piece.summary,
-        source: piece.source,
-        link: piece.link
-      };
-
       let header = new Headers({
         token: this._authService.retrieve_token(),
         'Content-Type': 'application/json'
       });
 
-      this._http.post(this._baseURL, JSON.stringify(object), {
+      this._http.post(this._baseURL, '', {
         headers: header
       })
         .map(res => res.text())
@@ -141,14 +81,8 @@ export class NewsService {
         summary: piece.summary
       }), {
         headers: header
-      })
-        .subscribe(
-          data => {
-            resolve();
-          },
-          err => reject(null)
-        )
-    });
+      }).subscribe(_ => resolve(), err => reject(err))
+    })
   }
 
   delete(id: string) {
@@ -159,18 +93,8 @@ export class NewsService {
 
       this._http.delete(this._baseURL + '/' + id, {
         headers: header
-      })
-                .map(res => res.status)
-                .subscribe(
-                  data => {
-                    if (data == 200) {
-                      resolve();
-                    } else {
-                      reject();
-                    }
-                  },
-                  err => reject()
-                )
+      }).map(res => res.status)
+      .subscribe(_ => resolve(), err => reject())
     });
   }
 }

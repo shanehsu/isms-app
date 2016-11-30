@@ -1,5 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
+import {Group} from './../types/group'
 import {User} from './../types/user'
 import {Token} from './../types/token'
 
@@ -124,8 +125,8 @@ export class AuthService {
     }
   }
   
-  privilege() : Promise<number> {
-    return new Promise<number>((resolve, reject) => {
+  privilege() : Promise<Group> {
+    return new Promise<Group>((resolve, reject) => {
       this.me().then(me => resolve(me.group)).catch(reject);
     })
   }

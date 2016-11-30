@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-var auth_service_1 = require('./auth.service');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+var auth_service_1 = require("./auth.service");
 var UserService = (function () {
     function UserService(_authService, _http, _config) {
         this._authService = _authService;
@@ -26,9 +26,9 @@ var UserService = (function () {
             id: '',
             email: '',
             name: '',
-            unit: '',
-            group: 10,
-            tokens: []
+            group: "guests",
+            tokens: [],
+            unit: {}
         };
     };
     /**
@@ -73,34 +73,21 @@ var UserService = (function () {
                 headers: headers
             }).map(function (res) { return res.json(); })
                 .subscribe(function (users) { return resolve(users.map(function (user) {
-                return {
+                return ({
                     id: user._id,
                     email: user.email,
                     name: user.name,
                     unit: user.unit,
                     group: user.group,
                     tokens: []
-                };
+                });
             })); }, function (err) { return reject(err); });
         });
     };
-    UserService.prototype.new = function (user) {
+    UserService.prototype.new = function () {
         var _this = this;
-        var postObject;
-        if (user) {
-            postObject = user;
-            postObject.id = undefined;
-        }
-        else {
-            postObject = {
-                email: '',
-                name: '',
-                group: 10,
-                tokens: []
-            };
-        }
         return new Promise(function (resolve, reject) {
-            _this._http.post(_this._baseURL, JSON.stringify(postObject), {
+            _this._http.post(_this._baseURL, "", {
                 headers: new http_1.Headers({
                     token: _this._authService.retrieve_token(),
                     'Content-Type': 'application/json'
@@ -113,10 +100,7 @@ var UserService = (function () {
         var user = Object.assign({}, originalUser);
         var id = user.id;
         var object = user;
-        object.tokens = undefined;
-        if (user.unit == '') {
-            object.unit = undefined;
-        }
+        delete object.tokens;
         return new Promise(function (resolve, reject) {
             _this._http.put(_this._baseURL + '/' + id, JSON.stringify(object), {
                 headers: new http_1.Headers({
@@ -137,12 +121,13 @@ var UserService = (function () {
             }).subscribe(function () { return resolve(); }, function (err) { return reject(err); });
         });
     };
-    UserService = __decorate([
-        core_1.Injectable(),
-        __param(2, core_1.Inject("app.config")), 
-        __metadata('design:paramtypes', [auth_service_1.AuthService, http_1.Http, Object])
-    ], UserService);
     return UserService;
 }());
+UserService = __decorate([
+    core_1.Injectable(),
+    __param(2, core_1.Inject("app.config")),
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        http_1.Http, Object])
+], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

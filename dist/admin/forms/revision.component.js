@@ -12,12 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var forms_1 = require('@angular/forms');
+var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 // 服務
-var form_service_1 = require('./../../services/form.service');
+var form_service_1 = require("./../../services/form.service");
 // 子元件
-var field_component_1 = require('./field.component');
+var field_component_1 = require("./field.component");
 var RevisionComponent = (function () {
     // 服務
     // 簡單初始化
@@ -152,35 +152,35 @@ var RevisionComponent = (function () {
             console.error(err);
         });
     };
-    __decorate([
-        core_1.Input('form-id'), 
-        __metadata('design:type', String)
-    ], RevisionComponent.prototype, "_formID", void 0);
-    __decorate([
-        core_1.Output('update'), 
-        __metadata('design:type', Object)
-    ], RevisionComponent.prototype, "_shouldUpdate", void 0);
-    __decorate([
-        core_1.Output('delete'), 
-        __metadata('design:type', Object)
-    ], RevisionComponent.prototype, "_shouldDelete", void 0);
-    __decorate([
-        core_1.Output('publish'), 
-        __metadata('design:type', Object)
-    ], RevisionComponent.prototype, "_shouldPublish", void 0);
-    __decorate([
-        core_1.ViewChildren(field_component_1.FieldComponent), 
-        __metadata('design:type', core_1.QueryList)
-    ], RevisionComponent.prototype, "fieldFormComponents", void 0);
-    RevisionComponent = __decorate([
-        core_1.Component({
-            selector: 'revision',
-            template: "\n  <form id=\"revisionForm\" class=\"ui form\" (ngSubmit)=\"submit_revision()\" #revisionForm=\"ngForm\">\n    <div class=\"field\">\n      <label>ID</label>\n      <p>{{_revision?._id}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u5DF2\u767C\u4F48</label>\n      <p>{{_revision?.published ? '\u662F' : '\u5426'}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u7248\u672C</label>\n      <input type=\"number\" min=\"1.0\" step=\"0.1\" [(ngModel)]=\"_revision.revision\" name=\"revision\" required>\n    </div>\n\n    <div class=\"field\">\n      <label>\u7C3D\u6838</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"signaturesRadio\" value=\"false\" [checked]=\"_revision.signatures == false\" (change)=\"_revision.signatures = false\">\n            <label>\u4E0D\u9700\u8981</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"signaturesRadio\" value=\"true\" [checked]=\"_revision.signatures == true\" (change)=\"_revision.signatures = true\">\n            <label>\u9700\u8981</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u7D44\u9577\u7C3D\u6838</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"officerSignatureRadio\" value=\"false\" [checked]=\"_revision.officerSignature == false\" (change)=\"_revision.officerSignature = false\">\n            <label>\u4E0D\u9700\u8981</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"officerSignatureRadio\" value=\"true\" [checked]=\"_revision.officerSignature == true\" (change)=\"_revision.officerSignature = true\">\n            <label>\u9700\u8981</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u6B0A\u9650</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"1\" [checked]=\"_revision.group == 1\" (change)=\"_revision.group = 1\">\n            <label>\u7BA1\u7406\u54E1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"2\" [checked]=\"_revision.group == 2\" (change)=\"_revision.group = 2\">\n            <label>\u8CC7\u8A0A\u5B89\u5168\u4EBA\u54E1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"3\" [checked]=\"_revision.group == 3\" (change)=\"_revision.group = 3\">\n            <label>\u4E00\u822C\u4F7F\u7528\u8005</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u6A5F\u5BC6\u6027</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"1\" [checked]=\"_revision.secrecyLevel == 1\" (change)=\"_revision.secrecyLevel = 1\">\n            <label>\u6A5F\u5BC6</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"2\" [checked]=\"_revision.secrecyLevel == 2\" (change)=\"_revision.secrecyLevel = 2\">\n            <label>\u654F\u611F</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"3\" [checked]=\"_revision.secrecyLevel == 3\" (change)=\"_revision.secrecyLevel = 3\">\n            <label>\u9650\u95B1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"4\" [checked]=\"_revision.secrecyLevel == 4\" (change)=\"_revision.secrecyLevel = 4\">\n            <label>\u4E00\u822C</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div style=\"text-align: right;\">\n      <button type=\"button\" class=\"ui teal basic button\" (click)=\"publish_revision()\" *ngIf=\"!_revision.published\" [class.loading]=\"isPublishing\">\u767C\u4F48</button>\n      <button type=\"button\" class=\"ui red basic button\" (click)=\"delete_revision()\" *ngIf=\"!_revision.published\" [class.loading]=\"isDeleting\">\u522A\u9664</button>\n      <button type=\"submit\" id=\"update_button\" class=\"ui basic button\" [class.green]=\"revisionForm.form.valid\" [class.red]=\"!revisionForm.form.valid\"\n        [disabled]=\"!revisionForm.form.valid\" [class.loading]=\"isUpdating\">\u66F4\u65B0</button>\n    </div>\n  </form>\n\n  <div class=\"ui secdion divider\"></div>\n\n  <div class=\"ui basic segment\" [class.loading]=\"isLoadingFields\">\n    <h3 class=\"ui header\" style=\"clear: none;\">\u8868\u55AE\u6B04\u4F4D</h3>\n    <a class=\"link\" (click)=\"toggleCollapse()\" style=\"float: right;\">\u5C55\u958B\uFF0F\u6536\u5408\u8868\u55AE\u6B04\u4F4D</a>\n    <p><small>\u6BCF\u500B\u7248\u672C\u6709\u81EA\u5DF1\u7684\u6B04\u4F4D\u8A2D\u8A08\u3002</small></p>\n    <div *ngIf=\"fields.length != 0\" class=\"ui segments\">\n      <div class=\"ui segment\" style=\"overflow: auto;\" *ngFor=\"let _ of fields; let i = index; let coloring = odd;\" [class.secondary]=\"coloring\">\n        <field *ngIf=\"fields[i]\" [(ngModel)]=\"fields[i]\" [update-button]=\"true\" (reload)=\"reloadField(fields[i], $event)\" (update)=\"updateField(fields[i], $event)\" (delete)=\"deleteField(fields[i])\"></field>\n      </div>\n    </div>\n    <div style=\"text-align: center;\">\n      <button type=\"button\" class=\"ui teal basic button\" (click)=\"createField()\" [class.loading]=\"isCreatingField\">\u589E\u52A0\u6B04\u4F4D</button>\n    </div>\n  </div>\n  "
-        }),
-        __param(1, core_1.Self()), 
-        __metadata('design:paramtypes', [form_service_1.FormService, forms_1.NgModel])
-    ], RevisionComponent);
     return RevisionComponent;
 }());
+__decorate([
+    core_1.Input('form-id'),
+    __metadata("design:type", String)
+], RevisionComponent.prototype, "_formID", void 0);
+__decorate([
+    core_1.Output('update'),
+    __metadata("design:type", Object)
+], RevisionComponent.prototype, "_shouldUpdate", void 0);
+__decorate([
+    core_1.Output('delete'),
+    __metadata("design:type", Object)
+], RevisionComponent.prototype, "_shouldDelete", void 0);
+__decorate([
+    core_1.Output('publish'),
+    __metadata("design:type", Object)
+], RevisionComponent.prototype, "_shouldPublish", void 0);
+__decorate([
+    core_1.ViewChildren(field_component_1.FieldComponent),
+    __metadata("design:type", core_1.QueryList)
+], RevisionComponent.prototype, "fieldFormComponents", void 0);
+RevisionComponent = __decorate([
+    core_1.Component({
+        selector: 'revision',
+        template: "\n  <form id=\"revisionForm\" class=\"ui form\" (ngSubmit)=\"submit_revision()\" #revisionForm=\"ngForm\">\n    <div class=\"field\">\n      <label>ID</label>\n      <p>{{_revision?._id}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u5DF2\u767C\u4F48</label>\n      <p>{{_revision?.published ? '\u662F' : '\u5426'}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u7248\u672C</label>\n      <input type=\"number\" min=\"1.0\" step=\"0.1\" [(ngModel)]=\"_revision.revision\" name=\"revision\" required>\n    </div>\n\n    <div class=\"field\">\n      <label>\u7C3D\u6838</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"signaturesRadio\" value=\"false\" [checked]=\"_revision.signatures == false\" (change)=\"_revision.signatures = false\">\n            <label>\u4E0D\u9700\u8981</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"signaturesRadio\" value=\"true\" [checked]=\"_revision.signatures == true\" (change)=\"_revision.signatures = true\">\n            <label>\u9700\u8981</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u7D44\u9577\u7C3D\u6838</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"officerSignatureRadio\" value=\"false\" [checked]=\"_revision.officerSignature == false\" (change)=\"_revision.officerSignature = false\">\n            <label>\u4E0D\u9700\u8981</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"officerSignatureRadio\" value=\"true\" [checked]=\"_revision.officerSignature == true\" (change)=\"_revision.officerSignature = true\">\n            <label>\u9700\u8981</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u6B0A\u9650</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"1\" [checked]=\"_revision.group == 1\" (change)=\"_revision.group = 1\">\n            <label>\u7BA1\u7406\u54E1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"2\" [checked]=\"_revision.group == 2\" (change)=\"_revision.group = 2\">\n            <label>\u8CC7\u8A0A\u5B89\u5168\u4EBA\u54E1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"3\" [checked]=\"_revision.group == 3\" (change)=\"_revision.group = 3\">\n            <label>\u4E00\u822C\u4F7F\u7528\u8005</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u6A5F\u5BC6\u6027</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"1\" [checked]=\"_revision.secrecyLevel == 1\" (change)=\"_revision.secrecyLevel = 1\">\n            <label>\u6A5F\u5BC6</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"2\" [checked]=\"_revision.secrecyLevel == 2\" (change)=\"_revision.secrecyLevel = 2\">\n            <label>\u654F\u611F</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"3\" [checked]=\"_revision.secrecyLevel == 3\" (change)=\"_revision.secrecyLevel = 3\">\n            <label>\u9650\u95B1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"4\" [checked]=\"_revision.secrecyLevel == 4\" (change)=\"_revision.secrecyLevel = 4\">\n            <label>\u4E00\u822C</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div style=\"text-align: right;\">\n      <button type=\"button\" class=\"ui teal basic button\" (click)=\"publish_revision()\" *ngIf=\"!_revision.published\" [class.loading]=\"isPublishing\">\u767C\u4F48</button>\n      <button type=\"button\" class=\"ui red basic button\" (click)=\"delete_revision()\" *ngIf=\"!_revision.published\" [class.loading]=\"isDeleting\">\u522A\u9664</button>\n      <button type=\"submit\" id=\"update_button\" class=\"ui basic button\" [class.green]=\"revisionForm.form.valid\" [class.red]=\"!revisionForm.form.valid\"\n        [disabled]=\"!revisionForm.form.valid\" [class.loading]=\"isUpdating\">\u66F4\u65B0</button>\n    </div>\n  </form>\n\n  <div class=\"ui secdion divider\"></div>\n\n  <div class=\"ui basic segment\" [class.loading]=\"isLoadingFields\">\n    <h3 class=\"ui header\" style=\"clear: none;\">\u8868\u55AE\u6B04\u4F4D</h3>\n    <a class=\"link\" (click)=\"toggleCollapse()\" style=\"float: right;\">\u5C55\u958B\uFF0F\u6536\u5408\u8868\u55AE\u6B04\u4F4D</a>\n    <p><small>\u6BCF\u500B\u7248\u672C\u6709\u81EA\u5DF1\u7684\u6B04\u4F4D\u8A2D\u8A08\u3002</small></p>\n    <div *ngIf=\"fields.length != 0\" class=\"ui segments\">\n      <div class=\"ui segment\" style=\"overflow: auto;\" *ngFor=\"let _ of fields; let i = index; let coloring = odd;\" [class.secondary]=\"coloring\">\n        <field *ngIf=\"fields[i]\" [(ngModel)]=\"fields[i]\" [update-button]=\"true\" (reload)=\"reloadField(fields[i], $event)\" (update)=\"updateField(fields[i], $event)\" (delete)=\"deleteField(fields[i])\"></field>\n      </div>\n    </div>\n    <div style=\"text-align: center;\">\n      <button type=\"button\" class=\"ui teal basic button\" (click)=\"createField()\" [class.loading]=\"isCreatingField\">\u589E\u52A0\u6B04\u4F4D</button>\n    </div>\n  </div>\n  "
+    }),
+    __param(1, core_1.Self()),
+    __metadata("design:paramtypes", [form_service_1.FormService, forms_1.NgModel])
+], RevisionComponent);
 exports.RevisionComponent = RevisionComponent;
 //# sourceMappingURL=revision.component.js.map

@@ -8,18 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
-var router_1 = require('@angular/router');
-var admin_component_1 = require('./admin.component');
-var news_admin_module_1 = require('./news/news-admin.module');
-var news_admin_module_2 = require('./news/news-admin.module');
-var users_admin_module_1 = require('./users/users-admin.module');
-var users_admin_module_2 = require('./users/users-admin.module');
-var units_admin_module_1 = require('./units/units-admin.module');
-var units_admin_module_2 = require('./units/units-admin.module');
-var forms_admin_module_1 = require('./forms/forms-admin.module');
-var forms_admin_module_2 = require('./forms/forms-admin.module');
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var router_1 = require("@angular/router");
+var admin_component_1 = require("./admin.component");
+var news_admin_module_1 = require("./news/news-admin.module");
+var news_admin_module_2 = require("./news/news-admin.module");
+var users_admin_module_1 = require("./users/users-admin.module");
+var users_admin_module_2 = require("./users/users-admin.module");
+var units_admin_module_1 = require("./units/units-admin.module");
+var units_admin_module_2 = require("./units/units-admin.module");
+var forms_admin_module_1 = require("./forms/forms-admin.module");
+var forms_admin_module_2 = require("./forms/forms-admin.module");
 var routes = [
     {
         path: 'admin',
@@ -61,24 +61,24 @@ var adminRoutingModule = router_1.RouterModule.forChild(routes);
 var adminModule = (function () {
     function adminModule() {
     }
-    adminModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                admin_component_1.AdminComponent
-            ],
-            imports: [
-                common_1.CommonModule,
-                router_1.RouterModule,
-                adminRoutingModule,
-                news_admin_module_1.newsAdminModule,
-                users_admin_module_1.usersAdminModule,
-                units_admin_module_1.unitsAdminModule,
-                forms_admin_module_1.formsAdminModule
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], adminModule);
     return adminModule;
 }());
+adminModule = __decorate([
+    core_1.NgModule({
+        declarations: [
+            admin_component_1.AdminComponent
+        ],
+        imports: [
+            common_1.CommonModule,
+            router_1.RouterModule,
+            adminRoutingModule,
+            news_admin_module_1.newsAdminModule,
+            users_admin_module_1.usersAdminModule,
+            units_admin_module_1.unitsAdminModule,
+            forms_admin_module_1.formsAdminModule
+        ]
+    }),
+    __metadata("design:paramtypes", [])
+], adminModule);
 exports.adminModule = adminModule;
 //# sourceMappingURL=admin.module.js.map

@@ -20,9 +20,9 @@ export class UserService {
       id: '',
       email: '',
       name: '',
-      unit: '',
-      group: 10,
-      tokens: []
+      group: "guests",
+      tokens: [],
+      unit: {}
     }
   }
   
@@ -87,22 +87,9 @@ export class UserService {
     });
   }
   
-  new(user? : User) : Promise<string> {
-    let postObject: any;
-    if (user) {
-      postObject = user;
-      postObject.id = undefined;
-    } else {
-      postObject = {
-        email: '',
-        name: '',
-        group: 10,
-        tokens: []
-      }
-    }
-    
+  new() : Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this._http.post(this._baseURL, JSON.stringify(postObject), {
+      this._http.post(this._baseURL, "", {
         headers: new Headers({
           token: this._authService.retrieve_token(),
           'Content-Type': 'application/json'
@@ -115,10 +102,9 @@ export class UserService {
     let user: User = Object.assign({}, originalUser);
     let id = user.id;
     let object: any = user;
-    object.tokens = undefined;
-    if (user.unit == '') {
-      object.unit = undefined;
-    }
+    
+    delete object.tokens
+    
     return new Promise<void>((resolve, reject) => {
       this._http.put(this._baseURL + '/' + id, JSON.stringify(object), {
         headers: new Headers({

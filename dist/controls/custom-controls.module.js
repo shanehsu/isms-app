@@ -8,29 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
-var forms_1 = require('@angular/forms');
-var editable_text_input_component_1 = require('./editable-text-input/editable-text-input.component');
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var forms_1 = require("@angular/forms");
+var editable_text_input_component_1 = require("./editable-text-input/editable-text-input.component");
 var customControlsModule = (function () {
     function customControlsModule() {
     }
-    customControlsModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                editable_text_input_component_1.EditableTextInput
-            ],
-            imports: [
-                common_1.CommonModule,
-                forms_1.FormsModule,
-            ],
-            exports: [
-                editable_text_input_component_1.EditableTextInput
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], customControlsModule);
     return customControlsModule;
 }());
+customControlsModule = __decorate([
+    core_1.NgModule({
+        declarations: [
+            editable_text_input_component_1.EditableTextInput
+        ],
+        imports: [
+            common_1.CommonModule,
+            forms_1.FormsModule,
+        ],
+        exports: [
+            editable_text_input_component_1.EditableTextInput
+        ]
+    }),
+    __metadata("design:paramtypes", [])
+], customControlsModule);
 exports.customControlsModule = customControlsModule;
 //# sourceMappingURL=custom-controls.module.js.map

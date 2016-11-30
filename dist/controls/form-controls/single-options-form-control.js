@@ -12,10 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
-var forms_1 = require('@angular/forms');
-var util_1 = require('./../../util');
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
+var forms_1 = require("@angular/forms");
+var util_1 = require("./../../util");
 var SingleOptionsFormControl = (function () {
     function SingleOptionsFormControl(cd) {
         this._onChanged = function (_) { };
@@ -48,19 +48,19 @@ var SingleOptionsFormControl = (function () {
     SingleOptionsFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
-    __decorate([
-        core_1.Input('metadata'), 
-        __metadata('design:type', Object)
-    ], SingleOptionsFormControl.prototype, "_metadata", void 0);
-    SingleOptionsFormControl = __decorate([
-        core_1.Component({
-            selector: 'form-control[type=options][presentation=single]',
-            template: "\n  <div [id]=\"_uid\" class=\"inline fields\">\n    <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n      <div class=\"field\">\n        <div class=\"ui radio checkbox\">\n          <input [name]=\"_uid\" type=\"radio\" (change)=\"select(i)\" [checked]=\"_dataModel.selected && _dataModel.selected[i]\">\n          <label>{{item.value}}</label>\n        </div>\n      </div>\n    </template>\n  </div>\n  <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n    <div style=\"margin-left: 4em;\" *ngIf=\"_dataModel.selected && _dataModel.selected[i]\">\n      <form-fields [nested]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></form-fields>\n    </div>\n  </template>\n  "
-        }),
-        __param(0, core_2.Self()), 
-        __metadata('design:paramtypes', [forms_1.NgModel])
-    ], SingleOptionsFormControl);
     return SingleOptionsFormControl;
 }());
+__decorate([
+    core_1.Input('metadata'),
+    __metadata("design:type", Object)
+], SingleOptionsFormControl.prototype, "_metadata", void 0);
+SingleOptionsFormControl = __decorate([
+    core_1.Component({
+        selector: 'form-control[type=options][presentation=single]',
+        template: "\n  <div [id]=\"_uid\" class=\"inline fields\">\n    <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n      <div class=\"field\">\n        <div class=\"ui radio checkbox\">\n          <input [name]=\"_uid\" type=\"radio\" (change)=\"select(i)\" [checked]=\"_dataModel.selected && _dataModel.selected[i]\">\n          <label>{{item.value}}</label>\n        </div>\n      </div>\n    </template>\n  </div>\n  <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n    <div style=\"margin-left: 4em;\" *ngIf=\"_dataModel.selected && _dataModel.selected[i]\">\n      <form-fields [nested]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></form-fields>\n    </div>\n  </template>\n  "
+    }),
+    __param(0, core_2.Self()),
+    __metadata("design:paramtypes", [forms_1.NgModel])
+], SingleOptionsFormControl);
 exports.SingleOptionsFormControl = SingleOptionsFormControl;
 //# sourceMappingURL=single-options-form-control.js.map

@@ -8,29 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var navigation_component_1 = require('./navigation.component');
-var common_1 = require('@angular/common');
-var router_1 = require('@angular/router');
+var core_1 = require("@angular/core");
+var navigation_component_1 = require("./navigation.component");
+var common_1 = require("@angular/common");
+var router_1 = require("@angular/router");
 var navigationModule = (function () {
     function navigationModule() {
     }
-    navigationModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                navigation_component_1.NavigationComponent
-            ],
-            exports: [
-                navigation_component_1.NavigationComponent
-            ],
-            imports: [
-                common_1.CommonModule,
-                router_1.RouterModule
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], navigationModule);
     return navigationModule;
 }());
+navigationModule = __decorate([
+    core_1.NgModule({
+        declarations: [
+            navigation_component_1.NavigationComponent
+        ],
+        exports: [
+            navigation_component_1.NavigationComponent
+        ],
+        imports: [
+            common_1.CommonModule,
+            router_1.RouterModule
+        ]
+    }),
+    __metadata("design:paramtypes", [])
+], navigationModule);
 exports.navigationModule = navigationModule;
 //# sourceMappingURL=navigation.module.js.map

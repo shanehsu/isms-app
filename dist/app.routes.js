@@ -1,5 +1,5 @@
 "use strict";
-var router_1 = require('@angular/router');
+var router_1 = require("@angular/router");
 var routes = [
     { path: '', redirectTo: 'news', pathMatch: 'full' },
     { path: '**', redirectTo: 'news' }

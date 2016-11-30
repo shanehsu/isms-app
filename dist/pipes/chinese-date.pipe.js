@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var ChineseDatePipe = (function () {
     function ChineseDatePipe() {
     }
@@ -25,11 +25,11 @@ var ChineseDatePipe = (function () {
         var date = value.getDate();
         return year + ' 年 ' + month + ' 月 ' + date + ' 日';
     };
-    ChineseDatePipe = __decorate([
-        core_1.Pipe({ name: 'chineseDate' }), 
-        __metadata('design:paramtypes', [])
-    ], ChineseDatePipe);
     return ChineseDatePipe;
 }());
+ChineseDatePipe = __decorate([
+    core_1.Pipe({ name: 'chineseDate' }),
+    __metadata("design:paramtypes", [])
+], ChineseDatePipe);
 exports.ChineseDatePipe = ChineseDatePipe;
 //# sourceMappingURL=chinese-date.pipe.js.map

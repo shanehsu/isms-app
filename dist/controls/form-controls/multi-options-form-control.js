@@ -12,10 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
-var forms_1 = require('@angular/forms');
-var util_1 = require('./../../util');
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
+var forms_1 = require("@angular/forms");
+var util_1 = require("./../../util");
 var MultiOptionsFormControl = (function () {
     function MultiOptionsFormControl(cd) {
         this._onChanged = function (_) { };
@@ -47,19 +47,19 @@ var MultiOptionsFormControl = (function () {
     MultiOptionsFormControl.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
     };
-    __decorate([
-        core_1.Input('metadata'), 
-        __metadata('design:type', Object)
-    ], MultiOptionsFormControl.prototype, "_metadata", void 0);
-    MultiOptionsFormControl = __decorate([
-        core_1.Component({
-            selector: 'form-control[type=options][presentation=multi]',
-            template: "\n  <div [id]=\"_uid\" class=\"grouped fields\">\n    <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n      <div class=\"field\">\n        <div class=\"ui checkbox\">\n          <input [name]=\"_uid\" type=\"checkbox\" (change)=\"select(i)\" [checked]=\"_dataModel.selected && _dataModel.selected[i]\">\n          <label>{{item.value}}</label>\n        </div>\n      </div>\n      <div style=\"margin-left: 4em;\" *ngIf=\"_dataModel.selected && _dataModel.selected[i]\">\n        <form-fields [nested]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></form-fields>\n      </div>\n    </template>\n  </div>"
-        }),
-        __param(0, core_2.Self()), 
-        __metadata('design:paramtypes', [forms_1.NgModel])
-    ], MultiOptionsFormControl);
     return MultiOptionsFormControl;
 }());
+__decorate([
+    core_1.Input('metadata'),
+    __metadata("design:type", Object)
+], MultiOptionsFormControl.prototype, "_metadata", void 0);
+MultiOptionsFormControl = __decorate([
+    core_1.Component({
+        selector: 'form-control[type=options][presentation=multi]',
+        template: "\n  <div [id]=\"_uid\" class=\"grouped fields\">\n    <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n      <div class=\"field\">\n        <div class=\"ui checkbox\">\n          <input [name]=\"_uid\" type=\"checkbox\" (change)=\"select(i)\" [checked]=\"_dataModel.selected && _dataModel.selected[i]\">\n          <label>{{item.value}}</label>\n        </div>\n      </div>\n      <div style=\"margin-left: 4em;\" *ngIf=\"_dataModel.selected && _dataModel.selected[i]\">\n        <form-fields [nested]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></form-fields>\n      </div>\n    </template>\n  </div>"
+    }),
+    __param(0, core_2.Self()),
+    __metadata("design:paramtypes", [forms_1.NgModel])
+], MultiOptionsFormControl);
 exports.MultiOptionsFormControl = MultiOptionsFormControl;
 //# sourceMappingURL=multi-options-form-control.js.map
