@@ -11,12 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
+const core_1 = require('@angular/core');
+const http_1 = require('@angular/http');
 // 登入服務
-var auth_service_1 = require("./auth.service");
-var FormService = (function () {
-    function FormService(_authService, _config, _http) {
+const auth_service_1 = require('./auth.service');
+let FormService = class FormService {
+    constructor(_authService, _config, _http) {
         this._authService = _authService;
         this._config = _config;
         this._http = _http;
@@ -28,119 +28,113 @@ var FormService = (function () {
      * 只會回傳 id, name, identifier
      * 並不包含表單內容！
      */
-    FormService.prototype.forms = function () {
-        var _this = this;
-        var headers = new http_1.Headers({
+    forms() {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL;
-        return new Promise(function (resolve, reject) {
-            _this._http.get(URL, options).map(function (res) { return res.json(); })
-                .subscribe(function (forms) {
-                var array = forms;
-                resolve(array.map(function (element) { return element; }));
+        let URL = this._baseURL;
+        return new Promise((resolve, reject) => {
+            this._http.get(URL, options).map(res => res.json())
+                .subscribe(forms => {
+                let array = forms;
+                resolve(array.map(element => element));
             });
         });
-    };
-    FormService.prototype.fillableForms = function () {
-        var _this = this;
-        var headers = new http_1.Headers({
+    }
+    fillableForms() {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/?type=fillable';
-        return new Promise(function (resolve, reject) {
-            _this._http.get(URL, options).map(function (res) { return res.json(); })
-                .subscribe(function (forms) {
-                var array = forms;
-                resolve(array.map(function (element) { return element; }));
+        let URL = this._baseURL + '/?type=fillable';
+        return new Promise((resolve, reject) => {
+            this._http.get(URL, options).map(res => res.json())
+                .subscribe(forms => {
+                let array = forms;
+                resolve(array.map(element => element));
             });
         });
-    };
+    }
     /**
      * 取得特定表單內容
      */
-    FormService.prototype.form = function (id) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    form(id) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/' + id;
-        return new Promise(function (resolve, reject) {
-            _this._http.get(URL, options).map(function (res) { return res.json(); })
-                .subscribe(function (form) {
+        let URL = this._baseURL + '/' + id;
+        return new Promise((resolve, reject) => {
+            this._http.get(URL, options).map(res => res.json())
+                .subscribe(form => {
                 resolve(form);
             });
         });
-    };
+    }
     /**
      * 建立一個新的表單
      *
      * 回傳表單的 id
      */
-    FormService.prototype.new = function () {
-        var _this = this;
-        var headers = new http_1.Headers({
+    new() {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers,
         };
-        var URL = this._baseURL;
-        return new Promise(function (resolve, reject) {
-            _this._http.post(URL, '', options)
-                .map(function (res) { return res.text(); })
+        let URL = this._baseURL;
+        return new Promise((resolve, reject) => {
+            this._http.post(URL, '', options)
+                .map(res => res.text())
                 .subscribe(resolve, reject);
         });
-    };
+    }
     /**
      * 更新一個表單
      */
-    FormService.prototype.update = function (form) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    update(form) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token(),
             'Content-Type': 'application/json'
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/' + form._id;
-        var payloadObject = {
+        let URL = this._baseURL + '/' + form._id;
+        let payloadObject = {
             name: form.name,
             identifier: form.identifier
         };
-        var payload = JSON.stringify(payloadObject);
-        return new Promise(function (resolve, reject) {
-            _this._http.put(URL, payload, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let payload = JSON.stringify(payloadObject);
+        return new Promise((resolve, reject) => {
+            this._http.put(URL, payload, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
+    }
     /**
      * 刪除一個表單
      */
-    FormService.prototype.delete = function (id) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    delete(id) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/' + id;
-        return new Promise(function (resolve, reject) {
-            _this._http.delete(URL, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let URL = this._baseURL + '/' + id;
+        return new Promise((resolve, reject) => {
+            this._http.delete(URL, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
+    }
     /**
      * SECTION
      *
@@ -149,103 +143,98 @@ var FormService = (function () {
     /**
      * 取得特定表單版本
      */
-    FormService.prototype.revision = function (formID, revisionID) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    revision(formID, revisionID) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/' + formID + '/' + revisionID;
-        return new Promise(function (resolve, reject) {
-            _this._http.get(URL, options).map(function (res) { return res.json(); })
-                .subscribe(function (formRevision) {
+        let URL = this._baseURL + '/revisions/' + formID + '/' + revisionID;
+        return new Promise((resolve, reject) => {
+            this._http.get(URL, options).map(res => res.json())
+                .subscribe(formRevision => {
                 resolve(formRevision);
             });
         });
-    };
+    }
     /**
      * 新增表單版本
      */
-    FormService.prototype.newRevision = function (formID) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    newRevision(formID) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/' + formID;
-        return new Promise(function (resolve, reject) {
-            _this._http.post(URL, '', options)
-                .map(function (res) { return res.text(); })
+        let URL = this._baseURL + '/revisions/' + formID;
+        return new Promise((resolve, reject) => {
+            this._http.post(URL, '', options)
+                .map(res => res.text())
                 .subscribe(resolve, reject);
         });
-    };
+    }
     /**
      * 更新表單版本
      */
-    FormService.prototype.updateRevision = function (formID, revision) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    updateRevision(formID, revision) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token(),
             'Content-Type': 'application/json'
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/' + formID + '/' + revision._id;
-        var payloadObject = {
+        let URL = this._baseURL + '/revisions/' + formID + '/' + revision._id;
+        let payloadObject = {
             revision: revision.revision,
             signatures: revision.signatures,
             officerSignature: revision.officerSignature,
             group: revision.group,
             secrecyLevel: revision.secrecyLevel
         };
-        var payload = JSON.stringify(payloadObject);
-        return new Promise(function (resolve, reject) {
-            _this._http.put(URL, payload, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let payload = JSON.stringify(payloadObject);
+        return new Promise((resolve, reject) => {
+            this._http.put(URL, payload, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
+    }
     /**
      * 發佈版本
      */
-    FormService.prototype.publishRevision = function (formID, revision) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    publishRevision(formID, revision) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token(),
             'Content-Type': 'application/json'
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/' + formID + '/' + revision._id + '/publish';
-        var payloadObject = {};
-        var payload = JSON.stringify(payloadObject);
-        return new Promise(function (resolve, reject) {
-            _this._http.put(URL, payload, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let URL = this._baseURL + '/revisions/' + formID + '/' + revision._id + '/publish';
+        let payloadObject = {};
+        let payload = JSON.stringify(payloadObject);
+        return new Promise((resolve, reject) => {
+            this._http.put(URL, payload, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
+    }
     /**
      * 刪除表單版本
      */
-    FormService.prototype.deleteRevision = function (formID, revisionID) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    deleteRevision(formID, revisionID) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/' + formID + '/' + revisionID;
-        return new Promise(function (resolve, reject) {
-            _this._http.delete(URL, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let URL = this._baseURL + '/revisions/' + formID + '/' + revisionID;
+        return new Promise((resolve, reject) => {
+            this._http.delete(URL, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
+    }
     /**
      * SECTION
      *
@@ -254,18 +243,17 @@ var FormService = (function () {
     /**
      * 取得特定表單欄位
      */
-    FormService.prototype.field = function (formID, revisionID, fieldID) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    field(formID, revisionID, fieldID) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID;
-        return new Promise(function (resolve, reject) {
-            _this._http.get(URL, options).map(function (res) { return res.json(); })
-                .subscribe(function (field) {
+        let URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID;
+        return new Promise((resolve, reject) => {
+            this._http.get(URL, options).map(res => res.json())
+                .subscribe(field => {
                 resolve({
                     _id: field._id,
                     name: field.name,
@@ -275,73 +263,69 @@ var FormService = (function () {
                 });
             });
         });
-    };
+    }
     /**
      * 新增表單欄位
      */
-    FormService.prototype.newField = function (formID, revisionID) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    newField(formID, revisionID) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID;
-        return new Promise(function (resolve, reject) {
-            _this._http.post(URL, '', options)
-                .map(function (res) { return res.text(); })
+        let URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID;
+        return new Promise((resolve, reject) => {
+            this._http.post(URL, '', options)
+                .map(res => res.text())
                 .subscribe(resolve, reject);
         });
-    };
+    }
     /**
      * 更新表單欄位
      */
-    FormService.prototype.updateField = function (formID, revisionID, field) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    updateField(formID, revisionID, field) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token(),
             'Content-Type': 'application/json'
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + field._id;
-        var payloadObject = {
+        let URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + field._id;
+        let payloadObject = {
             name: field.name,
             type: field.type,
             hint: field.hint,
             metadata: JSON.stringify(field.metadata)
         };
-        var payload = JSON.stringify(payloadObject);
-        return new Promise(function (resolve, reject) {
-            _this._http.put(URL, payload, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let payload = JSON.stringify(payloadObject);
+        return new Promise((resolve, reject) => {
+            this._http.put(URL, payload, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
+    }
     /**
      * 刪除表單欄位
      */
-    FormService.prototype.deleteField = function (formID, revisionID, fieldID) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    deleteField(formID, revisionID, fieldID) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
-        var options = {
+        let options = {
             headers: headers
         };
-        var URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID;
-        return new Promise(function (resolve, reject) {
-            _this._http.delete(URL, options)
-                .subscribe(function () { return resolve(); }, reject);
+        let URL = this._baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID;
+        return new Promise((resolve, reject) => {
+            this._http.delete(URL, options)
+                .subscribe(() => resolve(), reject);
         });
-    };
-    return FormService;
-}());
+    }
+};
 FormService = __decorate([
     core_1.Injectable(),
-    __param(1, core_1.Inject("app.config")),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, Object, http_1.Http])
+    __param(1, core_1.Inject("app.config")), 
+    __metadata('design:paramtypes', [auth_service_1.AuthService, Object, http_1.Http])
 ], FormService);
 exports.FormService = FormService;
 //# sourceMappingURL=form.service.js.map

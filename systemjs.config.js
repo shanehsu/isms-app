@@ -20,13 +20,15 @@
     '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
     
     'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
-    'rxjs':                       'npm:rxjs'
+    'rxjs':                       'npm:rxjs',
+    'ng-semantic':                'npm:ng-semantic'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'boot.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { defaultExtension: 'js' },
+    'ng-semantic':                { main: 'ng-semantic.js', defaultExtension: 'js' }
   }
   var config = {
     paths: paths,

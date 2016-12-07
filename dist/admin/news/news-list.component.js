@@ -8,75 +8,111 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var news_service_1 = require("./../../services/news.service");
-var NewsListComponent = (function () {
-    function NewsListComponent(router, route, newsService) {
+const core_1 = require('@angular/core');
+const router_1 = require('@angular/router');
+const news_service_1 = require('./../../services/news.service');
+let NewsListComponent = class NewsListComponent {
+    constructor(router, route, newsService) {
         this.router = router;
         this.route = route;
         this.newsService = newsService;
     }
-    NewsListComponent.prototype.ngOnInit = function () {
-        var _this = this;
+    ngOnInit() {
         this._piecesToKeep = 20;
         this._pieces = [];
-        this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
-    };
-    NewsListComponent.prototype.new = function () {
-        var _this = this;
+        this.newsService.retrieve().then(pieces => this._pieces = pieces);
+    }
+    new() {
         this.newsService.create(this.newsService.placeholder())
-            .then(function (id) { return _this.edit(id); })
-            .catch(function () { return _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); });
-    };
-    NewsListComponent.prototype.deleteExcessive = function () {
-        var _this = this;
-        var piecesToKeep = this._piecesToKeep;
-        var length = this._pieces.length;
+            .then(id => this.edit(id))
+            .catch(() => this.newsService.retrieve().then(pieces => this._pieces = pieces));
+    }
+    deleteExcessive() {
+        let piecesToKeep = this._piecesToKeep;
+        let length = this._pieces.length;
         if (piecesToKeep >= this._pieces.length)
             return;
-        var shouldDelete = confirm("確定刪除多餘的 " + (length - piecesToKeep) + " 筆消息？");
+        let shouldDelete = confirm("確定刪除多餘的 " + (length - piecesToKeep) + " 筆消息？");
         if (!shouldDelete)
             return;
-        var issuedRequest = 0;
-        var receivedResponse = 0;
-        for (var index = this._piecesToKeep; index < this._pieces.length; index++) {
+        let issuedRequest = 0;
+        let receivedResponse = 0;
+        for (let index = this._piecesToKeep; index < this._pieces.length; index++) {
             issuedRequest++;
             this.newsService.delete(this._pieces[index].id)
-                .then(function () {
+                .then(() => {
                 receivedResponse++;
-                _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                this.newsService.retrieve().then(pieces => this._pieces = pieces);
                 if (issuedRequest == receivedResponse) {
-                    _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                    this.newsService.retrieve().then(pieces => this._pieces = pieces);
                 }
             })
-                .catch(function () {
+                .catch(() => {
                 receivedResponse++;
-                _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                this.newsService.retrieve().then(pieces => this._pieces = pieces);
                 if (issuedRequest == receivedResponse) {
-                    _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; });
+                    this.newsService.retrieve().then(pieces => this._pieces = pieces);
                 }
             });
         }
-    };
-    NewsListComponent.prototype.edit = function (id) {
+    }
+    edit(id) {
         this.router.navigate([id], { relativeTo: this.route });
-    };
-    NewsListComponent.prototype.delete = function (id) {
-        var _this = this;
-        var shouldDelete = confirm("確定要刪除嗎？");
+    }
+    delete(id) {
+        let shouldDelete = confirm("確定要刪除嗎？");
         if (shouldDelete) {
-            this.newsService.delete(id).then(function () { return _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); })
-                .catch(function () { return _this.newsService.retrieve().then(function (pieces) { return _this._pieces = pieces; }); });
+            this.newsService.delete(id).then(() => this.newsService.retrieve().then(pieces => this._pieces = pieces))
+                .catch(() => this.newsService.retrieve().then(pieces => this._pieces = pieces));
         }
-    };
-    return NewsListComponent;
-}());
+    }
+};
 NewsListComponent = __decorate([
     core_1.Component({
-        template: "\n  <div class=\"ui two column grid\">\n    <div class=\"ui form left aligned column\">\n      <div class=\"inline field\">\n        <div class=\"ui right labeled input\">\n          <div class=\"ui basic label\">\u7559\u4E0B\u6700\u65B0</div>\n          <input type=\"number\" style=\"width: 5em; text-align: center;\" min=\"1\" max=\"99\" id=\"amount\" [(ngModel)]=\"_piecesToKeep\">\n          <div class=\"ui basic label\">\u5247\u6D88\u606F</div>\n        </div>\n        <button class=\"ui red button\" (click)=\"deleteExcessive()\">\u522A\u9664</button>\n      </div>\n    </div>\n    <form class=\"ui form right aligned column\">\n      <button type=\"button\" class=\"ui right floated blue labeled icon button\" (click)=\"new()\">\n        <i class=\"plus icon\"></i>\n        \u65B0\u589E\u6D88\u606F\n      </button>\n    </form>\n  </div>\n  <table class=\"ui striped table\">\n    <thead>\n      <tr>\n        <th style=\"min-width: 10em;\">\u65E5\u671F</th>\n        <th style=\"min-width: 6em;\">\u4F86\u6E90</th>\n        <th style=\"width: 100%\">\u65B0\u805E\u7C21\u4ECB</th>\n        <th style=\"min-width: 12em;\">\u52D5\u4F5C</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let piece of _pieces\">\n        <td>{{piece.date | chineseDate}}</td>\n        <td>{{piece.source}}</td>\n        <td>{{piece.summary}}</td>\n        <td style=\"text-align: center;\">\n          <div class=\"small ui buttons\">\n            <button type=\"button\" class=\"ui basic teal button\" (click)=\"edit(piece.id)\">\u7DE8\u8F2F</button>\n            <button type=\"button\" class=\"ui basic red button\" (click)=\"delete(piece.id)\">\u522A\u9664</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>"
-    }),
-    __metadata("design:paramtypes", [router_1.Router, router_1.ActivatedRoute, news_service_1.NewsService])
+        template: `
+  <div class="ui two column grid">
+    <div class="ui form left aligned column">
+      <div class="inline field">
+        <div class="ui right labeled input">
+          <div class="ui basic label">留下最新</div>
+          <input type="number" style="width: 5em; text-align: center;" min="1" max="99" id="amount" [(ngModel)]="_piecesToKeep">
+          <div class="ui basic label">則消息</div>
+        </div>
+        <button class="ui red button" (click)="deleteExcessive()">刪除</button>
+      </div>
+    </div>
+    <form class="ui form right aligned column">
+      <button type="button" class="ui right floated blue labeled icon button" (click)="new()">
+        <i class="plus icon"></i>
+        新增消息
+      </button>
+    </form>
+  </div>
+  <table class="ui striped table">
+    <thead>
+      <tr>
+        <th style="min-width: 10em;">日期</th>
+        <th style="min-width: 6em;">來源</th>
+        <th style="width: 100%">新聞簡介</th>
+        <th style="min-width: 12em;">動作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let piece of _pieces">
+        <td>{{piece.date | chineseDate}}</td>
+        <td>{{piece.source}}</td>
+        <td>{{piece.summary}}</td>
+        <td style="text-align: center;">
+          <div class="small ui buttons">
+            <button type="button" class="ui basic teal button" (click)="edit(piece.id)">編輯</button>
+            <button type="button" class="ui basic red button" (click)="delete(piece.id)">刪除</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>`
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, news_service_1.NewsService])
 ], NewsListComponent);
 exports.NewsListComponent = NewsListComponent;
 //# sourceMappingURL=news-list.component.js.map

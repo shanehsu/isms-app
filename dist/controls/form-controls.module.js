@@ -8,24 +8,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var pipes_module_1 = require("./../pipes/pipes.module");
-var date_form_controls_1 = require("./form-controls/date-form-controls");
-var dropdown_options_form_control_1 = require("./form-controls/dropdown-options-form-control");
-var multi_line_text_form_control_1 = require("./form-controls/multi-line-text-form-control");
-var multi_options_form_control_1 = require("./form-controls/multi-options-form-control");
-var single_line_text_form_control_1 = require("./form-controls/single-line-text-form-control");
-var single_options_form_control_1 = require("./form-controls/single-options-form-control");
-var table_form_control_1 = require("./form-controls/table-form-control");
-var time_form_control_1 = require("./form-controls/time-form-control");
-var fields_component_1 = require("./form-controls/fields.component");
-var formControlsModule = (function () {
-    function formControlsModule() {
-    }
-    return formControlsModule;
-}());
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
+const pipes_module_1 = require('./../pipes/pipes.module');
+const date_form_controls_1 = require('./form-controls/date-form-controls');
+const dropdown_options_form_control_1 = require('./form-controls/dropdown-options-form-control');
+const multi_line_text_form_control_1 = require('./form-controls/multi-line-text-form-control');
+const multi_options_form_control_1 = require('./form-controls/multi-options-form-control');
+const single_line_text_form_control_1 = require('./form-controls/single-line-text-form-control');
+const single_options_form_control_1 = require('./form-controls/single-options-form-control');
+const table_form_control_1 = require('./form-controls/table-form-control');
+const time_form_control_1 = require('./form-controls/time-form-control');
+const fields_component_1 = require('./form-controls/fields.component');
+let formControlsModule = class formControlsModule {
+};
 formControlsModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -55,8 +52,8 @@ formControlsModule = __decorate([
             time_form_control_1.TimeFormControl,
             fields_component_1.FieldsComponent
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], formControlsModule);
 exports.formControlsModule = formControlsModule;
 //# sourceMappingURL=form-controls.module.js.map

@@ -8,33 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var router_1 = require("@angular/router");
-var pipes_module_1 = require("./../../pipes/pipes.module");
-var form_controls_module_1 = require("./../../controls/form-controls.module");
-var news_list_component_1 = require("./news-list.component");
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
+const router_1 = require('@angular/router');
+const pipes_module_1 = require('./../../pipes/pipes.module');
+const form_controls_module_1 = require('./../../controls/form-controls.module');
+const news_list_component_1 = require('./news-list.component');
 exports.NewsListComponent = news_list_component_1.NewsListComponent;
-var news_detail_component_1 = require("./news-detail.component");
+const news_detail_component_1 = require('./news-detail.component');
 exports.NewsDetailComponent = news_detail_component_1.NewsDetailComponent;
-var NewsAdminComponent = (function () {
-    function NewsAdminComponent() {
-    }
-    return NewsAdminComponent;
-}());
+let NewsAdminComponent = class NewsAdminComponent {
+};
 NewsAdminComponent = __decorate([
     core_1.Component({
-        template: "<router-outlet></router-outlet>"
-    }),
-    __metadata("design:paramtypes", [])
+        template: `<router-outlet></router-outlet>`
+    }), 
+    __metadata('design:paramtypes', [])
 ], NewsAdminComponent);
 exports.NewsAdminComponent = NewsAdminComponent;
-var newsAdminModule = (function () {
-    function newsAdminModule() {
-    }
-    return newsAdminModule;
-}());
+let newsAdminModule = class newsAdminModule {
+};
 newsAdminModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -54,8 +48,8 @@ newsAdminModule = __decorate([
             news_list_component_1.NewsListComponent,
             news_detail_component_1.NewsDetailComponent
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], newsAdminModule);
 exports.newsAdminModule = newsAdminModule;
 //# sourceMappingURL=news-admin.module.js.map

@@ -12,36 +12,35 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var MultiLineTextFormControl = (function () {
-    function MultiLineTextFormControl(cd) {
-        this._onChanged = function (_) { };
-        this._onTouched = function () { };
+const core_1 = require('@angular/core');
+const core_2 = require('@angular/core');
+const forms_1 = require('@angular/forms');
+let MultiLineTextFormControl = class MultiLineTextFormControl {
+    constructor(cd) {
+        this._onChanged = (_) => { };
+        this._onTouched = () => { };
         this.cd = cd;
         cd.valueAccessor = this;
     }
     // 與 Value Accessor 有關的
     // 從 Value Accessor 接收資料
-    MultiLineTextFormControl.prototype.writeValue = function (value) {
+    writeValue(value) {
         this._dataModel = value;
-    };
-    MultiLineTextFormControl.prototype.registerOnChange = function (fn) {
+    }
+    registerOnChange(fn) {
         this._onChanged = fn;
-    };
-    MultiLineTextFormControl.prototype.registerOnTouched = function (fn) {
+    }
+    registerOnTouched(fn) {
         this._onTouched = fn;
-    };
-    return MultiLineTextFormControl;
-}());
+    }
+};
 MultiLineTextFormControl = __decorate([
     core_1.Component({
         selector: 'form-control[type=text][row=multi]',
-        template: "<textarea rows=\"3\" [(ngModel)]=\"_dataModel\" (keyup)=\"_onChanged(control.value)\" (blur)=\"_onTouched()\" #control></textarea>"
+        template: `<textarea rows="3" [(ngModel)]="_dataModel" (keyup)="_onChanged(control.value)" (blur)="_onTouched()" #control></textarea>`
     }),
-    __param(0, core_2.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
+    __param(0, core_2.Self()), 
+    __metadata('design:paramtypes', [forms_1.NgModel])
 ], MultiLineTextFormControl);
 exports.MultiLineTextFormControl = MultiLineTextFormControl;
 //# sourceMappingURL=multi-line-text-form-control.js.map

@@ -11,17 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-var auth_service_1 = require("./auth.service");
-var UserService = (function () {
-    function UserService(_authService, _http, _config) {
+const core_1 = require('@angular/core');
+const http_1 = require('@angular/http');
+const auth_service_1 = require('./auth.service');
+let UserService = class UserService {
+    constructor(_authService, _http, _config) {
         this._authService = _authService;
         this._http = _http;
         this._config = _config;
         this._baseURL = _config.endpoint + '/users';
     }
-    UserService.prototype.emptyUser = function () {
+    emptyUser() {
         return {
             id: '',
             email: '',
@@ -30,23 +30,22 @@ var UserService = (function () {
             tokens: [],
             unit: {}
         };
-    };
+    }
     /**
      * If `id` is given, a list containing one user is returned.
      * Otherwise, a list of all users is returned.
      * Retrieving all users also means that tokens field is left out.
      */
-    UserService.prototype.get = function (id) {
-        var _this = this;
-        var headers = new http_1.Headers({
+    get(id) {
+        let headers = new http_1.Headers({
             token: this._authService.retrieve_token()
         });
         if (id) {
-            return new Promise(function (resolve, reject) {
-                _this._http.get(_this._baseURL + '/' + id, {
+            return new Promise((resolve, reject) => {
+                this._http.get(this._baseURL + '/' + id, {
                     headers: headers
-                }).map(function (res) { return res.json(); })
-                    .subscribe(function (user) {
+                }).map(res => res.json())
+                    .subscribe(user => {
                     resolve([
                         {
                             id: user._id,
@@ -54,7 +53,7 @@ var UserService = (function () {
                             name: user.name,
                             unit: user.unit,
                             group: user.group,
-                            tokens: user.tokens.map(function (value) {
+                            tokens: user.tokens.map(value => {
                                 return {
                                     id: value._id,
                                     origin: value.origin,
@@ -65,69 +64,62 @@ var UserService = (function () {
                             })
                         }
                     ]);
-                }, function (err) { return reject(err); });
+                }, err => reject(err));
             });
         }
-        return new Promise(function (resolve, reject) {
-            _this._http.get(_this._baseURL, {
+        return new Promise((resolve, reject) => {
+            this._http.get(this._baseURL, {
                 headers: headers
-            }).map(function (res) { return res.json(); })
-                .subscribe(function (users) { return resolve(users.map(function (user) {
-                return ({
-                    id: user._id,
-                    email: user.email,
-                    name: user.name,
-                    unit: user.unit,
-                    group: user.group,
-                    tokens: []
-                });
-            })); }, function (err) { return reject(err); });
+            }).map(res => res.json())
+                .subscribe(users => resolve(users.map(user => ({
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                unit: user.unit,
+                group: user.group,
+                tokens: []
+            }))), err => reject(err));
         });
-    };
-    UserService.prototype.new = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this._http.post(_this._baseURL, "", {
+    }
+    new() {
+        return new Promise((resolve, reject) => {
+            this._http.post(this._baseURL, "", {
                 headers: new http_1.Headers({
-                    token: _this._authService.retrieve_token(),
+                    token: this._authService.retrieve_token(),
                     'Content-Type': 'application/json'
                 })
-            }).map(function (res) { return res.text(); }).subscribe(function (id) { return resolve(id); }, function (err) { return reject(err); });
+            }).map(res => res.text()).subscribe(id => resolve(id), err => reject(err));
         });
-    };
-    UserService.prototype.update = function (originalUser) {
-        var _this = this;
-        var user = Object.assign({}, originalUser);
-        var id = user.id;
-        var object = user;
+    }
+    update(originalUser) {
+        let user = Object.assign({}, originalUser);
+        let id = user.id;
+        let object = user;
         delete object.tokens;
-        return new Promise(function (resolve, reject) {
-            _this._http.put(_this._baseURL + '/' + id, JSON.stringify(object), {
+        return new Promise((resolve, reject) => {
+            this._http.put(this._baseURL + '/' + id, JSON.stringify(object), {
                 headers: new http_1.Headers({
-                    token: _this._authService.retrieve_token(),
+                    token: this._authService.retrieve_token(),
                     'Content-Type': 'application/json'
                 })
-            }).subscribe(function () { return resolve(); }, function (err) { return reject(err); });
+            }).subscribe(() => resolve(), err => reject(err));
         });
-    };
-    UserService.prototype.delete = function (id) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this._http.delete(_this._baseURL + '/' + id, {
+    }
+    delete(id) {
+        return new Promise((resolve, reject) => {
+            this._http.delete(this._baseURL + '/' + id, {
                 headers: new http_1.Headers({
-                    token: _this._authService.retrieve_token(),
+                    token: this._authService.retrieve_token(),
                     'Content-Type': 'application/json'
                 })
-            }).subscribe(function () { return resolve(); }, function (err) { return reject(err); });
+            }).subscribe(() => resolve(), err => reject(err));
         });
-    };
-    return UserService;
-}());
+    }
+};
 UserService = __decorate([
     core_1.Injectable(),
-    __param(2, core_1.Inject("app.config")),
-    __metadata("design:paramtypes", [auth_service_1.AuthService,
-        http_1.Http, Object])
+    __param(2, core_1.Inject("app.config")), 
+    __metadata('design:paramtypes', [auth_service_1.AuthService, http_1.Http, Object])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

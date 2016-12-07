@@ -1,16 +1,11 @@
 "use strict";
-var Piece = (function () {
-    function Piece(json) {
+class Piece {
+    constructor(json) {
         Object.assign(this, json);
     }
-    Object.defineProperty(Piece.prototype, "id", {
-        get: function () {
-            return this._id;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Piece;
-}());
+    get id() {
+        return this._id;
+    }
+}
 exports.Piece = Piece;
 //# sourceMappingURL=piece.js.map

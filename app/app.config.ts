@@ -2,10 +2,7 @@
 
 import {Config} from './types/config'
 
-// export type Group = "admins" | "securityPersonnel" | "users" | "vendors" | "guests"
-
 export var config: Config = {
-  // endpoint: 'http://infinite-temple-3140.herokuapp.com',
   endpoint: 'http://localhost:3000/api/v2',
   navigationItems: [
     {

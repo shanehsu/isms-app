@@ -12,36 +12,35 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var SingleLineTextFormControl = (function () {
-    function SingleLineTextFormControl(cd) {
-        this._onChanged = function (_) { };
-        this._onTouched = function () { };
+const core_1 = require('@angular/core');
+const core_2 = require('@angular/core');
+const forms_1 = require('@angular/forms');
+let SingleLineTextFormControl = class SingleLineTextFormControl {
+    constructor(cd) {
+        this._onChanged = (_) => { };
+        this._onTouched = () => { };
         this.cd = cd;
         cd.valueAccessor = this;
     }
     // 與 Value Accessor 有關的
     // 從 Value Accessor 接收資料
-    SingleLineTextFormControl.prototype.writeValue = function (value) {
+    writeValue(value) {
         this._dataModel = value;
-    };
-    SingleLineTextFormControl.prototype.registerOnChange = function (fn) {
+    }
+    registerOnChange(fn) {
         this._onChanged = fn;
-    };
-    SingleLineTextFormControl.prototype.registerOnTouched = function (fn) {
+    }
+    registerOnTouched(fn) {
         this._onTouched = fn;
-    };
-    return SingleLineTextFormControl;
-}());
+    }
+};
 SingleLineTextFormControl = __decorate([
     core_1.Component({
         selector: 'form-control[type=text][row=single]',
-        template: "<input type=\"text\" [(ngModel)]=\"_dataModel\" (blur)=\"_onTouched()\" (keyup)=\"_onChanged(control.value)\" #control/>"
+        template: `<input type="text" [(ngModel)]="_dataModel" (blur)="_onTouched()" (keyup)="_onChanged(control.value)" #control/>`
     }),
-    __param(0, core_2.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
+    __param(0, core_2.Self()), 
+    __metadata('design:paramtypes', [forms_1.NgModel])
 ], SingleLineTextFormControl);
 exports.SingleLineTextFormControl = SingleLineTextFormControl;
 //# sourceMappingURL=single-line-text-form-control.js.map

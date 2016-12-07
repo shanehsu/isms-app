@@ -10,7 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 let routes: Routes = [
   {
     path: 'news',
-    component: NewsComponent,
+    component: NewsComponent
   }
 ];
 

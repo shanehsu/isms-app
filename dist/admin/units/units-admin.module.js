@@ -8,32 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var router_1 = require("@angular/router");
-var pipes_module_1 = require("./../../pipes/pipes.module");
-var units_list_component_1 = require("./units-list.component");
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
+const router_1 = require('@angular/router');
+const pipes_module_1 = require('./../../pipes/pipes.module');
+const units_list_component_1 = require('./units-list.component');
 exports.UnitsListComponent = units_list_component_1.UnitsListComponent;
-var unit_detail_component_1 = require("./unit-detail.component");
+const unit_detail_component_1 = require('./unit-detail.component');
 exports.UnitDetailComponent = unit_detail_component_1.UnitDetailComponent;
-var UnitAdminComponent = (function () {
-    function UnitAdminComponent() {
-    }
-    return UnitAdminComponent;
-}());
+let UnitAdminComponent = class UnitAdminComponent {
+};
 UnitAdminComponent = __decorate([
     core_1.Component({
-        template: "<router-outlet></router-outlet>"
-    }),
-    __metadata("design:paramtypes", [])
+        template: `<router-outlet></router-outlet>`
+    }), 
+    __metadata('design:paramtypes', [])
 ], UnitAdminComponent);
 exports.UnitAdminComponent = UnitAdminComponent;
-var unitsAdminModule = (function () {
-    function unitsAdminModule() {
-    }
-    return unitsAdminModule;
-}());
+let unitsAdminModule = class unitsAdminModule {
+};
 unitsAdminModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -52,8 +46,8 @@ unitsAdminModule = __decorate([
             units_list_component_1.UnitsListComponent,
             unit_detail_component_1.UnitDetailComponent
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], unitsAdminModule);
 exports.unitsAdminModule = unitsAdminModule;
 //# sourceMappingURL=units-admin.module.js.map

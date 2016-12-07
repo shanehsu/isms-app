@@ -11,27 +11,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var auth_service_1 = require("./../services/auth.service");
-var AdminComponent = (function () {
-    function AdminComponent(authService, config) {
+const core_1 = require('@angular/core');
+const auth_service_1 = require('./../services/auth.service');
+let AdminComponent = class AdminComponent {
+    constructor(authService, config) {
         this.authService = authService;
         this.config = config;
     }
-    AdminComponent.prototype.ngOnInit = function () {
-        var _this = this;
+    ngOnInit() {
         this.privilege = "vendors";
         this.adminItems = this.config.adminItems;
-        this.authService.privilege().then(function (p) { return _this.privilege = p; });
-    };
-    return AdminComponent;
-}());
+        this.authService.privilege().then(p => this.privilege = p);
+    }
+};
 AdminComponent = __decorate([
     core_1.Component({
-        template: "\n  <h2 class=\"ui header\">\u7BA1\u7406\u5340</h2>\n  <div class=\"ui grid\">\n    <div class=\"sixteen wide mobile two wide computer column\">\n      <div class=\"ui secondary stacking fluid vertical pointing menu\">\n        <template ngFor let-item [ngForOf]=\"adminItems\">\n          <a class=\"active item\" *ngIf=\"item.group.includes(privilege)\" [routerLink]=\"item.path\" routerLinkActive=\"active\">\n            {{item.name}}\n          </a>\n        </template>\n      </div>\n    </div>\n    <div id=\"content\" class=\"sixteen wide mobile fourteen wide computer column\">\n      <router-outlet></router-outlet>\n    </div>\n  </div>"
+        template: `
+  <h2 class="ui header">管理區</h2>
+  <div class="ui grid">
+    <div class="sixteen wide mobile two wide computer column">
+      <div class="ui secondary stacking fluid vertical pointing menu">
+        <template ngFor let-item [ngForOf]="adminItems">
+          <a class="active item" *ngIf="item.group.includes(privilege)" [routerLink]="item.path" routerLinkActive="active">
+            {{item.name}}
+          </a>
+        </template>
+      </div>
+    </div>
+    <div id="content" class="sixteen wide mobile fourteen wide computer column">
+      <router-outlet></router-outlet>
+    </div>
+  </div>`
     }),
-    __param(1, core_1.Inject('app.config')),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, Object])
+    __param(1, core_1.Inject('app.config')), 
+    __metadata('design:paramtypes', [auth_service_1.AuthService, Object])
 ], AdminComponent);
 exports.AdminComponent = AdminComponent;
 //# sourceMappingURL=admin.component.js.map

@@ -1,7 +1,5 @@
 "use strict";
-// export type Group = "admins" | "securityPersonnel" | "users" | "vendors" | "guests"
 exports.config = {
-    // endpoint: 'http://infinite-temple-3140.herokuapp.com',
     endpoint: 'http://localhost:3000/api/v2',
     navigationItems: [
         {

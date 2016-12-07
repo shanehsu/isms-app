@@ -8,25 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var records_list_component_1 = require("./records-list.component");
-var record_component_1 = require("./record.component");
-var record_data_display_component_1 = require("./record-data-display.component");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var router_1 = require("@angular/router");
-var RecordsComponent = (function () {
-    function RecordsComponent() {
-    }
-    return RecordsComponent;
-}());
+const core_1 = require('@angular/core');
+const records_list_component_1 = require('./records-list.component');
+const record_component_1 = require('./record.component');
+const record_data_display_component_1 = require('./record-data-display.component');
+const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
+const router_1 = require('@angular/router');
+let RecordsComponent = class RecordsComponent {
+};
 RecordsComponent = __decorate([
     core_1.Component({
-        template: "<router-outlet></router-outlet>"
-    }),
-    __metadata("design:paramtypes", [])
+        template: `<router-outlet></router-outlet>`
+    }), 
+    __metadata('design:paramtypes', [])
 ], RecordsComponent);
-var routes = [
+let routes = [
     {
         path: 'records',
         component: RecordsComponent,
@@ -36,12 +33,9 @@ var routes = [
         ]
     }
 ];
-var recordsRoutingModule = router_1.RouterModule.forChild(routes);
-var recordsModule = (function () {
-    function recordsModule() {
-    }
-    return recordsModule;
-}());
+const recordsRoutingModule = router_1.RouterModule.forChild(routes);
+let recordsModule = class recordsModule {
+};
 recordsModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -55,8 +49,8 @@ recordsModule = __decorate([
             forms_1.FormsModule,
             recordsRoutingModule
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], recordsModule);
 exports.recordsModule = recordsModule;
 //# sourceMappingURL=records.module.js.map

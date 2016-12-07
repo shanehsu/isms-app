@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var router_1 = require("@angular/router");
-var admin_component_1 = require("./admin.component");
-var news_admin_module_1 = require("./news/news-admin.module");
-var news_admin_module_2 = require("./news/news-admin.module");
-var users_admin_module_1 = require("./users/users-admin.module");
-var users_admin_module_2 = require("./users/users-admin.module");
-var units_admin_module_1 = require("./units/units-admin.module");
-var units_admin_module_2 = require("./units/units-admin.module");
-var forms_admin_module_1 = require("./forms/forms-admin.module");
-var forms_admin_module_2 = require("./forms/forms-admin.module");
-var routes = [
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
+const router_1 = require('@angular/router');
+const admin_component_1 = require('./admin.component');
+const news_admin_module_1 = require('./news/news-admin.module');
+const news_admin_module_2 = require('./news/news-admin.module');
+const users_admin_module_1 = require('./users/users-admin.module');
+const users_admin_module_2 = require('./users/users-admin.module');
+const units_admin_module_1 = require('./units/units-admin.module');
+const units_admin_module_2 = require('./units/units-admin.module');
+const forms_admin_module_1 = require('./forms/forms-admin.module');
+const forms_admin_module_2 = require('./forms/forms-admin.module');
+let routes = [
     {
         path: 'admin',
         component: admin_component_1.AdminComponent,
@@ -57,12 +57,9 @@ var routes = [
         ]
     }
 ];
-var adminRoutingModule = router_1.RouterModule.forChild(routes);
-var adminModule = (function () {
-    function adminModule() {
-    }
-    return adminModule;
-}());
+const adminRoutingModule = router_1.RouterModule.forChild(routes);
+let adminModule = class adminModule {
+};
 adminModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -77,8 +74,8 @@ adminModule = __decorate([
             units_admin_module_1.unitsAdminModule,
             forms_admin_module_1.formsAdminModule
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], adminModule);
 exports.adminModule = adminModule;
 //# sourceMappingURL=admin.module.js.map

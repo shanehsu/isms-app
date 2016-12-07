@@ -9,50 +9,75 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 // Angular 2
-var core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 // 路由器
-var router_1 = require("@angular/router");
+const router_1 = require('@angular/router');
 // 服務
-var form_service_1 = require("./../../services/form.service");
-var FormsListComponent = (function () {
-    function FormsListComponent(formService, router, route) {
+const form_service_1 = require('./../../services/form.service');
+let FormsListComponent = class FormsListComponent {
+    constructor(formService, router, route) {
         this.formService = formService;
         this.router = router;
         this.route = route;
     }
-    FormsListComponent.prototype.refresh = function () {
-        var _this = this;
+    refresh() {
         this.formService.forms()
-            .then(function (forms) { return _this._forms = forms; })
+            .then(forms => this._forms = forms)
             .catch(console.error);
-    };
-    FormsListComponent.prototype.ngOnInit = function () {
+    }
+    ngOnInit() {
         this.refresh();
-    };
-    FormsListComponent.prototype.new = function () {
-        var _this = this;
+    }
+    new() {
         this.formService.new()
-            .then(function (id) { return _this.router.navigate([id], { relativeTo: _this.route }); })
+            .then(id => this.router.navigate([id], { relativeTo: this.route }))
             .catch(console.error);
-    };
-    FormsListComponent.prototype.edit = function (id) {
+    }
+    edit(id) {
         this.router.navigate([id], { relativeTo: this.route });
-    };
-    FormsListComponent.prototype.delete = function (id) {
-        var _this = this;
+    }
+    delete(id) {
         this.formService.delete(id)
-            .then(function () { return _this.refresh(); })
+            .then(() => this.refresh())
             .catch(console.error);
-    };
-    return FormsListComponent;
-}());
+    }
+};
 FormsListComponent = __decorate([
     core_1.Component({
-        template: "\n  <div class=\"ui one column grid\">\n    <form class=\"ui form right aligned column\">\n      <button type=\"button\" class=\"ui right floated blue labeled icon button\" (click)=\"new()\">\n        <i class=\"plus icon\"></i>\n        \u65B0\u589E\u8868\u55AE\n      </button>\n    </form>\n  </div>\n\n  <table class=\"ui striped table\">\n    <thead>\n      <tr>\n        <th>\u8868\u55AE ID</th>\n        <th>\u8868\u55AE</th>\n        <th style=\"width: 12em;\">\u52D5\u4F5C</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let form of _forms\">\n        <td>{{form.identifier}}</td>\n        <td>{{form.name}}</td>\n        <td style=\"text-align: center;\">\n          <div class=\"small ui buttons\">\n            <button type=\"button\" class=\"ui basic teal button\" (click)=\"edit(form._id)\">\u7DE8\u8F2F</button>\n            <button type=\"button\" class=\"ui basic red button\" (click)=\"delete(form._id)\">\u522A\u9664</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  "
-    }),
-    __metadata("design:paramtypes", [form_service_1.FormService,
-        router_1.Router,
-        router_1.ActivatedRoute])
+        template: `
+  <div class="ui one column grid">
+    <form class="ui form right aligned column">
+      <button type="button" class="ui right floated blue labeled icon button" (click)="new()">
+        <i class="plus icon"></i>
+        新增表單
+      </button>
+    </form>
+  </div>
+
+  <table class="ui striped table">
+    <thead>
+      <tr>
+        <th>表單 ID</th>
+        <th>表單</th>
+        <th style="width: 12em;">動作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let form of _forms">
+        <td>{{form.identifier}}</td>
+        <td>{{form.name}}</td>
+        <td style="text-align: center;">
+          <div class="small ui buttons">
+            <button type="button" class="ui basic teal button" (click)="edit(form._id)">編輯</button>
+            <button type="button" class="ui basic red button" (click)="delete(form._id)">刪除</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  `
+    }), 
+    __metadata('design:paramtypes', [form_service_1.FormService, router_1.Router, router_1.ActivatedRoute])
 ], FormsListComponent);
 exports.FormsListComponent = FormsListComponent;
 //# sourceMappingURL=forms-list.component.js.map

@@ -8,15 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var editable_text_input_component_1 = require("./editable-text-input/editable-text-input.component");
-var customControlsModule = (function () {
-    function customControlsModule() {
-    }
-    return customControlsModule;
-}());
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
+const editable_text_input_component_1 = require('./editable-text-input/editable-text-input.component');
+let customControlsModule = class customControlsModule {
+};
 customControlsModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -29,8 +26,8 @@ customControlsModule = __decorate([
         exports: [
             editable_text_input_component_1.EditableTextInput
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], customControlsModule);
 exports.customControlsModule = customControlsModule;
 //# sourceMappingURL=custom-controls.module.js.map

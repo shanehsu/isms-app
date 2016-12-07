@@ -1,6 +1,6 @@
 "use strict";
-var router_1 = require("@angular/router");
-var routes = [
+const router_1 = require('@angular/router');
+let routes = [
     { path: '', redirectTo: 'news', pathMatch: 'full' },
     { path: '**', redirectTo: 'news' }
 ];

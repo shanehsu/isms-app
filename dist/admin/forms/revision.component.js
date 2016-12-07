@@ -12,16 +12,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
+const core_1 = require('@angular/core');
+const forms_1 = require('@angular/forms');
 // 服務
-var form_service_1 = require("./../../services/form.service");
+const form_service_1 = require('./../../services/form.service');
 // 子元件
-var field_component_1 = require("./field.component");
-var RevisionComponent = (function () {
+const field_component_1 = require('./field.component');
+let RevisionComponent = class RevisionComponent {
     // 服務
     // 簡單初始化
-    function RevisionComponent(_formService, _model) {
+    constructor(_formService, _model) {
         this._formService = _formService;
         this._model = _model;
         // 輸出
@@ -32,51 +32,48 @@ var RevisionComponent = (function () {
         _model.valueAccessor = this;
     }
     // 生命週期掛鉤
-    RevisionComponent.prototype.ngOnInit = function () {
+    ngOnInit() {
         this.isDeleting = false;
         this.isPublishing = false;
         this.isUpdating = false;
         this.isLoadingFields = false;
         this.areFieldsCollapsed = false;
-    };
-    RevisionComponent.prototype.ngAfterViewInit = function () {
+    }
+    ngAfterViewInit() {
         $('form#revisionForm * * * .ui.radio.checkbox').checkbox();
-    };
-    RevisionComponent.prototype.ngOnChanges = function () {
-    };
+    }
+    ngOnChanges() {
+    }
     // 收合子元件
-    RevisionComponent.prototype.toggleCollapse = function () {
-        var expectedState = !this.areFieldsCollapsed;
-        this.fieldFormComponents.forEach(function (fieldFormComponent) {
+    toggleCollapse() {
+        let expectedState = !this.areFieldsCollapsed;
+        this.fieldFormComponents.forEach(fieldFormComponent => {
             fieldFormComponent.isCollapsed = expectedState;
         });
         this.areFieldsCollapsed = expectedState;
-    };
+    }
     // 動作
-    RevisionComponent.prototype.submit_revision = function () {
-        var _this = this;
+    submit_revision() {
         this.isUpdating = true;
-        this._shouldUpdate.emit(function () { _this.isUpdating = false; });
-    };
-    RevisionComponent.prototype.publish_revision = function () {
-        var _this = this;
+        this._shouldUpdate.emit(() => { this.isUpdating = false; });
+    }
+    publish_revision() {
         this.isPublishing = true;
-        this._shouldPublish.emit(function () { _this.isPublishing = false; });
-    };
-    RevisionComponent.prototype.delete_revision = function () {
+        this._shouldPublish.emit(() => { this.isPublishing = false; });
+    }
+    delete_revision() {
         this.isDeleting = true;
         this._shouldDelete.emit(null);
-    };
+    }
     // ControlValueAccessor - 註冊函數
-    RevisionComponent.prototype.registerOnChange = function (fn) {
+    registerOnChange(fn) {
         this.change = fn;
-    };
-    RevisionComponent.prototype.registerOnTouched = function (fn) {
+    }
+    registerOnTouched(fn) {
         this.touched = fn;
-    };
+    }
     // ControlValueAccessor - 接收資料
-    RevisionComponent.prototype.writeValue = function (value) {
-        var _this = this;
+    writeValue(value) {
         // 換到另外一個 Revision 了
         this.isDeleting = false;
         this.isPublishing = false;
@@ -88,99 +85,223 @@ var RevisionComponent = (function () {
         else {
             this._revision = value;
             this.isLoadingFields = this._revision.fields.length > 0;
-            this.fields = this._revision.fields.map(function (_) { return undefined; });
-            this._revision.fields.forEach(function (id, index) {
-                _this._formService.field(_this._formID, _this._revision._id, id).then(function (field) {
-                    _this.fields[index] = field;
-                    if (_this.fields.indexOf(undefined) < 0) {
-                        _this.isLoadingFields = false;
+            this.fields = this._revision.fields.map(_ => undefined);
+            this._revision.fields.forEach((id, index) => {
+                this._formService.field(this._formID, this._revision._id, id).then(field => {
+                    this.fields[index] = field;
+                    if (this.fields.indexOf(undefined) < 0) {
+                        this.isLoadingFields = false;
                     }
-                }).catch(function (err) {
+                }).catch(err => {
                     console.error('無法取得欄位');
                     console.error(err);
                 });
             });
         }
-    };
+    }
     // SECTION - 欄位
-    RevisionComponent.prototype.reloadField = function (field, finishedReloading) {
-        var _this = this;
-        var id = field._id;
-        this._formService.field(this._formID, this._revision._id, id).then(function (fetchedField) {
-            var index = _this.fields.findIndex(function (field) { return field._id == id; });
+    reloadField(field, finishedReloading) {
+        let id = field._id;
+        this._formService.field(this._formID, this._revision._id, id).then(fetchedField => {
+            let index = this.fields.findIndex(field => field._id == id);
             if (index >= 0)
-                _this.fields[index] = fetchedField;
+                this.fields[index] = fetchedField;
             finishedReloading();
-        }).catch(function (err) {
+        }).catch(err => {
             console.error('欄位載入失敗');
             console.error(err);
         });
-    };
-    RevisionComponent.prototype.updateField = function (field, finishedUpdating) {
-        this._formService.updateField(this._formID, this._revision._id, field).then(function () {
+    }
+    updateField(field, finishedUpdating) {
+        this._formService.updateField(this._formID, this._revision._id, field).then(() => {
             console.log('欄位更新成功');
             finishedUpdating();
-        }).catch(function (err) {
+        }).catch(err => {
             console.error('欄位更新失敗');
             console.error(err);
         });
-    };
-    RevisionComponent.prototype.deleteField = function (field) {
-        var _this = this;
-        this._formService.deleteField(this._formID, this._revision._id, field._id).then(function () {
+    }
+    deleteField(field) {
+        this._formService.deleteField(this._formID, this._revision._id, field._id).then(() => {
             console.log('欄位刪除成功');
-            _this.fields.splice(_this.fields.indexOf(field), 1);
-        }).catch(function (err) {
+            this.fields.splice(this.fields.indexOf(field), 1);
+        }).catch(err => {
             console.error('欄位刪除失敗');
             console.error(err);
         });
-    };
-    RevisionComponent.prototype.createField = function (field) {
-        var _this = this;
+    }
+    createField(field) {
         this.isCreatingField = true;
-        this._formService.newField(this._formID, this._revision._id).then(function (id) {
+        this._formService.newField(this._formID, this._revision._id).then(id => {
             console.log('增加欄位成功，嘗試取得欄位');
-            _this._formService.field(_this._formID, _this._revision._id, id).then(function (field) {
-                _this.fields.push(field);
-                _this.isCreatingField = false;
-            }).catch(function (err) {
+            this._formService.field(this._formID, this._revision._id, id).then(field => {
+                this.fields.push(field);
+                this.isCreatingField = false;
+            }).catch(err => {
                 console.error('取得剛剛增加的欄位失敗');
                 console.error(err);
             });
-        }).catch(function (err) {
+        }).catch(err => {
             console.error('增加欄位失敗');
             console.error(err);
         });
-    };
-    return RevisionComponent;
-}());
+    }
+};
 __decorate([
-    core_1.Input('form-id'),
-    __metadata("design:type", String)
+    core_1.Input('form-id'), 
+    __metadata('design:type', String)
 ], RevisionComponent.prototype, "_formID", void 0);
 __decorate([
-    core_1.Output('update'),
-    __metadata("design:type", Object)
+    core_1.Output('update'), 
+    __metadata('design:type', Object)
 ], RevisionComponent.prototype, "_shouldUpdate", void 0);
 __decorate([
-    core_1.Output('delete'),
-    __metadata("design:type", Object)
+    core_1.Output('delete'), 
+    __metadata('design:type', Object)
 ], RevisionComponent.prototype, "_shouldDelete", void 0);
 __decorate([
-    core_1.Output('publish'),
-    __metadata("design:type", Object)
+    core_1.Output('publish'), 
+    __metadata('design:type', Object)
 ], RevisionComponent.prototype, "_shouldPublish", void 0);
 __decorate([
-    core_1.ViewChildren(field_component_1.FieldComponent),
-    __metadata("design:type", core_1.QueryList)
+    core_1.ViewChildren(field_component_1.FieldComponent), 
+    __metadata('design:type', core_1.QueryList)
 ], RevisionComponent.prototype, "fieldFormComponents", void 0);
 RevisionComponent = __decorate([
     core_1.Component({
         selector: 'revision',
-        template: "\n  <form id=\"revisionForm\" class=\"ui form\" (ngSubmit)=\"submit_revision()\" #revisionForm=\"ngForm\">\n    <div class=\"field\">\n      <label>ID</label>\n      <p>{{_revision?._id}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u5DF2\u767C\u4F48</label>\n      <p>{{_revision?.published ? '\u662F' : '\u5426'}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u7248\u672C</label>\n      <input type=\"number\" min=\"1.0\" step=\"0.1\" [(ngModel)]=\"_revision.revision\" name=\"revision\" required>\n    </div>\n\n    <div class=\"field\">\n      <label>\u7C3D\u6838</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"signaturesRadio\" value=\"false\" [checked]=\"_revision.signatures == false\" (change)=\"_revision.signatures = false\">\n            <label>\u4E0D\u9700\u8981</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"signaturesRadio\" value=\"true\" [checked]=\"_revision.signatures == true\" (change)=\"_revision.signatures = true\">\n            <label>\u9700\u8981</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u7D44\u9577\u7C3D\u6838</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"officerSignatureRadio\" value=\"false\" [checked]=\"_revision.officerSignature == false\" (change)=\"_revision.officerSignature = false\">\n            <label>\u4E0D\u9700\u8981</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"officerSignatureRadio\" value=\"true\" [checked]=\"_revision.officerSignature == true\" (change)=\"_revision.officerSignature = true\">\n            <label>\u9700\u8981</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u6B0A\u9650</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"1\" [checked]=\"_revision.group == 1\" (change)=\"_revision.group = 1\">\n            <label>\u7BA1\u7406\u54E1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"2\" [checked]=\"_revision.group == 2\" (change)=\"_revision.group = 2\">\n            <label>\u8CC7\u8A0A\u5B89\u5168\u4EBA\u54E1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"groupRadio\" value=\"3\" [checked]=\"_revision.group == 3\" (change)=\"_revision.group = 3\">\n            <label>\u4E00\u822C\u4F7F\u7528\u8005</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"field\">\n      <label>\u6A5F\u5BC6\u6027</label>\n      <div class=\"inline fields\">\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"1\" [checked]=\"_revision.secrecyLevel == 1\" (change)=\"_revision.secrecyLevel = 1\">\n            <label>\u6A5F\u5BC6</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"2\" [checked]=\"_revision.secrecyLevel == 2\" (change)=\"_revision.secrecyLevel = 2\">\n            <label>\u654F\u611F</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"3\" [checked]=\"_revision.secrecyLevel == 3\" (change)=\"_revision.secrecyLevel = 3\">\n            <label>\u9650\u95B1</label>\n          </div>\n        </div>\n        <div class=\"field\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"secrecyLevelRadio\" value=\"4\" [checked]=\"_revision.secrecyLevel == 4\" (change)=\"_revision.secrecyLevel = 4\">\n            <label>\u4E00\u822C</label>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div style=\"text-align: right;\">\n      <button type=\"button\" class=\"ui teal basic button\" (click)=\"publish_revision()\" *ngIf=\"!_revision.published\" [class.loading]=\"isPublishing\">\u767C\u4F48</button>\n      <button type=\"button\" class=\"ui red basic button\" (click)=\"delete_revision()\" *ngIf=\"!_revision.published\" [class.loading]=\"isDeleting\">\u522A\u9664</button>\n      <button type=\"submit\" id=\"update_button\" class=\"ui basic button\" [class.green]=\"revisionForm.form.valid\" [class.red]=\"!revisionForm.form.valid\"\n        [disabled]=\"!revisionForm.form.valid\" [class.loading]=\"isUpdating\">\u66F4\u65B0</button>\n    </div>\n  </form>\n\n  <div class=\"ui secdion divider\"></div>\n\n  <div class=\"ui basic segment\" [class.loading]=\"isLoadingFields\">\n    <h3 class=\"ui header\" style=\"clear: none;\">\u8868\u55AE\u6B04\u4F4D</h3>\n    <a class=\"link\" (click)=\"toggleCollapse()\" style=\"float: right;\">\u5C55\u958B\uFF0F\u6536\u5408\u8868\u55AE\u6B04\u4F4D</a>\n    <p><small>\u6BCF\u500B\u7248\u672C\u6709\u81EA\u5DF1\u7684\u6B04\u4F4D\u8A2D\u8A08\u3002</small></p>\n    <div *ngIf=\"fields.length != 0\" class=\"ui segments\">\n      <div class=\"ui segment\" style=\"overflow: auto;\" *ngFor=\"let _ of fields; let i = index; let coloring = odd;\" [class.secondary]=\"coloring\">\n        <field *ngIf=\"fields[i]\" [(ngModel)]=\"fields[i]\" [update-button]=\"true\" (reload)=\"reloadField(fields[i], $event)\" (update)=\"updateField(fields[i], $event)\" (delete)=\"deleteField(fields[i])\"></field>\n      </div>\n    </div>\n    <div style=\"text-align: center;\">\n      <button type=\"button\" class=\"ui teal basic button\" (click)=\"createField()\" [class.loading]=\"isCreatingField\">\u589E\u52A0\u6B04\u4F4D</button>\n    </div>\n  </div>\n  "
+        template: `
+  <form id="revisionForm" class="ui form" (ngSubmit)="submit_revision()" #revisionForm="ngForm">
+    <div class="field">
+      <label>ID</label>
+      <p>{{_revision?._id}}</p>
+    </div>
+    <div class="field">
+      <label>已發佈</label>
+      <p>{{_revision?.published ? '是' : '否'}}</p>
+    </div>
+    <div class="field">
+      <label>版本</label>
+      <input type="number" min="1.0" step="0.1" [(ngModel)]="_revision.revision" name="revision" required>
+    </div>
+
+    <div class="field">
+      <label>簽核</label>
+      <div class="inline fields">
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="signaturesRadio" value="false" [checked]="_revision.signatures == false" (change)="_revision.signatures = false">
+            <label>不需要</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="signaturesRadio" value="true" [checked]="_revision.signatures == true" (change)="_revision.signatures = true">
+            <label>需要</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>組長簽核</label>
+      <div class="inline fields">
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="officerSignatureRadio" value="false" [checked]="_revision.officerSignature == false" (change)="_revision.officerSignature = false">
+            <label>不需要</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="officerSignatureRadio" value="true" [checked]="_revision.officerSignature == true" (change)="_revision.officerSignature = true">
+            <label>需要</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>權限</label>
+      <div class="inline fields">
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="groupRadio" value="1" [checked]="_revision.group == 1" (change)="_revision.group = 1">
+            <label>管理員</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="groupRadio" value="2" [checked]="_revision.group == 2" (change)="_revision.group = 2">
+            <label>資訊安全人員</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="groupRadio" value="3" [checked]="_revision.group == 3" (change)="_revision.group = 3">
+            <label>一般使用者</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>機密性</label>
+      <div class="inline fields">
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="secrecyLevelRadio" value="1" [checked]="_revision.secrecyLevel == 1" (change)="_revision.secrecyLevel = 1">
+            <label>機密</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="secrecyLevelRadio" value="2" [checked]="_revision.secrecyLevel == 2" (change)="_revision.secrecyLevel = 2">
+            <label>敏感</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="secrecyLevelRadio" value="3" [checked]="_revision.secrecyLevel == 3" (change)="_revision.secrecyLevel = 3">
+            <label>限閱</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            <input type="radio" name="secrecyLevelRadio" value="4" [checked]="_revision.secrecyLevel == 4" (change)="_revision.secrecyLevel = 4">
+            <label>一般</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: right;">
+      <button type="button" class="ui teal basic button" (click)="publish_revision()" *ngIf="!_revision.published" [class.loading]="isPublishing">發佈</button>
+      <button type="button" class="ui red basic button" (click)="delete_revision()" *ngIf="!_revision.published" [class.loading]="isDeleting">刪除</button>
+      <button type="submit" id="update_button" class="ui basic button" [class.green]="revisionForm.form.valid" [class.red]="!revisionForm.form.valid"
+        [disabled]="!revisionForm.form.valid" [class.loading]="isUpdating">更新</button>
+    </div>
+  </form>
+
+  <div class="ui secdion divider"></div>
+
+  <div class="ui basic segment" [class.loading]="isLoadingFields">
+    <h3 class="ui header" style="clear: none;">表單欄位</h3>
+    <a class="link" (click)="toggleCollapse()" style="float: right;">展開／收合表單欄位</a>
+    <p><small>每個版本有自己的欄位設計。</small></p>
+    <div *ngIf="fields.length != 0" class="ui segments">
+      <div class="ui segment" style="overflow: auto;" *ngFor="let _ of fields; let i = index; let coloring = odd;" [class.secondary]="coloring">
+        <field *ngIf="fields[i]" [(ngModel)]="fields[i]" [update-button]="true" (reload)="reloadField(fields[i], $event)" (update)="updateField(fields[i], $event)" (delete)="deleteField(fields[i])"></field>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <button type="button" class="ui teal basic button" (click)="createField()" [class.loading]="isCreatingField">增加欄位</button>
+    </div>
+  </div>
+  `
     }),
-    __param(1, core_1.Self()),
-    __metadata("design:paramtypes", [form_service_1.FormService, forms_1.NgModel])
+    __param(1, core_1.Self()), 
+    __metadata('design:paramtypes', [form_service_1.FormService, forms_1.NgModel])
 ], RevisionComponent);
 exports.RevisionComponent = RevisionComponent;
 //# sourceMappingURL=revision.component.js.map

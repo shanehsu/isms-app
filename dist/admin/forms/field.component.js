@@ -12,14 +12,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
+const core_1 = require('@angular/core');
+const forms_1 = require('@angular/forms');
 // 服務
-var form_service_1 = require("./../../services/form.service");
-var util_1 = require("./../../util");
-var FieldComponent = (function () {
+const form_service_1 = require('./../../services/form.service');
+const util_1 = require('./../../util');
+let FieldComponent = class FieldComponent {
     // 建構子：服務
-    function FieldComponent(model, _formService, fieldTypes) {
+    constructor(model, _formService, fieldTypes) {
         this.model = model;
         this._formService = _formService;
         this.fieldTypes = fieldTypes;
@@ -30,7 +30,7 @@ var FieldComponent = (function () {
         model.valueAccessor = this;
     }
     // 生命週期
-    FieldComponent.prototype.ngOnInit = function () {
+    ngOnInit() {
         this.field = {};
         this.isUpdating = false;
         this.isDeleting = false;
@@ -39,67 +39,107 @@ var FieldComponent = (function () {
         if (this.shouldShowUpdateButton == undefined) {
             this.shouldShowUpdateButton = true;
         }
-    };
-    FieldComponent.prototype.ngAfterViewInit = function () {
+    }
+    ngAfterViewInit() {
         $('div#' + this._radioUID + ' .ui.radio.checkbox').checkbox();
-    };
-    FieldComponent.prototype.writeValue = function (value) {
+    }
+    writeValue(value) {
         this.field = value;
-    };
+    }
     // 按鈕動作：更新與刪除
-    FieldComponent.prototype.reloadField = function () {
-        var _this = this;
+    reloadField() {
         this.isReloading = true;
-        this.reload.emit(function () { _this.isReloading = false; });
-    };
-    FieldComponent.prototype.updateField = function () {
-        var _this = this;
+        this.reload.emit(() => { this.isReloading = false; });
+    }
+    updateField() {
         this.isUpdating = true;
-        this.update.emit(function () { _this.isUpdating = false; });
-    };
-    FieldComponent.prototype.deleteField = function () {
+        this.update.emit(() => { this.isUpdating = false; });
+    }
+    deleteField() {
         this.isDeleting = true;
         this.delete.emit(null);
-    };
+    }
     // 按鈕動作：展開、收合
-    FieldComponent.prototype.toggleCollapse = function () {
+    toggleCollapse() {
         this.isCollapsed = !this.isCollapsed;
-    };
+    }
     // ControlValueAccessor - 註冊函數
-    FieldComponent.prototype.registerOnChange = function (fn) {
+    registerOnChange(fn) {
         this.change = fn;
-    };
-    FieldComponent.prototype.registerOnTouched = function (fn) {
+    }
+    registerOnTouched(fn) {
         this.touched = fn;
-    };
-    FieldComponent.prototype.emitValue = function () {
+    }
+    emitValue() {
         this.change(this.field);
-    };
-    return FieldComponent;
-}());
+    }
+};
 __decorate([
-    core_1.Input('update-button'),
-    __metadata("design:type", Boolean)
+    core_1.Input('update-button'), 
+    __metadata('design:type', Boolean)
 ], FieldComponent.prototype, "shouldShowUpdateButton", void 0);
 __decorate([
-    core_1.Output('reload'),
-    __metadata("design:type", Object)
+    core_1.Output('reload'), 
+    __metadata('design:type', Object)
 ], FieldComponent.prototype, "reload", void 0);
 __decorate([
-    core_1.Output('update'),
-    __metadata("design:type", Object)
+    core_1.Output('update'), 
+    __metadata('design:type', Object)
 ], FieldComponent.prototype, "update", void 0);
 __decorate([
-    core_1.Output('delete'),
-    __metadata("design:type", Object)
+    core_1.Output('delete'), 
+    __metadata('design:type', Object)
 ], FieldComponent.prototype, "delete", void 0);
 FieldComponent = __decorate([
     core_1.Component({
         selector: 'field',
-        template: "\n  <a class=\"link\" style=\"float: right; position: relative; z-index: 1;\" (click)=\"toggleCollapse()\">\u5C55\u958B\uFF0F\u6536\u5408\u6B64\u6B04\u4F4D</a>\n  <div [style.display]=\"isCollapsed ? 'initial' : 'none'\">\n    <p>\u540D\u7A31\uFF1A{{field.name}}</p>\n    <p>\u985E\u578B\uFF1A{{field.type | fieldType}}</p>\n  </div>\n  <form class=\"ui form\" (ngSubmit)=\"updateField()\" #fieldForm=\"ngForm\" [style.display]=\"isCollapsed ? 'none' : 'initial'\">\n    <div class=\"field\" style=\"clear: none;\">\n      <label>ID</label>\n      <p>{{field._id}}</p>\n    </div>\n    <div class=\"field\">\n      <label>\u540D\u7A31</label>\n      <input type=\"text\" [(ngModel)]=\"field.name\" name=\"name\" (change)=\"emitValue()\" required>\n    </div>\n    <div class=\"field\">\n      <label>\u985E\u578B</label>\n      <div class=\"inline fields\" [id]=\"_radioUID\">\n        <div class=\"field\" *ngFor=\"let fieldType of fieldTypes\">\n          <div class=\"ui radio checkbox\">\n            <input type=\"radio\" name=\"typeRadio\" [value]=\"fieldType.value\" [checked]=\"field.type == fieldType.value\" (change)=\"field.type = fieldType.value; emitValue();\">\n            <label>{{fieldType.label}}</label>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"field\">\n      <label>\u63D0\u9192\u6587\u5B57</label>\n      <input type=\"text\" [(ngModel)]=\"field.hint\" name=\"hint\" (change)=\"emitValue()\">\n    </div>\n    \n    <field-metadata *ngIf=\"field.type != 'table' && field.type != 'options'\" type=\"empty\" [(ngModel)]=\"field.metadata\" name=\"metadata\"></field-metadata>\n    <field-metadata *ngIf=\"field.type == 'options'\" type=\"options\" [(ngModel)]=\"field.metadata\" name=\"metadata\"></field-metadata>\n    <field-metadata *ngIf=\"field.type == 'table'\" type=\"table\" [(ngModel)]=\"field.metadata\" name=\"metadata\"></field-metadata>\n    \n    <div style=\"text-align: right;\">\n      <button type=\"button\" class=\"ui yellow basic button\" *ngIf=\"shouldShowUpdateButton\" (click)=\"reloadField()\" [class.loading]=\"isReloading\">\u91CD\u65B0\u8F09\u5165</button>\n      <button type=\"button\" class=\"ui red basic button\" (click)=\"deleteField()\" [class.loading]=\"isDeleting\">\u522A\u9664</button>\n      <button type=\"submit\" class=\"ui basic button\" *ngIf=\"shouldShowUpdateButton\" [class.green]=\"fieldForm.form.valid\" [class.red]=\"!fieldForm.form.valid\"\n        [disabled]=\"!fieldForm.form.valid\" [class.loading]=\"isUpdating\">\u66F4\u65B0</button>\n    </div>\n  </form>\n  "
+        template: `
+  <a class="link" style="float: right; position: relative; z-index: 1;" (click)="toggleCollapse()">展開／收合此欄位</a>
+  <div [style.display]="isCollapsed ? 'initial' : 'none'">
+    <p>名稱：{{field.name}}</p>
+    <p>類型：{{field.type | fieldType}}</p>
+  </div>
+  <form class="ui form" (ngSubmit)="updateField()" #fieldForm="ngForm" [style.display]="isCollapsed ? 'none' : 'initial'">
+    <div class="field" style="clear: none;">
+      <label>ID</label>
+      <p>{{field._id}}</p>
+    </div>
+    <div class="field">
+      <label>名稱</label>
+      <input type="text" [(ngModel)]="field.name" name="name" (change)="emitValue()" required>
+    </div>
+    <div class="field">
+      <label>類型</label>
+      <div class="inline fields" [id]="_radioUID">
+        <div class="field" *ngFor="let fieldType of fieldTypes">
+          <div class="ui radio checkbox">
+            <input type="radio" name="typeRadio" [value]="fieldType.value" [checked]="field.type == fieldType.value" (change)="field.type = fieldType.value; emitValue();">
+            <label>{{fieldType.label}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>提醒文字</label>
+      <input type="text" [(ngModel)]="field.hint" name="hint" (change)="emitValue()">
+    </div>
+    
+    <field-metadata *ngIf="field.type != 'table' && field.type != 'options'" type="empty" [(ngModel)]="field.metadata" name="metadata"></field-metadata>
+    <field-metadata *ngIf="field.type == 'options'" type="options" [(ngModel)]="field.metadata" name="metadata"></field-metadata>
+    <field-metadata *ngIf="field.type == 'table'" type="table" [(ngModel)]="field.metadata" name="metadata"></field-metadata>
+    
+    <div style="text-align: right;">
+      <button type="button" class="ui yellow basic button" *ngIf="shouldShowUpdateButton" (click)="reloadField()" [class.loading]="isReloading">重新載入</button>
+      <button type="button" class="ui red basic button" (click)="deleteField()" [class.loading]="isDeleting">刪除</button>
+      <button type="submit" class="ui basic button" *ngIf="shouldShowUpdateButton" [class.green]="fieldForm.form.valid" [class.red]="!fieldForm.form.valid"
+        [disabled]="!fieldForm.form.valid" [class.loading]="isUpdating">更新</button>
+    </div>
+  </form>
+  `
     }),
-    __param(0, core_1.Self()), __param(2, core_1.Inject('fieldTypes')),
-    __metadata("design:paramtypes", [forms_1.NgModel, form_service_1.FormService, Array])
+    __param(0, core_1.Self()),
+    __param(2, core_1.Inject('fieldTypes')), 
+    __metadata('design:paramtypes', [forms_1.NgModel, form_service_1.FormService, Array])
 ], FieldComponent);
 exports.FieldComponent = FieldComponent;
 //# sourceMappingURL=field.component.js.map

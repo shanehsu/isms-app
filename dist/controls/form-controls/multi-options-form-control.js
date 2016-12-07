@@ -12,54 +12,66 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var util_1 = require("./../../util");
-var MultiOptionsFormControl = (function () {
-    function MultiOptionsFormControl(cd) {
-        this._onChanged = function (_) { };
-        this._onTouched = function () { };
+const core_1 = require('@angular/core');
+const core_2 = require('@angular/core');
+const forms_1 = require('@angular/forms');
+const util_1 = require('./../../util');
+let MultiOptionsFormControl = class MultiOptionsFormControl {
+    constructor(cd) {
+        this._onChanged = (_) => { };
+        this._onTouched = () => { };
         this.cd = cd;
         this._uid = util_1.RandomString(10);
         cd.valueAccessor = this;
     }
-    MultiOptionsFormControl.prototype.ngAfterViewInit = function () {
+    ngAfterViewInit() {
         $('div#' + this._uid + ' .ui.checkbox').checkbox();
-    };
+    }
     // 與 Value Accessor 有關的
     // 從 Value Accessor 接收資料
-    MultiOptionsFormControl.prototype.writeValue = function (value) {
+    writeValue(value) {
         if (!value) {
-            this._dataModel = this._metadata && this._metadata.options ? this._metadata.options.map(function () { }) : {};
+            this._dataModel = this._metadata && this._metadata.options ? this._metadata.options.map(() => { }) : {};
         }
         else {
             this._dataModel = value;
         }
-    };
-    MultiOptionsFormControl.prototype.select = function (index) {
+    }
+    select(index) {
         this._dataModel.selected[index] = !this._dataModel.selected[index];
         this._onChanged(this._dataModel);
-    };
-    MultiOptionsFormControl.prototype.registerOnChange = function (fn) {
+    }
+    registerOnChange(fn) {
         this._onChanged = fn;
-    };
-    MultiOptionsFormControl.prototype.registerOnTouched = function (fn) {
+    }
+    registerOnTouched(fn) {
         this._onTouched = fn;
-    };
-    return MultiOptionsFormControl;
-}());
+    }
+};
 __decorate([
-    core_1.Input('metadata'),
-    __metadata("design:type", Object)
+    core_1.Input('metadata'), 
+    __metadata('design:type', Object)
 ], MultiOptionsFormControl.prototype, "_metadata", void 0);
 MultiOptionsFormControl = __decorate([
     core_1.Component({
         selector: 'form-control[type=options][presentation=multi]',
-        template: "\n  <div [id]=\"_uid\" class=\"grouped fields\">\n    <template ngFor let-item [ngForOf]=\"_metadata.options\" let-i=\"index\">\n      <div class=\"field\">\n        <div class=\"ui checkbox\">\n          <input [name]=\"_uid\" type=\"checkbox\" (change)=\"select(i)\" [checked]=\"_dataModel.selected && _dataModel.selected[i]\">\n          <label>{{item.value}}</label>\n        </div>\n      </div>\n      <div style=\"margin-left: 4em;\" *ngIf=\"_dataModel.selected && _dataModel.selected[i]\">\n        <form-fields [nested]=\"true\" [fields]=\"_metadata.options[i].fields\" [(ngModel)]=\"_dataModel.values[i]\"></form-fields>\n      </div>\n    </template>\n  </div>"
+        template: `
+  <div [id]="_uid" class="grouped fields">
+    <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+      <div class="field">
+        <div class="ui checkbox">
+          <input [name]="_uid" type="checkbox" (change)="select(i)" [checked]="_dataModel.selected && _dataModel.selected[i]">
+          <label>{{item.value}}</label>
+        </div>
+      </div>
+      <div style="margin-left: 4em;" *ngIf="_dataModel.selected && _dataModel.selected[i]">
+        <form-fields [nested]="true" [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel.values[i]"></form-fields>
+      </div>
+    </template>
+  </div>`
     }),
-    __param(0, core_2.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
+    __param(0, core_2.Self()), 
+    __metadata('design:paramtypes', [forms_1.NgModel])
 ], MultiOptionsFormControl);
 exports.MultiOptionsFormControl = MultiOptionsFormControl;
 //# sourceMappingURL=multi-options-form-control.js.map

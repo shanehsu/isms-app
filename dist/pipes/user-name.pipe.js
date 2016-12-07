@@ -8,27 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var user_service_1 = require("./../services/user.service");
-var UserNamePipe = (function () {
-    function UserNamePipe(userService) {
-        var _this = this;
+const core_1 = require('@angular/core');
+const user_service_1 = require('./../services/user.service');
+let UserNamePipe = class UserNamePipe {
+    constructor(userService) {
         this._users = {};
-        userService.get().then(function (users) {
-            for (var _i = 0, users_1 = users; _i < users_1.length; _i++) {
-                var user = users_1[_i];
-                _this._users[user.id] = user.name;
+        userService.get().then(users => {
+            for (let user of users) {
+                this._users[user.id] = user.name;
             }
         });
     }
-    UserNamePipe.prototype.transform = function (id) {
+    transform(id) {
         return this._users[id];
-    };
-    return UserNamePipe;
-}());
+    }
+};
 UserNamePipe = __decorate([
-    core_1.Pipe({ name: 'userName', pure: false }),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    core_1.Pipe({ name: 'userName', pure: false }), 
+    __metadata('design:paramtypes', [user_service_1.UserService])
 ], UserNamePipe);
 exports.UserNamePipe = UserNamePipe;
 //# sourceMappingURL=user-name.pipe.js.map

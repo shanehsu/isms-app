@@ -8,33 +8,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var platform_browser_1 = require("@angular/platform-browser");
-var forms_1 = require("@angular/forms");
-var http_1 = require("@angular/http");
-var app_component_1 = require("./app.component");
-var auth_service_1 = require("./services/auth.service");
-var form_service_1 = require("./services/form.service");
-var news_service_1 = require("./services/news.service");
-var record_service_1 = require("./services/record.service");
-var token_service_1 = require("./services/token.service");
-var unit_service_1 = require("./services/unit.service");
-var user_service_1 = require("./services/user.service");
-var pipes_module_1 = require("./pipes/pipes.module");
-var form_controls_module_1 = require("./controls/form-controls.module");
-var custom_controls_module_1 = require("./controls/custom-controls.module");
-var navigation_module_1 = require("./navigation/navigation.module");
-var news_module_1 = require("./news/news.module");
-var forms_module_1 = require("./forms/forms.module");
-var records_module_1 = require("./records/records.module");
-var admin_module_1 = require("./admin/admin.module");
-var app_routes_1 = require("./app.routes");
-var app_config_1 = require("./app.config");
-var AppModule = (function () {
-    function AppModule() {
-    }
-    return AppModule;
-}());
+const core_1 = require('@angular/core');
+const platform_browser_1 = require('@angular/platform-browser');
+const forms_1 = require('@angular/forms');
+const http_1 = require('@angular/http');
+const app_component_1 = require('./app.component');
+const auth_service_1 = require('./services/auth.service');
+const form_service_1 = require('./services/form.service');
+const news_service_1 = require('./services/news.service');
+const record_service_1 = require('./services/record.service');
+const me_service_1 = require('./services/me.service');
+const unit_service_1 = require('./services/unit.service');
+const user_service_1 = require('./services/user.service');
+const pipes_module_1 = require('./pipes/pipes.module');
+const form_controls_module_1 = require('./controls/form-controls.module');
+const custom_controls_module_1 = require('./controls/custom-controls.module');
+const directives_module_1 = require('./directives/directives.module');
+const navigation_module_1 = require('./navigation/navigation.module');
+const news_module_1 = require('./news/news.module');
+const forms_module_1 = require('./forms/forms.module');
+const records_module_1 = require('./records/records.module');
+const admin_module_1 = require('./admin/admin.module');
+const app_routes_1 = require('./app.routes');
+const app_config_1 = require('./app.config');
+const ng_semantic_1 = require("ng-semantic");
+let AppModule = class AppModule {
+};
 AppModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -52,7 +51,9 @@ AppModule = __decorate([
             admin_module_1.adminModule,
             pipes_module_1.pipesModule,
             form_controls_module_1.formControlsModule,
-            custom_controls_module_1.customControlsModule
+            custom_controls_module_1.customControlsModule,
+            directives_module_1.directivesModule,
+            ng_semantic_1.NgSemanticModule
         ],
         bootstrap: [app_component_1.AppComponent],
         providers: [
@@ -60,28 +61,14 @@ AppModule = __decorate([
             form_service_1.FormService,
             news_service_1.NewsService,
             record_service_1.RecordService,
-            token_service_1.TokenService,
+            me_service_1.MeService,
             unit_service_1.UnitService,
             user_service_1.UserService,
             { provide: 'app.config', useValue: app_config_1.config },
             { provide: 'app.debug', useValue: false },
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], AppModule);
 exports.AppModule = AppModule;
-/*
-
-bootstrap(AppComponent, [
-    HTTP_PROVIDERS,
-    provideRouter,
-    AuthService,
-    NewsService,
-    TokenService,
-    provideForms(),
-    provide('app.config', {useValue: config}),
-    provide('app.debug', {useValue: false})
-]);
-
-*/
 //# sourceMappingURL=app.module.js.map

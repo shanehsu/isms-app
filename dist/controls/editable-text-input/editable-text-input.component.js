@@ -11,28 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var EditableTextInput = (function () {
+const core_1 = require('@angular/core');
+const forms_1 = require('@angular/forms');
+let EditableTextInput = class EditableTextInput {
     // 建構子
-    function EditableTextInput(model) {
+    constructor(model) {
         this.model = model;
         this.label = "";
         this.text = "";
         this.isEditing = false;
         model.valueAccessor = this;
     }
-    EditableTextInput.prototype.emitValue = function () {
+    emitValue() {
         this.change(this.text);
-    };
+    }
     // ControlValueAccessor - 註冊函數
-    EditableTextInput.prototype.registerOnChange = function (fn) {
+    registerOnChange(fn) {
         this.change = fn;
-    };
-    EditableTextInput.prototype.registerOnTouched = function (fn) {
+    }
+    registerOnTouched(fn) {
         this.touched = fn;
-    };
-    EditableTextInput.prototype.keypress = function (event) {
+    }
+    keypress(event) {
         if (event.which == 13) {
             this.isEditing = false;
             return false;
@@ -40,23 +40,30 @@ var EditableTextInput = (function () {
         else {
             return true;
         }
-    };
-    EditableTextInput.prototype.writeValue = function (value) {
+    }
+    writeValue(value) {
         this.text = value;
-    };
-    return EditableTextInput;
-}());
+    }
+};
 __decorate([
-    core_1.Input('label'),
-    __metadata("design:type", String)
+    core_1.Input('label'), 
+    __metadata('design:type', String)
 ], EditableTextInput.prototype, "label", void 0);
 EditableTextInput = __decorate([
     core_1.Component({
         selector: 'text-input[editable]',
-        template: "\n  <form class=\"ui form\">\n    <div class=\"field\">\n      <label (click)=\"isEditing = !isEditing;\">{{label}}</label>\n      <p [style.display]=\"isEditing ? 'none' : undefined\" (click)=\"isEditing = true;\">{{text}}</p>\n      <input [style.display]=\"isEditing ? undefined : 'none'\" type=\"text\" (keypress)=\"keypress($event)\" [(ngModel)]=\"text\" name=\"value\" (keyup)=\"emitValue()\" />\n    </div>\n  </form>\n  "
+        template: `
+  <form class="ui form">
+    <div class="field">
+      <label (click)="isEditing = !isEditing;">{{label}}</label>
+      <p [style.display]="isEditing ? 'none' : undefined" (click)="isEditing = true;">{{text}}</p>
+      <input [style.display]="isEditing ? undefined : 'none'" type="text" (keypress)="keypress($event)" [(ngModel)]="text" name="value" (keyup)="emitValue()" />
+    </div>
+  </form>
+  `
     }),
-    __param(0, core_1.Self()),
-    __metadata("design:paramtypes", [forms_1.NgModel])
+    __param(0, core_1.Self()), 
+    __metadata('design:paramtypes', [forms_1.NgModel])
 ], EditableTextInput);
 exports.EditableTextInput = EditableTextInput;
 //# sourceMappingURL=editable-text-input.component.js.map

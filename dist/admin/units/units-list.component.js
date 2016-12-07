@@ -9,48 +9,89 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 // Angular 2
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
+const core_1 = require('@angular/core');
+const router_1 = require('@angular/router');
 // Services
-var unit_service_1 = require("./../../services/unit.service");
-var UnitsListComponent = (function () {
-    function UnitsListComponent(router, route, unitService) {
+const unit_service_1 = require('./../../services/unit.service');
+let UnitsListComponent = class UnitsListComponent {
+    constructor(router, route, unitService) {
         this.router = router;
         this.route = route;
         this.unitService = unitService;
         this.units = [];
     }
-    UnitsListComponent.prototype.ngOnInit = function () {
-        var _this = this;
+    ngOnInit() {
         // 取得所有單位
         this.unitService.units()
-            .then(function (units) { return _this.units = units; })
+            .then(units => this.units = units)
             .catch(console.error);
-    };
-    UnitsListComponent.prototype.new = function () {
-        var _this = this;
+    }
+    new() {
         this.unitService.new()
-            .then(function (newUnitID) { return _this.router.navigate([newUnitID], { relativeTo: _this.route }); })
+            .then(newUnitID => this.router.navigate([newUnitID], { relativeTo: this.route }))
             .catch(console.error);
-    };
-    UnitsListComponent.prototype.edit = function (unitID) {
+    }
+    edit(unitID) {
         this.router.navigate([unitID], { relativeTo: this.route });
-    };
-    UnitsListComponent.prototype.delete = function (unitID) {
-        var _this = this;
+    }
+    delete(unitID) {
         this.unitService.delete(unitID)
-            .then(function () { return _this.unitService.units()
-            .then(function (units) { return _this.units = units; })
-            .catch(console.error); })
+            .then(() => this.unitService.units()
+            .then(units => this.units = units)
+            .catch(console.error))
             .catch(console.error);
-    };
-    return UnitsListComponent;
-}());
+    }
+};
 UnitsListComponent = __decorate([
     core_1.Component({
-        template: "\n  <div class=\"ui one column grid\">\n    <form class=\"ui form right aligned column\">\n      <button type=\"button\" class=\"ui right floated blue labeled icon button\" (click)=\"new()\">\n        <i class=\"plus icon\"></i>\n        \u65B0\u589E\u55AE\u4F4D\n      </button>\n    </form>\n  </div>\n\n  <table class=\"ui unstackable striped table\">\n    <thead>\n      <tr>\n        <th>\u55AE\u4F4D</th>\n        <th class=\"on tablet on small screen on large screen\">\u7DE8\u865F</th>\n        <th class=\"on tablet on small screen on large screen\">\u6BCD\u55AE\u4F4D</th>\n        <th class=\"on large screen\">\u5B50\u55AE\u4F4D</th>\n        <th class=\"on tablet on small screen on large screen\">\u4E3B\u7BA1</th>\n        <th class=\"on small screen on large screen\">\u6587\u7BA1</th>\n        <th class=\"on large screen\">\u627F\u8FA6\u4EBA</th>\n        <th style=\"width: 12em;\">\u52D5\u4F5C</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let unit of units\">\n        <td>{{unit.name}}</td>\n        <td class=\"on tablet on small screen on large screen\">{{unit.identifier}}</td>\n        <td class=\"on tablet on small screen on large screen\">{{unit.parentUnit | unitName:'silent'}}</td>\n        <td class=\"on large screen\">\n          <p *ngFor=\"let childUnit of unit.childUnits\">{{childUnit | unitName:'silent'}}</p>\n        </td>\n        <td class=\"on tablet on small screen on large screen\">{{unit.manager | userName}}</td>\n        <td class=\"on small screen on large screen\">{{unit.docsControl | userName}}</td>\n        <td class=\"on large screen\">\n          <p *ngFor=\"let agent of unit.agents\">{{agent | userName}}</p>\n        </td>\n        <td style=\"text-align: center;\">\n          <div class=\"small ui buttons\">\n            <button type=\"button\" class=\"ui basic teal button\" (click)=\"edit(unit.id)\">\u7DE8\u8F2F</button>\n            <button type=\"button\" class=\"ui basic red button\" (click)=\"delete(unit.id)\">\u522A\u9664</button>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  "
-    }),
-    __metadata("design:paramtypes", [router_1.Router, router_1.ActivatedRoute, unit_service_1.UnitService])
+        template: `
+  <div class="ui one column grid">
+    <form class="ui form right aligned column">
+      <button type="button" class="ui right floated blue labeled icon button" (click)="new()">
+        <i class="plus icon"></i>
+        新增單位
+      </button>
+    </form>
+  </div>
+
+  <table class="ui unstackable striped table">
+    <thead>
+      <tr>
+        <th>單位</th>
+        <th class="on tablet on small screen on large screen">編號</th>
+        <th class="on tablet on small screen on large screen">母單位</th>
+        <th class="on large screen">子單位</th>
+        <th class="on tablet on small screen on large screen">主管</th>
+        <th class="on small screen on large screen">文管</th>
+        <th class="on large screen">承辦人</th>
+        <th style="width: 12em;">動作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let unit of units">
+        <td>{{unit.name}}</td>
+        <td class="on tablet on small screen on large screen">{{unit.identifier}}</td>
+        <td class="on tablet on small screen on large screen">{{unit.parentUnit | unitName:'silent'}}</td>
+        <td class="on large screen">
+          <p *ngFor="let childUnit of unit.childUnits">{{childUnit | unitName:'silent'}}</p>
+        </td>
+        <td class="on tablet on small screen on large screen">{{unit.manager | userName}}</td>
+        <td class="on small screen on large screen">{{unit.docsControl | userName}}</td>
+        <td class="on large screen">
+          <p *ngFor="let agent of unit.agents">{{agent | userName}}</p>
+        </td>
+        <td style="text-align: center;">
+          <div class="small ui buttons">
+            <button type="button" class="ui basic teal button" (click)="edit(unit.id)">編輯</button>
+            <button type="button" class="ui basic red button" (click)="delete(unit.id)">刪除</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  `
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, unit_service_1.UnitService])
 ], UnitsListComponent);
 exports.UnitsListComponent = UnitsListComponent;
 //# sourceMappingURL=units-list.component.js.map

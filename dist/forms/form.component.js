@@ -11,47 +11,65 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var form_service_1 = require("./../services/form.service");
-var record_service_1 = require("./../services/record.service");
-var router_1 = require("@angular/router");
-var FormComponent = (function () {
-    function FormComponent(formService, recordService, route, debug) {
+const core_1 = require('@angular/core');
+const form_service_1 = require('./../services/form.service');
+const record_service_1 = require('./../services/record.service');
+const router_1 = require('@angular/router');
+let FormComponent = class FormComponent {
+    constructor(formService, recordService, route, debug) {
         this.formService = formService;
         this.recordService = recordService;
         this.route = route;
         this.debug = debug;
     }
-    FormComponent.prototype.ngOnInit = function () {
-        var _this = this;
+    ngOnInit() {
         this.data = [];
         this.id = this.route.snapshot.params['id'];
         this.fields = [];
-        this.recordService.schema(this.id).then(function (fields) {
-            var parsedFields = fields.map(function (field) {
+        this.recordService.schema(this.id).then(fields => {
+            let parsedFields = fields.map(field => {
                 field.metadata = JSON.parse(field.metadata);
                 return field;
             });
-            _this.data = _this.recordService.emptyRecordForFields(parsedFields);
-            _this.fields = parsedFields;
+            this.data = this.recordService.emptyRecordForFields(parsedFields);
+            this.fields = parsedFields;
         }).catch(console.error);
-    };
-    FormComponent.prototype.submit = function () {
-        this.recordService.upload(this.id, this.data).then(function (recordID) {
-            console.dir("\u5DF2\u7D93\u5EFA\u7ACB\u7D00\u9304\uFF1A" + recordID);
-        }).catch(function (err) {
+    }
+    submit() {
+        this.recordService.upload(this.id, this.data).then(recordID => {
+            console.dir(`已經建立紀錄：${recordID}`);
+        }).catch(err => {
             console.error('無法建立表單紀錄');
             console.error(err);
         });
-    };
-    return FormComponent;
-}());
+    }
+};
 FormComponent = __decorate([
     core_1.Component({
-        template: "<div class=\"container\">\n    <div *ngIf=\"fields\">\n      <form class=\"ui form\">\n        <form-fields [fields]=\"fields\" [(ngModel)]=\"data\" name=\"fields\"></form-fields>\n        <div style=\"margin-top: 1em; text-align: right;\">\n          <button type=\"button\" (click)=\"submit()\" class=\"ui yellow button\">\u9001\u51FA</button>\n        </div> \n      </form>\n      \n      <div class=\"ui raised segment\" *ngIf=\"true || debug\">\n        <h2 class=\"ui header\">\u9664\u932F\u8CC7\u8A0A</h2>\n        <h3 class=\"ui header\">\u6B04\u4F4D JSON</h3>\n        <pre>{{fields | json}}</pre>\n      </div>\n    </div>\n    <div class=\"ui raised segment\" *ngIf=\"!_nested && debug\">\n      <h2 class=\"card-title\">\u9664\u932F\u8CC7\u8A0A</h2>\n      <h3 class=\"card-subtitle text-muted\">\u8868\u55AE JSON</h3>\n      <pre>{{data | json}}</pre>\n    </div>\n  </div>"
+        template: `<div class="container">
+    <div *ngIf="fields">
+      <form class="ui form">
+        <form-fields [fields]="fields" [(ngModel)]="data" name="fields"></form-fields>
+        <div style="margin-top: 1em; text-align: right;">
+          <button type="button" (click)="submit()" class="ui yellow button">送出</button>
+        </div> 
+      </form>
+      
+      <div class="ui raised segment" *ngIf="true || debug">
+        <h2 class="ui header">除錯資訊</h2>
+        <h3 class="ui header">欄位 JSON</h3>
+        <pre>{{fields | json}}</pre>
+      </div>
+    </div>
+    <div class="ui raised segment" *ngIf="!_nested && debug">
+      <h2 class="card-title">除錯資訊</h2>
+      <h3 class="card-subtitle text-muted">表單 JSON</h3>
+      <pre>{{data | json}}</pre>
+    </div>
+  </div>`
     }),
-    __param(3, core_1.Inject("app.debug")),
-    __metadata("design:paramtypes", [form_service_1.FormService, record_service_1.RecordService, router_1.ActivatedRoute, Object])
+    __param(3, core_1.Inject("app.debug")), 
+    __metadata('design:paramtypes', [form_service_1.FormService, record_service_1.RecordService, router_1.ActivatedRoute, Object])
 ], FormComponent);
 exports.FormComponent = FormComponent;
 //# sourceMappingURL=form.component.js.map

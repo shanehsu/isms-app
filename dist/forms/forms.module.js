@@ -8,25 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var form_list_component_1 = require("./form-list.component");
-var form_component_1 = require("./form.component");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var router_1 = require("@angular/router");
-var form_controls_module_1 = require("./../controls/form-controls.module");
-var FormsComponent = (function () {
-    function FormsComponent() {
-    }
-    return FormsComponent;
-}());
+const core_1 = require('@angular/core');
+const form_list_component_1 = require('./form-list.component');
+const form_component_1 = require('./form.component');
+const common_1 = require('@angular/common');
+const forms_1 = require('@angular/forms');
+const router_1 = require('@angular/router');
+const form_controls_module_1 = require('./../controls/form-controls.module');
+let FormsComponent = class FormsComponent {
+};
 FormsComponent = __decorate([
     core_1.Component({
-        template: "<router-outlet></router-outlet>"
-    }),
-    __metadata("design:paramtypes", [])
+        template: `<router-outlet></router-outlet>`
+    }), 
+    __metadata('design:paramtypes', [])
 ], FormsComponent);
-var routes = [
+let routes = [
     {
         path: 'forms',
         component: FormsComponent,
@@ -36,12 +33,9 @@ var routes = [
         ]
     }
 ];
-var newsRoutingModule = router_1.RouterModule.forRoot(routes);
-var formsModule = (function () {
-    function formsModule() {
-    }
-    return formsModule;
-}());
+const newsRoutingModule = router_1.RouterModule.forRoot(routes);
+let formsModule = class formsModule {
+};
 formsModule = __decorate([
     core_1.NgModule({
         declarations: [
@@ -56,8 +50,8 @@ formsModule = __decorate([
             newsRoutingModule,
             form_controls_module_1.formControlsModule
         ]
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], formsModule);
 exports.formsModule = formsModule;
 //# sourceMappingURL=forms.module.js.map

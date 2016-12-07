@@ -11,101 +11,88 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-var piece_1 = require("./../types/piece");
-var auth_service_1 = require("./auth.service");
-var NewsService = (function () {
-    function NewsService(_http, _authService, _config) {
+const core_1 = require('@angular/core');
+const http_1 = require('@angular/http');
+const piece_1 = require('./../types/piece');
+const auth_service_1 = require('./auth.service');
+let NewsService = class NewsService {
+    constructor(_http, _authService, _config) {
         this._http = _http;
         this._authService = _authService;
         this._config = _config;
         this._baseURL = _config.endpoint + '/news';
     }
-    NewsService.prototype.placeholder = function () {
+    placeholder() {
         return new piece_1.Piece({
             _id: '4e7020cb7cac81af7136236b', date: new Date(),
             summary: '新聞簡述', source: '新聞來源', link: 'http://www.google.com/'
         });
-    };
-    NewsService.prototype.retrieve = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            return _this._http.get(_this._baseURL)
-                .map(function (res) { return res.json(); })
-                .subscribe(function (data) { return resolve(data.map(function (p) { return new piece_1.Piece(p); })); }, function (err) { return reject(err); });
-        });
-    };
-    NewsService.prototype.retrievePage = function (page) {
-        var _this = this;
-        var params = new http_1.URLSearchParams();
+    }
+    retrieve() {
+        return new Promise((resolve, reject) => this._http.get(this._baseURL)
+            .map(res => res.json())
+            .subscribe((data) => resolve(data.map(p => new piece_1.Piece(p))), err => reject(err)));
+    }
+    retrievePage(page) {
+        let params = new http_1.URLSearchParams();
         params.set('page', page.toString());
-        return new Promise(function (resolve, reject) {
-            return _this._http.get(_this._baseURL, {
-                search: params
-            }).map(function (res) { return res.json(); })
-                .subscribe(function (data) { return resolve(data.map(function (p) { return new piece_1.Piece(p); })); }, function (err) { return reject(err); });
-        });
-    };
-    NewsService.prototype.retrievePiece = function (id) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            return _this._http.get(_this._baseURL + '/' + id)
-                .map(function (response) { return response.json(); })
-                .subscribe(function (data) { return resolve(new piece_1.Piece(data)); }, function (err) { return reject(err); });
-        });
-    };
-    NewsService.prototype.create = function (piece) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var header = new http_1.Headers({
-                token: _this._authService.retrieve_token(),
+        return new Promise((resolve, reject) => this._http.get(this._baseURL, {
+            search: params
+        }).map(res => res.json())
+            .subscribe((data) => resolve(data.map(p => new piece_1.Piece(p))), err => reject(err)));
+    }
+    retrievePiece(id) {
+        return new Promise((resolve, reject) => this._http.get(this._baseURL + '/' + id)
+            .map(response => response.json())
+            .subscribe(data => resolve(new piece_1.Piece(data)), err => reject(err)));
+    }
+    create(piece) {
+        return new Promise((resolve, reject) => {
+            let header = new http_1.Headers({
+                token: this._authService.retrieve_token(),
                 'Content-Type': 'application/json'
             });
-            _this._http.post(_this._baseURL, '', {
+            this._http.post(this._baseURL, '', {
                 headers: header
             })
-                .map(function (res) { return res.text(); })
-                .subscribe(function (id) {
+                .map(res => res.text())
+                .subscribe(id => {
                 resolve(id);
-            }, function (err) { return reject(); });
+            }, err => reject());
         });
-    };
-    NewsService.prototype.update = function (piece) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var header = new http_1.Headers({
-                token: _this._authService.retrieve_token(),
+    }
+    update(piece) {
+        return new Promise((resolve, reject) => {
+            let header = new http_1.Headers({
+                token: this._authService.retrieve_token(),
                 'Content-Type': 'application/json'
             });
-            _this._http.put(_this._baseURL + '/' + piece.id, JSON.stringify({
+            this._http.put(this._baseURL + '/' + piece.id, JSON.stringify({
                 date: piece.date,
                 link: piece.link,
                 source: piece.source,
                 summary: piece.summary
             }), {
                 headers: header
-            }).subscribe(function (_) { return resolve(); }, function (err) { return reject(err); });
+            }).subscribe(_ => resolve(), err => reject(err));
         });
-    };
-    NewsService.prototype.delete = function (id) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var header = new http_1.Headers({
-                token: _this._authService.retrieve_token()
+    }
+    delete(id) {
+        return new Promise((resolve, reject) => {
+            let header = new http_1.Headers({
+                token: this._authService.retrieve_token()
             });
-            _this._http.delete(_this._baseURL + '/' + id, {
+            this._http.delete(this._baseURL + '/' + id, {
                 headers: header
-            }).map(function (res) { return res.status; })
-                .subscribe(function (_) { return resolve(); }, function (err) { return reject(); });
+            }).map(res => res.status)
+                .subscribe(_ => resolve(), err => reject());
         });
-    };
-    return NewsService;
-}());
+    }
+};
 NewsService = __decorate([
     core_1.Injectable(),
-    __param(2, core_1.Inject("app.config")),
-    __metadata("design:paramtypes", [http_1.Http, auth_service_1.AuthService, Object])
+    __param(2, core_1.Inject("app.config")), 
+    __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService, Object])
 ], NewsService);
 exports.NewsService = NewsService;
 //# sourceMappingURL=news.service.js.map
