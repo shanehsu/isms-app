@@ -1,11 +1,11 @@
-import {Component, OnInit, Inject, Input} from '@angular/core';
-import {Location} from '@angular/common'
+import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Location } from '@angular/common'
 
-import {NavigationItem} from './../types/navigation-item'
-import {Group}         from './../types/group'
-import {Config}         from './../types/config'
+import { NavigationItem } from './../types/navigation-item'
+import { Group } from './../types/group'
+import { Config } from './../types/config'
 
-import {AuthService} from './../services/auth.service'
+import { MeService } from './../services/me.service'
 
 @Component({
   template: `
@@ -14,7 +14,7 @@ import {AuthService} from './../services/auth.service'
     <div class="sixteen wide mobile two wide computer column">
       <div class="ui secondary stacking fluid vertical pointing menu">
         <template ngFor let-item [ngForOf]="adminItems">
-          <a class="active item" *ngIf="item.group.includes(privilege)" [routerLink]="item.path" routerLinkActive="active">
+          <a class="active item" [routerLink]="item.path" routerLinkActive="active">
             {{item.name}}
           </a>
         </template>
@@ -27,15 +27,18 @@ import {AuthService} from './../services/auth.service'
 })
 
 export class AdminComponent implements OnInit {
-  private adminItems: [NavigationItem];
-  private privilege: Group;
-  
+  private adminItems: NavigationItem[];
+
   ngOnInit() {
-    this.privilege = "vendors";
-    this.adminItems =  this.config.adminItems;
-    
-    this.authService.privilege().then(p => this.privilege = p);
+    this.adminItems = []
+    this.meService.user.subscribe(user => {
+      if (user) {
+        this.adminItems = this.config.adminItems.filter(i => i.group.includes(user.group))
+      } else {
+        this.adminItems = this.config.adminItems.filter(i => i.group.includes('guests' as Group))
+      }
+    })
   }
 
-  constructor(private authService: AuthService, @Inject('app.config') private config: Config) {}
+  constructor(private meService: MeService, @Inject('app.config') private config: Config) { }
 }

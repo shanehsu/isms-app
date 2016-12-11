@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {  } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
 import { AuthService } from './services/auth.service'
+import { Message, MessageService } from './services/message.service'
 
 @Component({
   selector: 'isms-app',
@@ -14,17 +14,37 @@ import { AuthService } from './services/auth.service'
         <router-outlet></router-outlet>
       </div>
     </div>
-    `
+    <div class="message-panel">
+      <sm-message *ngFor="let message of messages" [class]="message.class" [icon]="message.icon">
+        <message-header>
+          {{message.header}}
+        </message-header>
+        <message-content>
+          {{message.content}}
+        </message-content>
+      </sm-message>
+    </div>
+    `,
+  styles: [
+    ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll;}"
+  ]
 })
 
 export class AppComponent implements OnInit {
+  private messages: Message[]
+
   ngOnInit(): void {
+    this.messages = []
+    this.messageService.messages.subscribe(messages => {
+      this.messages = messages
+    })
+
     this.activatedRoute.queryParams.subscribe((query: any) => {
       if (query.sso && query.token) {
 
         let withoutSSO: any = {}
         Object.apply(withoutSSO, query)
-        delete withoutSSO.sso 
+        delete withoutSSO.sso
         delete withoutSSO.token
 
         this.authService.authenticate_sso(query.token).then(_ => {
@@ -35,5 +55,6 @@ export class AppComponent implements OnInit {
       }
     })
   }
-  constructor(private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private authService: AuthService, private messageService: MessageService,
+    private router: Router, private activatedRoute: ActivatedRoute) { }
 }

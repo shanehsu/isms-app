@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core'
-import {ActivatedRoute} from '@angular/router'
-import {FormGroup, Validators} from '@angular/forms'
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { FormGroup, Validators } from '@angular/forms'
 
-import {Piece}             from './../../types/piece'
-import {NewsService}       from './../../services/news.service'
+import { Piece } from './../../types/piece'
+import { NewsService } from './../../services/news.service'
 
-import {Router} from '@angular/router'
+import { Router } from '@angular/router'
 
 @Component({
-    template: `
+  template: `
     <form class="ui form" (ngSubmit)="submit()" #pieceForm="ngForm">
       <div class="field">
         <label>ID</label>
@@ -42,23 +42,23 @@ import {Router} from '@angular/router'
 export class NewsDetailComponent implements OnInit {
   private id: string;
   private piece: Piece;
-  
+
   ngOnInit() {
     this.piece = this.newsService.placeholder()
     this.id = this.route.snapshot.params['id']
     this.newsService.retrievePiece(this.id).then(piece => this.piece = piece)
   }
-  
+
   submit() {
-    this.newsService.update(this.piece).then(piece => this.router.navigate(['..'], {relativeTo: this.route}))
-                                         .catch(err => console.error(err));
+    this.newsService.update(this.piece)
+      .then(piece => this.router.navigate(['..'], { relativeTo: this.route }))
+      .catch(err => console.error(err))
   }
-  
+
   cancel() {
-    this.router.navigate(['..'], {relativeTo: this.route});
+    this.router.navigate(['..'], { relativeTo: this.route })
   }
-  
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private newsService: NewsService) {  }
+
+  constructor(private router: Router, private route: ActivatedRoute,
+    private newsService: NewsService) { }
 }

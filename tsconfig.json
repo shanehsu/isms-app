@@ -8,12 +8,20 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outDir": "dist"
-    // "strictNullChecks": true
+    "outDir": "dist",
+    "lib": [
+      "dom",
+      "es5",
+      "es6",
+      "es2015",
+      "es2015.core",
+      "es2017.object",
+      "es2016.array.include"
+    ]
   },
   "exclude": [
     "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
+    "typings/global",
+    "typings/index.d.ts"
   ]
 }

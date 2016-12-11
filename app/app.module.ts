@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Directive } from '@angular/core';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
-import { HttpModule }    from '@angular/http';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
@@ -13,6 +13,7 @@ import { RecordService } from './services/record.service'
 import { MeService } from './services/me.service'
 import { UnitService } from './services/unit.service'
 import { UserService } from './services/user.service'
+import { MessageService } from './services/message.service'
 
 import { pipesModule } from './pipes/pipes.module'
 import { formControlsModule } from './controls/form-controls.module'
@@ -30,27 +31,35 @@ import { config } from './app.config'
 
 import { NgSemanticModule } from "ng-semantic"
 
+@Directive({ selector: 'message-header' })
+class MessageHeader { }
+@Directive({ selector: 'message-content' })
+class MessageContent { }
+
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MessageHeader,
+    MessageContent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    
+
     appRoutingModule,
     navigationModule,
     newsModule,
     formsModule,
     recordsModule,
     adminModule,
-    
+
     pipesModule,
     formControlsModule,
     customControlsModule,
     directivesModule,
-    
+
     NgSemanticModule
   ],
   bootstrap: [AppComponent],
@@ -62,9 +71,10 @@ import { NgSemanticModule } from "ng-semantic"
     MeService,
     UnitService,
     UserService,
-    
-    {provide: 'app.config', useValue: config },
-    {provide: 'app.debug', useValue: false },
+    MessageService,
+
+    { provide: 'app.config', useValue: config },
+    { provide: 'app.debug', useValue: false },
   ]
 })
 

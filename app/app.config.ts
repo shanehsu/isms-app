@@ -1,6 +1,6 @@
 "use strict"
 
-import {Config} from './types/config'
+import { Config } from './types/config'
 
 export var config: Config = {
   endpoint: 'http://localhost:3000/api/v2',
