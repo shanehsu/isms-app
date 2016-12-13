@@ -26,7 +26,7 @@ import { Message, MessageService } from './services/message.service'
     </div>
     `,
   styles: [
-    ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll;}"
+    ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll; z-index: 10; }"
   ]
 })
 

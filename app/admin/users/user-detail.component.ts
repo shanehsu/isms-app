@@ -79,7 +79,7 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   private _user: User;
   
   ngOnInit() {
-    this._user = this.userService.emptyUser();
+    this._user = this.userService.placeholder();
     this._id = this.route.snapshot.params['id'];
     this.userService.get(this._id).then(user => this._user = user[0]).catch(console.error);
   }

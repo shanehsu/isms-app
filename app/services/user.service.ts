@@ -7,23 +7,20 @@ import {User}  from './../types/user'
 
 @Injectable()
 export class UserService {
-  private _baseURL: string;
+  private endpoint: string;
   
-  constructor(private _authService: AuthService,
-              private _http: Http,
-              @Inject("app.config") private _config) {
-    this._baseURL = _config.endpoint + '/users';
+  constructor(private authService: AuthService, private http: Http, @Inject("app.config") private config) {
+    this.endpoint = config.endpoint + '/users'
   }
   
-  emptyUser() : User {
-    return {
-      id: '',
+  placeholder(): User {
+    return new User({
+      _id: '',
       email: '',
       name: '',
       group: "guests",
-      tokens: [],
-      unit: {}
-    }
+      tokens: []
+    })
   }
   
   /**
@@ -33,12 +30,12 @@ export class UserService {
    */
   get(id?: string) : Promise<User[]> {
     let headers = new Headers({
-      token: this._authService.retrieve_token()
+      token: this.authService.token.getValue()
     })
     
     if (id) {
       return new Promise<User[]>((resolve, reject) => {
-        this._http.get(this._baseURL + '/' + id, {
+        this.http.get(this.endpoint + '/' + id, {
           headers: headers
         }).map(res => res.json())
           .subscribe(
@@ -68,7 +65,7 @@ export class UserService {
     }
     
     return new Promise<User[]>((resolve, reject) => {
-      this._http.get(this._baseURL, {
+      this.http.get(this.endpoint, {
         headers: headers
       }).map(res => res.json())
         .subscribe(
@@ -89,9 +86,9 @@ export class UserService {
   
   new() : Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      this._http.post(this._baseURL, "", {
+      this.http.post(this.endpoint, "", {
         headers: new Headers({
-          token: this._authService.retrieve_token(),
+          token: this.authService.token.getValue(),
           'Content-Type': 'application/json'
         })
       }).map(res => res.text()).subscribe(id => resolve(id), err => reject(err))
@@ -106,9 +103,9 @@ export class UserService {
     delete object.tokens
     
     return new Promise<void>((resolve, reject) => {
-      this._http.put(this._baseURL + '/' + id, JSON.stringify(object), {
+      this.http.put(this.endpoint + '/' + id, JSON.stringify(object), {
         headers: new Headers({
-          token: this._authService.retrieve_token(),
+          token: this.authService.token.getValue(),
           'Content-Type': 'application/json'
         })
       }).subscribe(() => resolve(), err => reject(err))
@@ -117,9 +114,9 @@ export class UserService {
   
   delete(id: string) : Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this._http.delete(this._baseURL + '/' + id, {
+      this.http.delete(this.endpoint + '/' + id, {
         headers: new Headers({
-          token: this._authService.retrieve_token(),
+          token: this.authService.token.getValue(),
           'Content-Type': 'application/json'
         })
       }).subscribe(() => resolve(), err => reject(err))

@@ -20,7 +20,7 @@ import { Piece }             from './../types/piece'
         <td>{{piece.source}}</td>
         <td><a [href]="piece.link">{{piece.summary}}</a></td>
       </tr>
-      <tr style="height: 8em;" *ngIf="!isLoading && piecesView && piecesView.length == 0">
+      <tr style="height: 8em;" *ngIf="!isLoading && !hasError && piecesView && piecesView.length == 0">
         <td style="text-align: center; font-size: 1.4em; color: rgb(160, 160, 160);" colspan="3">無資料</td>
       </tr>
       <tr style="height: 8em;" *ngIf="isLoading">
@@ -82,7 +82,10 @@ export class NewsComponent implements OnInit {
       this.pieces = pieces
       this.piecesView = this.pieces.slice(0, 10)
       this.hasOlder = (pieces.length > 10)
-    }).catch(_ => this.hasError = true )
+    }).catch(_ => {
+      this.isLoading = false
+      this.hasError = true 
+    })
   }
 
   older() {

@@ -70,7 +70,7 @@ enum PieceState {
         <td style="text-align: center;">
           <div class="small ui buttons">
             <button type="button" class="ui basic teal button" (click)="edit(piece.id)">編輯</button>
-            <button type="button" class="ui basic red button"  (click)="delete(piece.id)" [class.loading]="states[piece.id] == 2">刪除</button>
+            <button type="button" class="ui basic red button"  (click)="delete(piece.id, true)" [class.loading]="states[piece.id] == 2">刪除</button>
           </div>
         </td>
       </tr>
@@ -136,15 +136,14 @@ export class NewsListComponent implements OnInit {
 
     for (let index = piecesToKeep; index < this.pieces.length; index++) {
       let id = this.pieces[index].id
-      this.delete(id)
+      this.delete(id, false)
     }
   }
   private edit(id: string) {
     this.router.navigate([id], { relativeTo: this.route })
   }
-  private delete(id: string) {
-    let shouldDelete = confirm("確定要刪除嗎？");
-    if (shouldDelete) {
+  private delete(id: string, shouldConfirm: boolean) {
+    if (!shouldConfirm && confirm("確定要刪除嗎？")) {
       // 設定狀態
       this.states[id] = PieceState.Deleting
 

@@ -1,11 +1,11 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {Unit}                from './../types/unit'
-import {UnitService}         from './../services/unit.service'
-@Pipe({name: 'unitName', pure: false})
+import { Pipe, PipeTransform } from '@angular/core';
+import { Unit } from './../types/unit'
+import { UnitService } from './../services/unit.service'
 
+@Pipe({ name: 'unitName', pure: false })
 export class UnitNamePipe implements PipeTransform {
-  private _units: {[id : string] : string } = {};
-  
+  private _units: { [id: string]: string } = {};
+
   constructor(unitService: UnitService) {
     unitService.units().then(units => {
       for (let unit of units) {
@@ -13,7 +13,6 @@ export class UnitNamePipe implements PipeTransform {
       }
     })
   }
-  
   transform(id: string, args: string[]): string {
     if (!id || id == '') {
       if (!args || args.indexOf('silent') < 0) {
