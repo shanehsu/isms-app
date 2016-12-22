@@ -1,125 +1,105 @@
-import {Inject, Injectable} from '@angular/core'
-import {Http, Headers} from '@angular/http'
-import {AuthService}   from './auth.service'
+import { Inject, Injectable } from '@angular/core'
+import { Http, Headers } from '@angular/http'
 
-import {Token} from './../types/token'
-import {User}  from './../types/user'
+import { AuthService } from './auth.service'
+import { Token } from './../types/token'
+import { User } from './../types/user'
+
+import 'rxjs/add/operator/toPromise'
 
 @Injectable()
 export class UserService {
-  private endpoint: string;
-  
+  private endpoint: string
+
   constructor(private authService: AuthService, private http: Http, @Inject("app.config") private config) {
     this.endpoint = config.endpoint + '/users'
   }
-  
-  placeholder(): User {
-    return new User({
-      _id: '',
-      email: '',
-      name: '',
-      group: "guests",
-      tokens: []
-    })
+  get placeholder(): User {
+    return new User({ _id: '', email: '', name: '', group: "guests", tokens: [] })
   }
-  
-  /**
-   * If `id` is given, a list containing one user is returned.
-   * Otherwise, a list of all users is returned.
-   * Retrieving all users also means that tokens field is left out.
-   */
-  get(id?: string) : Promise<User[]> {
+  async get(id?: string): Promise<User | User[]> {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    
+
     if (id) {
-      return new Promise<User[]>((resolve, reject) => {
-        this.http.get(this.endpoint + '/' + id, {
-          headers: headers
-        }).map(res => res.json())
-          .subscribe(
-            user => {
-              resolve([
-                <User>{
-                  id: user._id,
-                  email: user.email,
-                  name: user.name,
-                  unit: user.unit,
-                  group: user.group,
-                  tokens: (<any[]>user.tokens).map(value => {
-                    return {
-                      id: value._id,
-                      origin: value.origin,
-                      token: value.token,
-                      userAgent: value.userAgent,
-                      used: new Date(value.used)
-                    }
-                  })
-                }
-              ])
-            },
-            err => reject(err)
-          )
-      });
+      let responseJSONObject: Object
+      try {
+        responseJSONObject = await this.http.get(`${this.endpoint}/${id}`, { headers: headers })
+          .map(res => res.json()).toPromise()
+      } catch (networkError) {
+        console.error('無法取得使用者資訊')
+        console.dir(networkError)
+      }
+
+      return new User(responseJSONObject)
+    } else {
+      let responseJSONArray: Object[]
+      try {
+        responseJSONArray = await this.http.get(this.endpoint, { headers: headers })
+          .map(res => res.json()).toPromise()
+      } catch (networkError) {
+        console.error('無法取得使用者列表')
+        console.dir(networkError)
+      }
+
+      return responseJSONArray.map(object => new User(object))
     }
-    
-    return new Promise<User[]>((resolve, reject) => {
-      this.http.get(this.endpoint, {
-        headers: headers
-      }).map(res => res.json())
-        .subscribe(
-          users => resolve( (<any[]>users).map(user => 
-              <User> {
-                id: user._id,
-                email: user.email,
-                name: user.name,
-                unit: user.unit,
-                group: user.group,
-                tokens: []
-              }
-          )),
-          err => reject(err)
-        )
-    });
   }
-  
-  new() : Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      this.http.post(this.endpoint, "", {
-        headers: new Headers({
-          token: this.authService.token.getValue(),
-          'Content-Type': 'application/json'
-        })
-      }).map(res => res.text()).subscribe(id => resolve(id), err => reject(err))
+  async create(): Promise<string> {
+    let headers = new Headers({
+      token: this.authService.token.getValue(),
+      'Content-Type': 'application/json'
     })
+    try {
+      let id = await this.http.post(this.endpoint, "", { headers: headers })
+        .map(res => res.text()).toPromise()
+      return id
+    } catch (networkError) {
+      console.error('無法新增使用者')
+      console.dir(networkError)
+    }
   }
-  
-  update(originalUser: User) : Promise<void> {
-    let user: User = Object.assign({}, originalUser);
-    let id = user.id;
-    let object: any = user;
-    
+  async confirm(userId: string): Promise<void> {
+    let headers = new Headers({
+      token: this.authService.token.getValue(),
+      'Content-Type': 'application/json'
+    })
+    try {
+      await this.http.post(`${this.endpoint}/${userId}/actions/confirm`, null, { headers: headers }).toPromise()
+    } catch (networkError) {
+      console.error('無法啟用使用者')
+      console.dir(networkError)
+    }
+  }
+  async update(user: User): Promise<void> {
+    let id = user.id
+    let object: User = Object.assign({}, user)
     delete object.tokens
-    
-    return new Promise<void>((resolve, reject) => {
-      this.http.put(this.endpoint + '/' + id, JSON.stringify(object), {
-        headers: new Headers({
-          token: this.authService.token.getValue(),
-          'Content-Type': 'application/json'
-        })
-      }).subscribe(() => resolve(), err => reject(err))
+
+    let headers = new Headers({
+      token: this.authService.token.getValue(),
+      'Content-Type': 'application/json'
     })
+
+    try {
+      await this.http.put(`${this.endpoint}/${id}`, JSON.stringify(object), { headers: headers }).toPromise()
+    } catch (networkError) {
+      console.error('無法更新使用者')
+      console.dir(networkError)
+    }
   }
-  
-  delete(id: string) : Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.http.delete(this.endpoint + '/' + id, {
-        headers: new Headers({
-          token: this.authService.token.getValue(),
-          'Content-Type': 'application/json'
-        })
-      }).subscribe(() => resolve(), err => reject(err))
+  async delete(id: string): Promise<void> {
+    let headers = new Headers({
+      token: this.authService.token.getValue(),
+      'Content-Type': 'application/json'
     })
+
+    try {
+      await this.http.delete(`${this.endpoint}/${id}`, headers).toPromise()
+    } catch (networkError) {
+      console.error('無法刪除使用者')
+      console.dir(networkError)
+    }
   }
 }

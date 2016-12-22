@@ -1,7 +1,8 @@
-import {NavigationItem} from './navigation-item'
+import { NavigationItem } from './navigation-item'
 
 export interface Config {
-  endpoint: string;
-  navigationItems: [NavigationItem];
-  adminItems: [NavigationItem]
+  endpoint: string
+  ssoUrl: string
+  navigationItems: NavigationItem[]
+  adminItems: NavigationItem[]
 }

@@ -3,7 +3,8 @@
 import { Config } from './types/config'
 
 export var config: Config = {
-  endpoint: 'http://localhost:3000/api/v2',
+  endpoint: '$$endpoint$$',
+  ssoUrl: '$$ssourl$$',
   navigationItems: [
     {
       name: "最新消息",

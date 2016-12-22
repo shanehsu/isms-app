@@ -54,7 +54,7 @@ enum PieceState {
           載入中 <i class="spinner loading icon"></i>
         </td>
       </tr>
-      <tr style="height: 8em;" *ngIf="!loading && error">
+      <tr style="height: 8em;" *ngIf="!loading && loadingError">
         <td style="text-align: center; font-size: 1.4em; color: rgb(160, 160, 160); margin-bottom: 0em;" colspan="4">
           <p>
             載入錯誤 <i class="warning sign icon"></i>
@@ -101,7 +101,7 @@ export class NewsListComponent implements OnInit {
     this.states = {}
 
     this.loading = true
-    this.loadingError = undefined
+    this.loadingError = null
 
     this.newsService.retrieve().then(pieces => {
       for (let piece of pieces) {

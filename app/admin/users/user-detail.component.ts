@@ -1,110 +1,148 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core'
+import { Component, OnInit, AfterViewInit } from '@angular/core'
 
-import {User}             from './../../types/user'
-import {Token}            from './../../types/token'
+import { User } from './../../types/user'
+import { Token } from './../../types/token'
 
-import {UserService}       from './../../services/user.service'
+import { UserService } from './../../services/user.service'
 
-import {Router, ActivatedRoute} from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({
-    template: `
-    <form class="ui form" (ngSubmit)="submit()" #userForm="ngForm">
-      <div class="field">
-        <label>ID</label>
-        <p>{{_user.id}}</p>
-      </div>
-
-      <div class="field">
-        <label>姓名</label>
-        <input type="text" [(ngModel)]="_user.name" name="name" required>
-      </div>
-
-      <div class="field">
-        <label>電子郵件</label>
-        <input type="text" [(ngModel)]="_user.email" name="email" required>
-      </div>
-
-      <div class="field">
-        <label>單位</label>
-        <p id="unit_label">{{_user.unit | unitName}}</p>
-        
-        <!-- 前往該單位的提示 -->
-        <div style="text-align: center;" class="ui flowing popup transition hidden">
-          <p>前往單位設定畫面</p>
-          <button class="ui tiny teal button" type="button" (click)="gotoUnit(_user.unit)">前往</button>
+  template: `
+    <form class="ui dimmable basic segment form" [class.loading]="loading" [class.dimmed]="updatingError || loadingError" #userForm="ngForm">
+      <div class="ui simple blurring dimmer">
+        <div class="content">
+          <div class="center">
+            <a class="link" (click)="reload()" style="font-size: 1.5em; color: #7e8bb3;">重新載入？</a>
+          </div>
         </div>
       </div>
 
       <div class="field">
+        <label>ID</label>
+        <p>{{user.id}}</p>
+      </div>
+      <div class="field">
+        <label>姓名</label>
+        <input type="text" [(ngModel)]="user.name" name="name" required>
+      </div>
+      <div class="field">
+        <label>電子郵件</label>
+        <input type="text" [(ngModel)]="user.email" name="email" required>
+      </div>
+      <div class="field">
         <label>權限</label>
-        <div class="inline fields" id="groupRadio">
+        <p *ngIf="user.group == 'vendors'">廠商</p>
+        <div class="inline fields" id="groupRadio" *ngIf="user.group != 'vendors'">
           <div class="field">
             <div class="ui radio checkbox">
-              <input name="radio" type="radio" value="1" [checked]="_user.group == 1" (change)="_user.group = 1">
+              <input name="radio" type="radio" value="1" [checked]="user.group == 'admins'" (change)="user.group = 'admins'">
               <label>管理員</label>
             </div>
           </div>
           <div class="field">
             <div class="ui radio checkbox">
-              <input name="radio" type="radio" value="2" [checked]="_user.group == 2" (change)="_user.group = 2">
+              <input name="radio" type="radio" value="2" [checked]="user.group == 'securityPersonnel'" (change)="user.group = 'securityPersonnel'">
               <label>資訊安全人員</label>
             </div>
           </div>
           <div class="field">
             <div class="ui radio checkbox">
-              <input name="radio" type="radio" value="3" [checked]="_user.group == 3" (change)="_user.group = 3">
+              <input name="radio" type="radio" value="3" [checked]="user.group == 'users'" (change)="user.group = 'users'">
               <label>一般使用者</label>
             </div>
           </div>
         </div>
       </div>
+      <div class="field" *ngIf="user.group == 'vendors'">
+        <label>已啟用</label>
+        <p>{{user.confirmed ? '可使用' : '不可使用'}}</p>
+      </div>
 
       <div class="field">
         <label>登入代幣</label>
-        <p>該使用者有 {{_user.tokens.length}} 個登入代幣。</p>
+        <p>該使用者有 {{user.tokens.length}} 個登入代幣。</p>
       </div>
       
       <div style="text-align: right;">
-        <button type="button" class="ui basic button" (click)="cancel()">取消</button>
-        <button type="submit" class="ui basic button" [class.green]="userForm.form.valid" [class.red]="!userForm.form.valid" [disabled]="!userForm.form.valid">更新</button>
+        <button type="button" class="ui grey button" (click)="return()">返回</button>
+        <button type="button" class="ui green button" *ngIf="!user.confirmed" [class.loading]="confirming" (click)="confirm()">啟用</button>
+        <button type="button" class="ui button" [class.blue]="userForm.form.valid" [class.loading]="updating"
+          [class.red]="!userForm.form.valid" [disabled]="!userForm.form.valid" (click)="update()">更新</button>
+        <button type="button" class="ui button" [class.green]="userForm.form.valid" [class.loading]="updating"
+          [class.red]="!userForm.form.valid" [disabled]="!userForm.form.valid" (click)="updateAndReturn()">更新並返回</button>
       </div>
     </form>
-
     `
 })
 
 export class UserDetailComponent implements OnInit, AfterViewInit {
-  private _id: string;
-  private _user: User;
-  
+  private user: User
+  private loading: boolean
+  private confirming: boolean
+  private updating: boolean
+  private loadingError: any
+  private confirmError: any
+  private updatingError: any
+
   ngOnInit() {
-    this._user = this.userService.placeholder();
-    this._id = this.route.snapshot.params['id'];
-    this.userService.get(this._id).then(user => this._user = user[0]).catch(console.error);
+    this.user = this.userService.placeholder
+    this.loading = true
+    this.confirming = false
+    this.updating = false
+    this.loadingError = null
+    this.confirmError = null
+    this.updatingError = null
+
+    this.reload()
   }
-  
   ngAfterViewInit() {
-    ($('#unit_label') as any).popup({
-      inline: true,
-      hoverable: true
-    });
-    ($('div#groupRadio div.ui.radio.checkbox') as any).checkbox();
+    (<any>$('div#groupRadio div.ui.radio.checkbox')).checkbox()
   }
-  
-  submit() {
-    this.userService.update(this._user)
-        .then(() => this.router.navigate(['..'], {relativeTo: this.route}))
-        .catch(console.error);
+  reload() {
+    let id = this.route.snapshot.params['id']
+    this.loading = true
+    this.loadingError = null
+    this.userService.get(id)
+      .then((user: User) => {
+        this.user = user
+        this.loading = false
+      })
+      .catch(err => {
+        this.loadingError = err
+        this.loading = false
+      })
   }
-  
-  cancel() {
-    this.router.navigate(['..'], {relativeTo: this.route});
+  async confirm() {
+    this.confirming = true
+    try {
+      await this.userService.confirm(this.user.id)
+      this.user.confirmed = true
+    } catch (err) {
+      this.confirmError = err
+    }
+    this.confirming = false
   }
-  
-  gotoUnit(unitID: string) {
-    this.router.navigate(['..', 'units', unitID], {relativeTo: this.route});
+  async update() {
+    this.updating = true
+    this.updatingError = null
+
+    try {
+      await this.userService.update(this.user)
+    } catch (err) {
+      this.updatingError = err
+    }
+    this.updating = false
   }
-  
-  constructor(private router: Router, private route: ActivatedRoute, private userService: UserService) {}
+  async updateAndReturn() {
+    await this.update()
+    if (this.updatingError == null) {
+      this.return()
+    }
+  }
+  return() {
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
+  constructor(private router: Router, private route: ActivatedRoute, private userService: UserService) { }
 }

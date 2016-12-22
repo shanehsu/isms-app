@@ -8,16 +8,15 @@ import { MeService } from './../services/me.service'
 import { Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
-let ssoURL = "http://localhost:3000/sso"
-
 @Injectable()
 export class AuthService {
-  public  token: BehaviorSubject<string>
-  public  isLoading: BehaviorSubject<boolean>
+  public token: BehaviorSubject<string>
+  public isLoading: BehaviorSubject<boolean>
   private endpoint: string
-
+  private ssoUrl: string
   constructor(private http: Http, @Inject("app.config") private config, private router: Router) {
     this.endpoint = config.endpoint + '/login'
+    this.ssoUrl = config.ssoUrl
 
     this.token = new BehaviorSubject<string>(localStorage.getItem('token'))
     this.isLoading = new BehaviorSubject<boolean>(false)
@@ -29,15 +28,15 @@ export class AuthService {
     } else {
       ending = '?sso=true&token='
     }
-    window.location.href = ssoURL + '?redirectUrl=' + encodeURIComponent(window.location.href + ending)
+    window.location.href = this.ssoUrl + '?redirectUrl=' + encodeURIComponent(window.location.href + ending)
   }
   authenticate_sso(token: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       let endpoint = this.endpoint + '/sso'
       this.isLoading.next(true)
-      this.http.post(endpoint, JSON.stringify({ 'sso_token':  token}), {
+      this.http.post(endpoint, JSON.stringify({ 'sso_token': token }), {
         headers: new Headers({ 'Content-Type': 'application/json' })
-      }).map(res => res.json()).subscribe((result: {success: boolean, token?: string, message?: string}) => {
+      }).map(res => res.json()).subscribe((result: { success: boolean, token?: string, message?: string }) => {
         this.isLoading.next(false)
         if (result.success) {
           this.setToken(result.token)
@@ -61,20 +60,20 @@ export class AuthService {
         email: email,
         password: password
       }), {
-        headers: headers
-      })
-      .map(res => res.json()).subscribe(result => {
-        this.isLoading.next(false)
-        if (result.success) {
-          this.setToken(result.token)
-          resolve()
-        } else {
-          reject(result.message)
-        }
-      }, err => {
-        this.isLoading.next(false)
-        reject(err)
-      })
+          headers: headers
+        })
+        .map(res => res.json()).subscribe(result => {
+          this.isLoading.next(false)
+          if (result.success) {
+            this.setToken(result.token)
+            resolve()
+          } else {
+            reject(result.message)
+          }
+        }, err => {
+          this.isLoading.next(false)
+          reject(err)
+        })
     })
   }
   register(name: string, email: string, password: string): Promise<void> {
@@ -89,14 +88,14 @@ export class AuthService {
         email: email,
         password: password
       }), {
-        headers: headers
-      }).subscribe(_ => {
-        this.isLoading.next(false)
-        resolve()
-      }, err => {
-        this.isLoading.next(false)
-        reject(err)
-      })
+          headers: headers
+        }).subscribe(_ => {
+          this.isLoading.next(false)
+          resolve()
+        }, err => {
+          this.isLoading.next(false)
+          reject(err)
+        })
     })
   }
   didLogout(): void {
