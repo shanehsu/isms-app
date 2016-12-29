@@ -1,10 +1,38 @@
-export interface Unit {
-  id: string,
-  name: string,
-  identifier: number, // 學校的行政單位編號
-  parentUnit: string,   // 兩者的關係必須自己維護
-  childUnits: string[], // 兩者的關係必須自己維護
-  manager: string,      // 主管
-  docsControl: string,  // 文管
+export class Unit {
+  constructor(object: any) {
+    Object.assign(this, object)
+    this.members = new UnitMember(object.members)
+  }
+  get id(): string {
+    return this._id
+  }
+  _id: string
+  name: string
+  identifier: number
+  parentUnit?: string
+
+  members: UnitMember
+}
+
+class UnitMember {
+  constructor(object: any) {
+    Object.assign(this, object)
+  }
+  get all(): string[] {
+    let all = [...this.none, ...this.agents, ...this.vendors]
+    if (this.docsControl) {
+      all.push(this.docsControl)
+    }
+    if (this.manager) {
+      all.push(this.manager)
+    }
+
+    return all
+  }
+
+  none: string[]
   agents: string[]
+  vendors: string[]
+  docsControl?: string
+  manager?: string
 }

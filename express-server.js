@@ -5,8 +5,8 @@ let http = require('http')
 let fs = require('fs')
 let app = express()
 
-let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : 'http://127.0.0.1:3000'
-let ssoUrl = process.env.SSOURL ? process.env.SSOURL : 'http://127.0.0.1:3000/sso'
+let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : 'http://10.0.0.16:3000'
+let ssoUrl = process.env.SSOURL ? process.env.SSOURL : 'http://10.0.0.16:3000/sso'
 
 app.get('/dist/app.config.js', (req, res, next) => {
   fs.readFile(`${__dirname}/dist/app.config.js`, 'utf8', (err, data) => {

@@ -74,7 +74,7 @@ export class NewsDetailComponent implements OnInit {
     this.updatingError = null
     this.loadingError = null
     this.piece = this.newsService.placeholder()
-    
+
     this.newsService.retrievePiece(id).then(piece => {
       this.loading = false
       this.piece = piece
@@ -85,7 +85,7 @@ export class NewsDetailComponent implements OnInit {
         class: 'error',
         header: '載入失敗',
         content: '載入新聞失敗'
-      }, -1)
+      })
       this.loading = false
     })
   }

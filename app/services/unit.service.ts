@@ -1,414 +1,96 @@
-import {Inject, Injectable} from '@angular/core'
-import {Http, Headers} from '@angular/http'
-import {AuthService}   from './auth.service'
+import { Inject, Injectable } from '@angular/core'
+import { Http, Headers, RequestOptionsArgs } from '@angular/http'
 
-import {User}  from './../types/user'
-import {Unit}  from './../types/unit'
+import { AuthService } from './auth.service'
+import { User } from './../types/user'
+import { Unit } from './../types/unit'
 
 @Injectable()
-
-/**
- * This service provide a total of 14 methods to communicate with
- * the Unit API provided by isms-api.
- * 
- * They include Unit Management, User Listing (User in Unit, User without Unit),
- * Inter-Unit Relation, User-Unit Relation, User Role Management
- * 
- * The API are built very carefully and thoughtfully. For example, in order to
- * transfer an User X from Unit A to Unit B, the end user should do the following,
- * 
- * - Make sure User X has no active role in Unit A (otherwise remove its role(s))
- * - Remove User X from Unit A
- * - Add User X to Unit B
- * 
- * In the API, this is expressed as,
- * 
- * - /units/deassignRole <json> {unit, user, role}
- * - /units/removeUser   <json> {unit, user}
- * - /units/relateUser   <json> {unit, user}
- * 
- * May need multiple deassignRole to deassign all roles.
- * 
- * This API design makes sure that no mistakes and assumptions are made, the admin
- * will not by accident remove a user with an important role from its unit. The
- * design also makes writing the backend and frontend super simple.
- */
 export class UnitService {
-  
   /**
    * Base URL of Units API
    */
-  private _baseURL: string;
-  
-  constructor(private _authService: AuthService,
-              private _http: Http,
-              @Inject("app.config") private _config) {
-    
-    this._baseURL = _config.endpoint + '/units'
+  private endpoint: string;
+
+  constructor(private authService: AuthService, private http: Http,
+    @Inject("app.config") private config) {
+    this.endpoint = config.endpoint + '/units'
   }
-  
+
   /**
    * Returns a placeholder Unit that is empty.
    */
-  empty(): Unit {
-    return {
-      id: '',
-      name: '',
-      identifier: 0,
-      parentUnit: '',
-      childUnits: [],
-      manager: '',
-      docsControl: '',
-      agents: []
-    }
-  }
-  
-  /**
-   * Intended from private use only, maps a returned JSON object to Unit object.
-   */
-  __util__map__(object: any): Unit {
-    return {
-      id: object._id,
-      name: object.name,
-      identifier: object.identifier,
-      parentUnit: object.parentUnit,
-      childUnits: object.childUnits,
-      manager: object.manager,
-      docsControl: object.docsControl,
-      agents: object.agents
-    }
-  }
-  
-  /**
-   * Lists all units.
-   * 
-   * Returns a Promise of an array of Unit.
-   */
-  units(): Promise<Unit[]>{
-    let headers = new Headers({
-      token: this._authService.retrieve_token()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL
-    
-    return new Promise<Unit[]>((resolve, reject) => {
-      this._http.get(URL, options)
-          .map(res => res.json())
-          .subscribe(units => {
-            let anyArray = <any[]>units
-            let unitArray = anyArray.map(this.__util__map__)
-            resolve(unitArray)
-          }, reject)
+  get placeholder(): Unit {
+    return new Unit({
+      _id: '507c7f79bcf86cd7994f6c0e', name: '', identifier: 0, parentUnit: null, members: {
+        none: [], agents: [], vendors: [], docsControl: null, manager: null
+      }
     })
   }
-  
+
   /**
-   * Get a Unit.
-   * 
-   * Returns a Promise of a Unit.
+   * Get all the units.
    */
-  unit(id: string): Promise<Unit> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token()
-    })
-    let options = {
-      headers: headers
+  async units(): Promise<Unit[]> {
+    let endpoint = this.endpoint
+    let options: RequestOptionsArgs = {
+      headers: new Headers({
+        token: this.authService.token.getValue()
+      })
     }
-    let URL = this._baseURL + '/' + id
-    
-    return new Promise<Unit>((resolve, reject) => {
-      this._http.get(URL, options)
-          .map(res => res.json())
-          .subscribe(units => {
-            let anyObject = <any>units
-            let unitObject = this.__util__map__(anyObject)
-            resolve(unitObject)
-          }, reject)
-    })
+
+    return await this.http.get(endpoint, options)
+      .map(res => res.json())
+      .map(json => <any[]>json)
+      .map(array => array.map($0 => new Unit($0)))
+      .toPromise()
   }
-  
+
   /**
-   * Creates a Unit.
-   * 
-   * Returns a Promise of a string, id of the newly created Unit.
+   * Creates a unit.
+   * @returns The id of the new unit.
    */
-  new(): Promise<string> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers,
+  async create(): Promise<string> {
+    let endpoint = this.endpoint
+    let options: RequestOptionsArgs = {
+      headers: new Headers({
+        token: this.authService.token.getValue()
+      })
     }
-    let URL = this._baseURL
-    let payloadObject = {
-      name: '',
-      identifier: 0
-    }
-    let payload = JSON.stringify(payloadObject)
-    
-    return new Promise<string>((resolve, reject) => {
-      this._http.post(URL, payload, options)
-          .map(res => {console.dir(res); return res.text()})
-          .subscribe(resolve, reject)
-    })
+
+    return await this.http.post(endpoint, null, options)
+      .map(res => res.text())
+      .toPromise()
   }
-  
+
   /**
-   * Updates a Unit.
-   * 
-   * Only the name, and identifier information can be updated through this method.
-   * 
-   * Returns a Promise.
+   * Updates a unit.
    */
-  update(unit: Unit) : Promise<void> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
+  async update(unit: Unit): Promise<void> {
+    let endpoint = `${this.endpoint}/${unit.id}`
+    let options: RequestOptionsArgs = {
+      headers: new Headers({
+        token: this.authService.token.getValue(),
+        "Content-Type": "application/json"
+      })
     }
-    let URL = this._baseURL + '/' + unit.id
-    let payloadObject = {
-      name: unit.name,
-      // identifier should really be an integer in parsing,
-      // but the backend mongoose really handle the verification.
-      identifier: unit.identifier
-    }
-    let payload = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payload, options)
-          .subscribe(() => resolve(), reject)
-    })
+    let payload = Object.assign({}, unit)
+    delete payload.id
+
+    await this.http.put(endpoint, JSON.stringify(payload), options).toPromise()
   }
-  
+
   /**
-   * Deletes a Unit.
-   * 
-   * Returns a Promise.
+   * Deletes a unit.
    */
-  delete(id: string): Promise<void> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token()
-    })
-    let options = {
-      headers: headers
+  async delete(id: string): Promise<void> {
+    let endpoint = `${this.endpoint}/${id}`
+    let options: RequestOptionsArgs = {
+      headers: new Headers({
+        token: this.authService.token.getValue(),
+      })
     }
-    let URL = this._baseURL + '/' + id
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.delete(URL, options)
-          .subscribe(() => resolve(), reject)
-    })
-  }
-  
-  /**
-   * Returns a list of users without unit.
-   */
-  freeUsers(): Promise<string[]> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/freeUsers'
-    
-    return new Promise<string[]>((resolve, reject) => {
-      this._http.get(URL, options)
-          .map(res => res.json())
-          .subscribe(resolve, reject)
-    })
-  }
-  
-  /**
-   * Returns a list of users belonging to the given unit.
-   */
-  usersInUnit(id: string): Promise<string[]> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/usersInUnit/' + id
-    
-    return new Promise<string[]>((resolve, reject) => {
-      this._http.get(URL, options)
-          .map(res => res.json())
-          .subscribe(resolve, reject)
-    })
-  }
-  
-  /**
-   * Relate the user to the given unit.
-   */
-  relateUser(unitID: string, userID: string): Promise<void> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/relateUser/'
-    let payloadObject = {
-      user: userID,
-      unit: unitID
-    }
-    let payloadString = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payloadString, options)
-          .subscribe(() => resolve(), reject)
-    })
-  }
-  
-  /**
-   * Remove the user from the given unit.
-   */
-  removeUser(unitID: string, userID: string): Promise<void> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/removeUser/'
-    let payloadObject = {
-      user: userID,
-      unit: unitID
-    }
-    let payloadString = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payloadString, options)
-          .subscribe(() => resolve(), reject)
-    })
-  }
-  
-  /**
-   * Assign the given role of the given unit to the given user.
-   */
-  assignRole(unitID: string, userID: string, role: string) {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/assignRole/'
-    let payloadObject = {
-      user: userID,
-      unit: unitID,
-      role: role
-    }
-    let payloadString = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payloadString, options)
-          .subscribe(() => resolve(), reject)
-    })
-  }
-  
-  /**
-   * Deassign the given role of the given unit to the given user.
-   */
-  deassignRole(unitID: string, userID: string, role: string) {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/deassignRole/'
-    let payloadObject = {
-      user: userID,
-      unit: unitID,
-      role: role
-    }
-    let payloadString = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payloadString, options)
-          .subscribe(() => resolve(), reject)
-    })
-  }
-  
-  /**
-   * Returns a list of IDs of Units without parent unit.
-   */
-  freeUnits(id: string): Promise<string[]> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/freeUnits'
-    
-    return new Promise<string[]>((resolve, reject) => {
-      this._http.get(URL, options)
-          .map(res => res.json())
-          .subscribe(ids => {
-            let data = <string[]>ids.filter(x => x != id)
-            resolve(data)
-          }, reject)
-    })
-  }
-  
-  /**
-   * Relate the user to the given unit.
-   */
-  relateParent(parentID: string, childID: string): Promise<void> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/relateParent/'
-    let payloadObject = {
-      parent: parentID,
-      child: childID
-    }
-    let payloadString = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payloadString, options)
-          .subscribe(() => resolve(), reject)
-    })
-  }
-  
-  /**
-   * Remove the user from the given unit.
-   */
-  removeParent(parentID: string, childID: string): Promise<void> {
-    let headers = new Headers({
-      token: this._authService.retrieve_token(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this._baseURL + '/removeParent/'
-    let payloadObject = {
-      parent: parentID,
-      child: childID
-    }
-    let payloadString = JSON.stringify(payloadObject)
-    
-    return new Promise<void>((resolve, reject) => {
-      this._http.put(URL, payloadString, options)
-          .subscribe(() => resolve(), reject)
-    })
+
+    await this.http.delete(endpoint, options).toPromise()
   }
 }

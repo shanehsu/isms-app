@@ -21,23 +21,20 @@ export class MessageService {
   /**
    * Post a message to the Message Service
    * @param {Message} message The message
-   * @param {number}  timeout How much time (in milliseconds) before the message itself expires.
-   *                          Use a negative value to indicate that the message should not expire.
    */
-  public post(message: Message, timeout: number) {
+  public post(message: Message) {
     let messages = this.subject.getValue()
     messages.push(message)
     this.subject.next(messages)
-
-    if (1 + 1 == 0) {
-      window.setTimeout(_ => {
-        let m = this.subject.getValue()
-        let mIndex = m.indexOf(message)
-        if (mIndex >= 0) {
-          m.splice(mIndex, 1)
-          this.subject.next(m)
-        }
-      }, timeout)
-    }
+  }
+  public error(header: string, message: string) {
+    let messages = this.subject.getValue()
+    messages.push({
+      header: header,
+      content: message,
+      icon: 'remove',
+      class: 'error'
+    })
+    this.subject.next(messages)
   }
 }

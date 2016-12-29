@@ -33,7 +33,7 @@ enum UserState {
       </thead>
       <tbody>
         <!-- 訊息 -->
-        <tr style="height: 8em;" *ngIf="!loading && users && users.length == 0">
+        <tr style="height: 8em;" *ngIf="!loading && users && users.length == 0 && !loadingError">
           <td style="text-align: center; font-size: 1.4em; color: rgb(160, 160, 160);" colspan="4">
             無資料
           </td>
@@ -128,7 +128,7 @@ export class UsersListComponent implements OnInit {
         content: '刪除失敗，資料與伺服器可能不同步，請考慮重整網頁。',
         icon: 'remove',
         class: 'error'
-      }, -1)
+      })
     })
   }
 

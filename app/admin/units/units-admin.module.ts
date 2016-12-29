@@ -2,9 +2,10 @@ import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
+import { DragulaModule } from 'ng2-dragula'
+
 
 import { pipesModule } from './../../pipes/pipes.module'
-
 import { UnitsListComponent } from './units-list.component'
 import { UnitDetailComponent } from './unit-detail.component'
 export { UnitsListComponent, UnitDetailComponent }
@@ -24,7 +25,8 @@ export class UnitAdminComponent { }
     CommonModule,
     FormsModule,
     RouterModule,
-    
+    DragulaModule,
+
     pipesModule
   ],
   exports: [

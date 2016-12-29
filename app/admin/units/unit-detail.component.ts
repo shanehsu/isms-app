@@ -1,288 +1,307 @@
 // Angular 2
-import {Component, OnInit, AfterViewInit}   from '@angular/core'
-import {Router, ActivatedRoute} from '@angular/router'
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
 
 // Services
-import {UnitService} from './../../services/unit.service'
-import {UserService} from './../../services/user.service'
+import { UnitService } from './../../services/unit.service'
+import { UserService } from './../../services/user.service'
+import { DragulaService } from 'ng2-dragula'
 
 // Interfaces
-import {Unit, User} from './../../types/types'
+import { Unit, User } from './../../types/types'
 
 @Component({
   template: `
   <div class="ui one column grid">
     <div class="column">
-        <div class="ui padded raised segment">
+      <div class="ui padded dimmable raised segment" [class.loading]="loadingUnits" [class.dimmed]="unitsLoadingError">
         <h2 class="ui header">基本資訊</h2>
-
-        <form class="ui form" (ngSubmit)="submit_name_and_identifier()" #unitForm="ngForm">
-            <div class="field">
-            <label>ID</label>
-            <p>{{_unit.id}}</p>
+        <div class="ui simple blurring dimmer">
+          <div class="content">
+            <div class="center">
+              <a class="link" (click)="reloadUnits()" style="font-size: 1.5em; color: #7e8bb3;">重新載入？</a>
             </div>
-            <div class="field">
-            <label>單位名稱</label>
-            <input type="text" [(ngModel)]="_unit.name" name="name" required>
-            </div>
-            <div class="field">
-            <label>單位編號</label>
-            <input type="number" min="0" [(ngModel)]="_unit.identifier" name="title" required>
-            </div>
-            <div style="text-align: right;">
-            <button type="button" class="ui basic button" (click)="cancel()">取消</button>
-            <button type="submit" id="update_button" class="ui basic button" [class.green]="unitForm.form.valid" [class.red]="!unitForm.form.valid"
-                [disabled]="!unitForm.form.valid" data-content="該按鈕只能更新單位名稱以及單位編號。">更新</button>
-            </div>
-        </form>
+          </div>
         </div>
+        <form class="ui form" #unitForm="ngForm">
+          <div class="field">
+            <label>ID</label>
+            <p>{{unit.id}}</p>
+          </div>
+          <div class="field">
+            <label>單位名稱</label>
+            <input type="text" [(ngModel)]="unit.name" name="name" required>
+          </div>
+          <div class="field">
+            <label>單位編號</label>
+            <input type="number" min="0" [(ngModel)]="unit.identifier" name="title" required>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="column">
-        <div class="ui two column grid">
+      <div class="ui padded dimmable raised segment" [class.loading]="loadingUnits" [class.dimmed]="unitsLoadingError">
+        <h2 class="ui header">母單位</h2>
+        <div class="ui simple blurring dimmer">
+          <div class="content">
+            <div class="center">
+              <a class="link" (click)="reloadUnits()" style="font-size: 1.5em; color: #7e8bb3;">重新載入？</a>
+            </div>
+          </div>
+        </div>
+        <div class="ui label" [class.green]="!unit.parentUnit" (click)="clearParent()">沒有母單位</div>
+        <div class="ui label" *ngFor="let unitId of acceptedParents" [class.green]="unit.parentUnit == unitId" (click)="unit.parentUnit = unitId">{{unitMap[unitId].name}}</div>
+      </div>
+    </div>
+    <div class="ui column basic raised segment" style="padding-top: 1em; margin-top: 0;" [class.loading]="loadingUsers" [class.dimmed]="usersLoadingError">
+      <div class="ui dimmable two column grid stretched row">
         <div class="column">
-            <div class="ui segments">
-            <h2 class="ui top attached header">人員資訊</h2>
-            <div class="ui attached segment">
-                <h3 class="ui header">單位內</h3>
-                <p *ngIf="_unitUserIDs.length == 0">單位內無人員</p>
-                <div>
-                <a class="link append-separator" data-separator="、" *ngFor="let userID of _unitUserIDs" (click)="removeUser(_unit.id, userID)">{{userID | userName}}</a>
-                </div>
+          <div class="ui segments">
+            <h2 class="ui top attached header">非單位內人員</h2>
+            <div class="ui attached segment dragula-container" style="border-bottom: none; border-radius: 0; min-height: 30em;" [dragula]="'users'" [dragulaModel]="notDelegated" [attr.data-container]="'not-delegated'">
+              <div class="ui label" *ngFor="let user of notDelegated" [attr.data-id]="users[user].id">{{users[user].name}}</div>
             </div>
-            <div class="ui attached segment">
-                <h3 class="ui header">無單位</h3>
-                <div>
-                <a class="link append-separator" data-separator="、" *ngFor="let userID of _freeUserIDs" (click)="relateUser(_unit.id, userID)">{{userID | userName}}</a>
-                </div>
-            </div>
-            <div class="ui bottom attached info message">
-                <p>點選以加入／移出單位</p>
-            </div>
-            </div>
+          </div>
         </div>
         <div class="column">
-            <div class="ui segments">
-            <h2 class="ui top attached header">主管</h2>
-            <div class="ui attached segment" *ngIf="_unit.manager">
-                目前由 <a class="link" (click)="deassignRole(_unit.id, _unit.manager, 'manager')">{{_unit.manager | userName}}</a> 任職
-            </div>
-            <div class="ui attached segment" *ngIf="!_unit.manager">
-                <p *ngIf="_unitUserIDs.length == 0">單位內無人員</p>
-                <div>
-                <a class="link append-separator" data-separator="、" *ngFor="let userID of _unitUserIDs" (click)="assignRole(_unit.id, userID, 'manager')">{{userID | userName}}</a>
-                </div>
-            </div>
-            <div class="ui bottom attached info message">
-                <p *ngIf="_unit.manager">點選以解除職務</p>
-                <p *ngIf="!_unit.manager">點選以指定職務</p>
-            </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="ui segments">
-            <h2 class="ui top attached header">文管</h2>
-            <div class="ui attached segment" *ngIf="_unit.docsControl">
-                目前由 <a class="link" (click)="deassignRole(_unit.id, _unit.docsControl, 'docsControl')">{{_unit.docsControl | userName}}</a> 任職
-            </div>
-            <div class="ui attached segment" *ngIf="!_unit.docsControl">
-                <p *ngIf="_unitUserIDs.length == 0">單位內無人員</p>
-                <div>
-                <a class="link append-separator" data-separator="、" *ngFor="let userID of _unitUserIDs" (click)="assignRole(_unit.id, userID, 'docsControl')">{{userID | userName}}</a>
-                </div>
-            </div>
-            <div class="ui bottom attached info message">
-                <p *ngIf="_unit.docsControl">點選以解除職務</p>
-                <p *ngIf="!_unit.docsControl">點選以指定職務</p>
-            </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="ui segments">
+          <div class="ui segments">
             <h2 class="ui top attached header">承辦人</h2>
-            <div class="ui attached segment" *ngIf="_unit.agents.length > 0">
-                <h3 class="ui header">現任承辦人</h3>
-                <div>
-                <a class="link append-separator" data-separator="、" *ngFor="let agent of _unit.agents" (click)="deassignRole(_unit.id, agent, 'agent')">{{agent | userName}}</a>
-                </div>
+            <div class="ui attached segment dragula-container" *ngIf="!loadingUsers" [dragula]="'users'" [dragulaModel]="unit.members.agents" [attr.data-container]="'agents'">
+              <div class="ui label" *ngFor="let user of unit.members.agents" [attr.data-id]="users[user].id">{{users[user].name}}</div>
             </div>
-            <div class="ui attached segment" *ngIf="_unit.agents.length != _unitUserIDs.length">
-                <h3 class="ui header">非承辦人</h3>
-                <div>
-                <template ngFor let-userID [ngForOf]="_unitUserIDs">
-                    <a class="link append-separator" data-separator="、" *ngIf="_unit.agents.indexOf(userID) < 0" (click)="assignRole(_unit.id, userID, 'agent')">{{userID | userName}}</a>
-                </template>
-                </div>
+            <h2 class="ui attached header">廠商</h2>
+            <div class="ui attached segment dragula-container" *ngIf="!loadingUsers" [dragula]="'users'" [dragulaModel]="unit.members.vendors" [attr.data-container]="'vendors'">
+              <div class="ui label" *ngFor="let user of unit.members.vendors" [attr.data-id]="users[user].id">{{users[user].name}}</div>
             </div>
-            <div class="ui attached segment" *ngIf="_unitUserIDs.length == 0">
-                <p>沒有人員在單位中</p>
+            <h2 class="ui attached header">組長</h2>
+            <div class="ui attached segment dragula-container" *ngIf="!loadingUsers" [dragula]="'users'" [dragulaModel]="manager" [attr.data-container]="'manager'">
+              <div class="ui label" *ngFor="let user of manager" [attr.data-id]="users[user].id">{{users[user].name}}</div>
             </div>
-            <div class="ui bottom attached info message">
-                <p>點選以指定／解除職務</p>
+            <h2 class="ui attached header">文管</h2>
+            <div class="ui attached segment dragula-container" *ngIf="!loadingUsers" [dragula]="'users'" [dragulaModel]="docsControl" [attr.data-container]="'docsControl'">
+              <div class="ui label" *ngFor="let user of docsControl" [attr.data-id]="users[user].id">{{users[user].name}}</div>
             </div>
-            </div>
+          </div>
         </div>
-        <div class="column">
-            <div class="ui segments">
-            <h2 class="ui top attached header">母單位</h2>
-            <div class="ui attached segment" *ngIf="_unit.parentUnit">
-                目前的母單位：<a class="link" (click)="removeParent(_unit.parentUnit, _unit.id)">{{_unit.parentUnit | unitName}}</a>
+        <div class="ui simple blurring dimmer">
+          <div class="content">
+            <div class="center">
+              <a class="link" (click)="reloadUsers()" style="font-size: 1.5em; color: #7e8bb3;">重新載入？</a>
             </div>
-            <div class="ui attached segment" *ngIf="!_unit.parentUnit">
-                <a class="link append-separator" data-separator="、" *ngFor="let unitID of _freeUnitIDs" (click)="relateParent(unitID, _unit.id)">{{unitID | unitName}}</a>
-            </div>
-            <div class="ui bottom attached info message" *ngIf="_unit.parentUnit">
-                <p>點選以解除母單位</p>
-            </div>
-            <div class="ui bottom attached info message" *ngIf="!_unit.parentUnit">
-                <p>點選以指定為母單位</p>
-            </div>
-            </div>
+          </div>
         </div>
-        <div class="column">
-            <div class="ui segments">
-            <h2 class="ui top attached header">子單位</h2>
-            <div class="ui attached segment">
-                <p *ngIf="_unit.childUnits.length == 0">沒有子單位</p>
-                <p *ngFor="let childUnit of _unit.childUnits">
-                {{childUnit | unitName:'silent'}}
-                </p>
-            </div>
-            </div>
-        </div>
-        </div>
+      </div>
     </div>
+    <div class="ui basic segment column" style="text-align: right; padding-top: 1em; margin-top: 0;">
+      <button type="button" class="ui basic button" (click)="return()">取消</button>
+      <button type="button" id="update_button" class="ui basic button" [class.green]="unitForm.form.valid" [class.red]="!unitForm.form.valid"
+      [disabled]="!unitForm.form.valid" data-content="該按鈕只能更新單位名稱以及單位編號。" [class.loading]="updating" (click)="update()">更新</button>
     </div>
-
-  `
+  </div>
+  `,
+  styles: [
+    `.dragula-container { min-height: 5em; }`
+  ]
 })
 
-export class UnitDetailComponent implements OnInit, AfterViewInit {
-  private _unitID: string
-  private _unit: Unit
-  
-  private _unitUserIDs: string[]
-  private _freeUserIDs: string[]
-  
-  private _freeUnitIDs: string[]
-  
-  constructor(private router: Router, private route: ActivatedRoute, private unitService: UnitService) {}
-  
-  ngOnInit(): void {
-    // Get a placeholder Unit to get around the undefined key bug.
-    this._unit   = this.unitService.empty()
-    this._unitUserIDs = []
-    this._freeUserIDs = []
-    this._freeUnitIDs = []
-    this._unitID = this.route.snapshot.params['id']
-    
-    // Get the Unit from UnitService
-    this.unitService.unit(this._unitID)
-        .then(unit => this._unit = unit)
-        .catch(console.error)
-    
-    this.unitService.usersInUnit(this._unitID)
-        .then(userIDs => this._unitUserIDs = userIDs)
-        .catch(console.error)
-    
-    this.unitService.freeUsers()
-        .then(userIDs => this._freeUserIDs = userIDs)
-        .catch(console.error)
-    
-    this.unitService.freeUnits(this._unitID)
-        .then(unitIDs => this._freeUnitIDs = unitIDs)
-        .catch(console.error)
+export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+  private loadingUnits: boolean
+  private unitsLoadingError: any
+  private loadingUsers: boolean
+  private usersLoadingError: any
+  private units: Unit[]
+  private unitMap: { [unitId: string]: Unit }
+  private unit: Unit
+
+  private users: { [userId: string]: User }
+  private notDelegated: string[]
+
+  // 假的 Buckets 負責處理 docsControl, manager
+  private docsControl: string[]
+  private manager: string[]
+
+  private acceptedParents: string[]
+  private updating: boolean
+
+  constructor(private router: Router, private route: ActivatedRoute, private unitService: UnitService,
+    private userService: UserService, private dragulaService: DragulaService) { }
+  ngOnDestroy(): void {
+    this.dragulaService.destroy('users')
   }
-  
+  ngOnInit(): void {
+    this.unitsLoadingError = null
+    this.usersLoadingError = null
+    this.loadingUsers = false
+    this.loadingUnits = false
+
+    this.users = {}
+    this.unitMap = {}
+    this.acceptedParents = []
+    this.notDelegated = []
+    this.docsControl = []
+    this.manager = []
+    this.updating = false
+
+    this.unit = this.unitService.placeholder
+    this.reloadUnits()
+
+    this.dragulaService.setOptions('users', {
+      "accepts": (el: HTMLDivElement, dst: HTMLDivElement, src: HTMLDivElement, sib) => {
+        let id = el.dataset['id']
+        let source = src.dataset['container']
+        let destination = dst.dataset['container']
+
+        // 規則：
+        // 廠商只能進入廠商
+        // manager、docsControl 只能有一個人
+        let user = this.users[id]
+        if (user.group == 'vendors') {
+          // 廠商
+          if (destination == 'vendors' || destination == 'not-delegated') {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          // 校內人士
+          if (destination == 'manager') {
+            if (this.manager.length == 0) {
+              return true
+            } else {
+              return false
+            }
+          } else if (destination == 'docsControl') {
+            if (this.docsControl.length == 0) {
+              return true
+            } else {
+              return false
+            }
+          } else if (destination == 'vendors') {
+            console.log('verdict is false.')
+            return false
+          } else {
+            return true
+          }
+        }
+      }
+    })
+    this.dragulaService.dropModel.subscribe(args => {
+      let [bag, element, dst, src] = <[string, HTMLDivElement, HTMLDivElement, HTMLDivElement]>args
+
+      let id = element.dataset['id']
+      let source = src.dataset['container']
+      let destination = dst.dataset['container']
+      let user = this.users[id]
+
+      if (user.group != 'vendors') {
+        if (destination == 'manager') {
+          this.unit.members.manager = id
+        } else if (destination == 'docsControl') {
+          this.unit.members.docsControl = id
+        }
+        if (source == 'manager') {
+          delete this.unit.members.manager
+        } else if (source == 'docsControl') {
+          delete this.unit.members.docsControl
+        }
+      }
+    })
+  }
+  async reloadUsers() {
+    this.loadingUsers = true
+    this.usersLoadingError = null
+    this.users = {}
+    this.notDelegated = []
+    this.docsControl = []
+    this.manager = []
+
+    try {
+      let allUsers = await this.userService.get() as User[]
+      allUsers.forEach(user => this.users[user.id] = user)
+      let usersInUnit = this.units.reduce((users, unit) => {
+        let values = [...users,
+        ...unit.members.agents,
+        ...unit.members.none,
+        ...unit.members.vendors]
+        if (unit.members.docsControl) {
+          values.push(unit.members.docsControl)
+        }
+        if (unit.members.manager) {
+          values.push(unit.members.manager)
+        }
+
+        return values
+      }, <string[]>[])
+
+      // 分配到 notDelegated 中
+      let free = allUsers.filter(user => !usersInUnit.includes(user.id))
+      for (let user of free) {
+        this.notDelegated.push(user.id)
+      }
+    } catch (err) {
+      this.usersLoadingError = err
+    }
+    this.loadingUsers = false
+  }
+  async reloadUnits() {
+    this.loadingUnits = true
+    this.loadingUsers = true
+    this.unitsLoadingError = null
+    this.unitMap = {}
+    this.acceptedParents = []
+    let unitId = this.route.snapshot.params['id']
+    try {
+      this.units = await this.unitService.units()
+      this.unit = this.units.find(unit => unit.id == unitId)
+      // 找到自己所有的小孩
+      let recursiveChildren: string[] = []
+      let current = unitId
+      while (current) {
+        recursiveChildren.push(current)
+        let parent = this.units.find(unit => unit.parentUnit == current)
+        if (parent) {
+          current = parent.id
+        } else {
+          break
+        }
+      }
+
+      console.log('childs')
+      console.dir(recursiveChildren)
+
+      // 過濾
+      for (let unit of this.units) {
+        this.unitMap[unit.id] = unit
+      }
+      this.acceptedParents = this.units.filter(unit => !recursiveChildren.includes(unit.id)).map(unit => unit.id)
+
+      console.log('acceptedParents')
+      console.dir(this.acceptedParents)
+      this.reloadUsers()
+    } catch (err) {
+      this.unitsLoadingError = err
+    }
+
+    this.loadingUnits = false
+  }
   ngAfterViewInit() {
     ($('#update_button') as any).popup({
       inline: true
-    });
+    })
   }
-  
-  submit_name_and_identifier() {
-    this.unitService.update(this._unit)
-        .then(() => this.router.navigate(['..'], {relativeTo: this.route}))
-        .catch(console.error)
+  return() {
+    this.router.navigate(['..'], { relativeTo: this.route })
   }
-  
-  relateUser(unitID: string, userID: string) {
-    this.unitService.relateUser(unitID, userID)
-        .then(() => {
-          this.unitService.usersInUnit(this._unitID)
-              .then(userIDs => this._unitUserIDs = userIDs)
-              .catch(console.error)
-    
-          this.unitService.freeUsers()
-              .then(userIDs => this._freeUserIDs = userIDs)
-              .catch(console.error)
-        })
-        .catch(console.error)
+  async update() {
+    this.updating = true
+    try {
+      await this.unitService.update(this.unit)
+    } catch (err) {
+
+    }
+    this.updating = false
   }
-  
-  removeUser(unitID: string, userID: string) {
-    this.unitService.removeUser(unitID, userID)
-        .then(() => {
-          this.unitService.usersInUnit(this._unitID)
-              .then(userIDs => this._unitUserIDs = userIDs)
-              .catch(console.error)
-    
-          this.unitService.freeUsers()
-              .then(userIDs => this._freeUserIDs = userIDs)
-              .catch(console.error)
-        })
-        .catch(console.error)
-  }
-  
-  assignRole(unitID: string, userID: string, role: string) {
-    this.unitService.assignRole(unitID, userID, role)
-        .then(() => {
-          this.unitService.unit(this._unitID)
-              .then(unit => this._unit = unit)
-              .catch(console.error)
-          
-          this.unitService.usersInUnit(this._unitID)
-              .then(userIDs => this._unitUserIDs = userIDs)
-              .catch(console.error)
-        })
-        .catch(console.error)
-  }
-  
-  deassignRole(unitID: string, userID: string, role: string) {
-    this.unitService.deassignRole(unitID, userID, role)
-        .then(() => {
-          this.unitService.unit(this._unitID)
-              .then(unit => this._unit = unit)
-              .catch(console.error)
-          
-          this.unitService.usersInUnit(this._unitID)
-              .then(userIDs => this._unitUserIDs = userIDs)
-              .catch(console.error)
-        })
-        .catch(console.error)
-  }
-  
-  relateParent(parentUnit: string, childUnit: string) {
-    this.unitService.relateParent(parentUnit, childUnit)
-        .then(() => {
-          this.unitService.unit(this._unitID)
-              .then(unit => this._unit = unit)
-              .catch(console.error)
-        }).catch(console.error)
-  }
-  
-  removeParent(parentUnit: string, childUnit: string) {
-    this.unitService.removeParent(parentUnit, childUnit)
-        .then(() => {
-          this.unitService.unit(this._unitID)
-              .then(unit => this._unit = unit)
-              .catch(console.error)
-          this.unitService.freeUnits(this._unitID)
-              .then(unitIDs => this._freeUnitIDs = unitIDs)
-              .catch(console.error)
-        }).catch(console.error)
-  }
-  
-  cancel() {
-    this.router.navigate(['..'], {relativeTo: this.route});
+  clearParent() {
+    delete this.unit.parentUnit
   }
 }
