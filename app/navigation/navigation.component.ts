@@ -78,7 +78,7 @@ import { SemanticModalComponent } from 'ng-semantic'
         </div>
         <div class="required field">
           <label>密碼</label>
-          <input type="password" name="password" placeholder="" [(ngModel)]="registerInfo.password" #register_password="ngModel" required minlength="6" validateEqual="confirm" reverse="true">
+          <input type="password" name="password" placeholder="" [(ngModel)]="registerInfo.password" #register_password="ngModel" required minlength="8" validateEqual="confirm" reverse="true">
         </div>
         <div class="required field">
           <label>密碼確認</label>
@@ -167,7 +167,7 @@ export class NavigationComponent implements OnInit {
       this.loading = this.meService.isLoading.getValue() || this.authService.isLoading.getValue()
     })
     this.standaloneRegisterForm.valueChanges.subscribe(_ => {
-      let messageGenerator = function(field: string, object: any): string {
+      let messageGenerator = function (field: string, object: any): string {
         if (object.required) {
           return `${field} 為必填欄位`
         } else if (object.minlength) {
@@ -196,7 +196,7 @@ export class NavigationComponent implements OnInit {
   }
   login(email: string, password: string) {
     this.loading = true
-    this.authService.login(email, password).then(_ => {})
+    this.authService.login(email, password).then(_ => { })
   }
   logout() {
     this.user = undefined
@@ -206,7 +206,7 @@ export class NavigationComponent implements OnInit {
     }).catch(error => {
       console.warn("無法刪除伺服器端的認證代幣。")
     })
-    
+
     this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
   }
   login_sso(): void {

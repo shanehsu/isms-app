@@ -33,8 +33,9 @@ import { Unit, User } from './../../types/types'
             <input type="text" [(ngModel)]="unit.name" name="name" required>
           </div>
           <div class="field">
-            <label>單位編號</label>
-            <input type="number" min="0" [(ngModel)]="unit.identifier" name="title" required>
+            <label>單位代碼</label>
+            <!-- a) 改成字串 -->
+            <input type="number" min="1000" max="9999" [(ngModel)]="unit.identifier" name="title" required>
           </div>
         </form>
       </div>
@@ -49,7 +50,7 @@ import { Unit, User } from './../../types/types'
             </div>
           </div>
         </div>
-        <div class="ui label" [class.green]="!unit.parentUnit" (click)="clearParent()">沒有母單位</div>
+        <div class="ui label" [class.green]="unit.parentUnit == '' || !unit.parentUnit" (click)="unit.parentUnit = ''">沒有母單位</div>
         <div class="ui label" *ngFor="let unitId of acceptedParents" [class.green]="unit.parentUnit == unitId" (click)="unit.parentUnit = unitId">{{unitMap[unitId].name}}</div>
       </div>
     </div>
@@ -64,6 +65,7 @@ import { Unit, User } from './../../types/types'
           </div>
         </div>
         <div class="column">
+        <!-- 兩個職位 -->
           <div class="ui segments">
             <h2 class="ui top attached header">承辦人</h2>
             <div class="ui attached segment dragula-container" *ngIf="!loadingUsers" [dragula]="'users'" [dragulaModel]="unit.members.agents" [attr.data-container]="'agents'">
