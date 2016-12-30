@@ -8,6 +8,8 @@ import { DragulaModule } from 'ng2-dragula'
 import { pipesModule } from './../../pipes/pipes.module'
 import { UnitsListComponent } from './units-list.component'
 import { UnitDetailComponent } from './unit-detail.component'
+import { NgSemanticModule } from "ng-semantic"
+
 export { UnitsListComponent, UnitDetailComponent }
 
 @Component({
@@ -26,6 +28,7 @@ export class UnitAdminComponent { }
     FormsModule,
     RouterModule,
     DragulaModule,
+    NgSemanticModule,
 
     pipesModule
   ],

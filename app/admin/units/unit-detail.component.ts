@@ -1,5 +1,5 @@
 // Angular 2
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef, QueryList } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 
 // Services
@@ -60,7 +60,7 @@ import { Unit, User } from './../../types/types'
           <div class="ui segments">
             <h2 class="ui top attached header">非單位內人員</h2>
             <div class="ui attached segment dragula-container" style="border-bottom: none; border-radius: 0; min-height: 30em;" [dragula]="'users'" [dragulaModel]="notDelegated" [attr.data-container]="'not-delegated'">
-              <div class="ui label" *ngFor="let user of notDelegated" [attr.data-id]="users[user].id">{{users[user].name}}</div>
+              <div (contextmenu)="onContextMenu($event, i)" class="ui unselectable label" *ngFor="let user of notDelegated; let i = index" [attr.data-id]="users[user].id">{{users[user].name}}</div>
             </div>
           </div>
         </div>
@@ -100,9 +100,19 @@ import { Unit, User } from './../../types/types'
       [disabled]="!unitForm.form.valid" data-content="該按鈕只能更新單位名稱以及單位編號。" [class.loading]="updating" (click)="update()">更新</button>
     </div>
   </div>
+  <!-- 快顯功能表 -->
+  <sm-contextmenu [position]="menuPosition" [items]="menuItems"></sm-contextmenu>
   `,
   styles: [
-    `.dragula-container { min-height: 5em; }`
+    `.dragula-container { min-height: 5em; }`,
+    `.unselectable {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }`
   ]
 })
 
@@ -124,6 +134,10 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private acceptedParents: string[]
   private updating: boolean
+
+  private contextMenuUserIndex: number
+  menuItems = []
+  menuPosition = { x: -100, y: -100 }
 
   constructor(private router: Router, private route: ActivatedRoute, private unitService: UnitService,
     private userService: UserService, private dragulaService: DragulaService) { }
@@ -179,10 +193,17 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
               return false
             }
           } else if (destination == 'vendors') {
-            console.log('verdict is false.')
             return false
-          } else {
+          } else if (destination == 'agents') {
+            if (this.unit.members.agents.includes(id)) {
+              return false
+            } else {
+              return true
+            }
+          } else if (destination == 'not-delegated') {
             return true
+          } else {
+            return false
           }
         }
       }
@@ -224,10 +245,13 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       let allUsers = await this.userService.get() as User[]
       allUsers.forEach(user => this.users[user.id] = user)
       let usersInUnit = this.units.reduce((users, unit) => {
-        let values = [...users,
-        ...unit.members.agents,
-        ...unit.members.none,
-        ...unit.members.vendors]
+        let values = [
+          ...users,
+          ...unit.members.agents,
+          ...unit.members.none,
+          ...unit.members.vendors
+        ]
+
         if (unit.members.docsControl) {
           values.push(unit.members.docsControl)
         }
@@ -258,7 +282,7 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       this.units = await this.unitService.units()
       this.unit = this.units.find(unit => unit.id == unitId)
-      // 找到自己所有的小孩
+
       let recursiveChildren: string[] = []
       let current = unitId
       while (current) {
@@ -270,9 +294,6 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
           break
         }
       }
-
-      console.log('childs')
-      console.dir(recursiveChildren)
 
       // 過濾
       for (let unit of this.units) {
@@ -300,11 +321,34 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       await this.unitService.update(this.unit)
     } catch (err) {
-
+      // TODO: 錯誤處理
     }
     this.updating = false
   }
-  clearParent() {
-    delete this.unit.parentUnit
+  onContextMenu(event: MouseEvent, userIndex: number) {
+    this.contextMenuUserIndex = userIndex
+    this.menuItems = [
+      {
+        action: (): void => { this.notDelegated.push(this.notDelegated[this.contextMenuUserIndex]) },
+        icon: "clone",
+        method: 1,
+        title: "重製",
+      }
+    ]
+
+    let id = this.notDelegated[this.contextMenuUserIndex]
+    if (this.notDelegated.reduce((count, value) => { return count + ((value == id) ? 1 : 0) }, 0) >= 2) {
+      this.menuItems.push({
+        action: (): void => {
+          this.notDelegated.splice(this.contextMenuUserIndex, 1)
+        },
+        icon: "remove",
+        method: 1,
+        title: "移除",
+      })
+    }
+
+    this.menuPosition = { x: event.clientX, y: event.clientY }
+    event.preventDefault()
   }
 }

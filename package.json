@@ -14,6 +14,7 @@
     "@angular/platform-browser-dynamic": "2.0.0",
     "@angular/router": "3.0.0",
     "@types/jquery": "^2.0.34",
+    "angular2-contextmenu": "^0.6.0",
     "core-js": "^2.4.0",
     "dragula": "^3.7.2",
     "express": "^4.14.0",

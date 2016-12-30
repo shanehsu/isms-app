@@ -22,7 +22,8 @@
     'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
     'rxjs': 'npm:rxjs',
     'ng-semantic': 'npm:ng-semantic',
-    'ng2-dragula': 'npm:ng2-dragula/bundles'
+    'ng2-dragula': 'npm:ng2-dragula/bundles',
+    'angular2-contextmenu': 'npm:angular2-contextmenu'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -30,7 +31,8 @@
     'rxjs': { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { defaultExtension: 'js' },
     'ng-semantic': { main: 'ng-semantic.js', defaultExtension: 'js' },
-    'ng2-dragula': { main: 'ng2-dragula.umd.js', defaultExtension: 'js' }
+    'ng2-dragula': { main: 'ng2-dragula.umd.js', defaultExtension: 'js' },
+    'angular2-contextmenu': { defaultExtension: 'js' }
   }
   var config = {
     paths: paths,
