@@ -214,9 +214,12 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.usersLoadingError = null
     this.users = {}
     this.notDelegated = []
-    this.docsControl = []
-    this.manager = []
-
+    if (this.unit.members.docsControl) {
+      this.docsControl = [this.unit.members.docsControl]
+    }
+    if (this.unit.members.manager) {
+      this.manager = [this.unit.members.manager]
+    }
     try {
       let allUsers = await this.userService.get() as User[]
       allUsers.forEach(user => this.users[user.id] = user)
@@ -276,9 +279,6 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         this.unitMap[unit.id] = unit
       }
       this.acceptedParents = this.units.filter(unit => !recursiveChildren.includes(unit.id)).map(unit => unit.id)
-
-      this.docsControl = [this.unit.members.docsControl]
-      this.manager = [this.unit.members.manager]
 
       this.reloadUsers()
     } catch (err) {
