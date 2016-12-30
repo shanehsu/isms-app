@@ -41,3 +41,5 @@ server.key
 server.csr
 
 server.key.org
+
+.DS_Store
