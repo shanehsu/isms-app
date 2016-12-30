@@ -277,8 +277,9 @@ export class UnitDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.acceptedParents = this.units.filter(unit => !recursiveChildren.includes(unit.id)).map(unit => unit.id)
 
-      console.log('acceptedParents')
-      console.dir(this.acceptedParents)
+      this.docsControl = [this.unit.members.docsControl]
+      this.manager = [this.unit.members.manager]
+
       this.reloadUsers()
     } catch (err) {
       this.unitsLoadingError = err
