@@ -1,13 +1,22 @@
-export interface FormRevision {
+import { Group } from './group'
+import { Field } from './field'
+
+export class FormRevision {
+  constructor(json: any) {
+
+  }
+
+  get id() {
+    return this._id
+  }
+
   _id: string
-  revision: number
+  number: number
   signatures: boolean
-  officerSignature: boolean
-  group: number
-  secrecyLevel: number
-  template: string
+  skipImmediateChief: boolean
   published: boolean
-  
-  // 回傳一群 id
-  fields: [string]
+  groups: Group[]
+  secrecy: number
+  template: string
+  fields: Field[]
 }
