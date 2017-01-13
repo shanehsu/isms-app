@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core'
-import { Http, Headers } from '@angular/http'
+import { Http, Headers, RequestOptionsArgs, URLSearchParams } from '@angular/http'
 
 // 登入服務
 import { AuthService } from './auth.service'
@@ -7,74 +7,64 @@ import { AuthService } from './auth.service'
 // 三個在這個服務中會用的基本型態
 import { Form, FormRevision, Field } from './../types/types'
 
+export type Scope = 'Management' | 'Filling'
+
 @Injectable()
 export class FormService {
-  private baseURL: string
-
+  private endpoint: string
   constructor(private authService: AuthService,
     @Inject("app.config") private config,
     private http: Http) {
-    this.baseURL = config.endpoint + '/forms'
+    this.endpoint = config.endpoint + '/forms'
   }
   /**
-   * 取得現在登入的使用者，可以填寫的所有表單
-   * 
+   * 取得現在登入的使用者，可以填寫或是管理的所有表單
    * 只會回傳 id, name, identifier
-   * 並不包含表單內容！
    */
-  forms(): Promise<Form[]> {
+  forms(purpose: Scope): Promise<Form[]> {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
-      headers: headers
+    let search = new URLSearchParams()
+    if (purpose == 'Management') {
+      search.set('scope', 'admin')
     }
-    let URL = this.baseURL
+    let options: RequestOptionsArgs = {
+      headers: headers,
+      search: search
+    }
+    let URL = this.endpoint
 
     return new Promise<Form[]>((resolve, reject) => {
       this.http.get(URL, options).map(res => res.json())
-        .subscribe(forms => {
-          let array = <any[]>forms
-          resolve(array.map(element => <Form>element))
-        })
-    })
-  }
-
-  fillableForms(): Promise<Form[]> {
-    let headers = new Headers({
-      token: this.authService.token.getValue()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/?type=fillable'
-
-    return new Promise<Form[]>((resolve, reject) => {
-      this.http.get(URL, options).map(res => res.json())
-        .subscribe(forms => {
-          let array = <any[]>forms
-          resolve(array.map(element => <Form>element))
-        })
+        .map((forms: any[]) => forms.map($0 => new Form($0)))
+        .subscribe(resolve, reject)
     })
   }
 
   /**
-   * 取得特定表單內容
+   * 取得一個表單
    */
-  form(id: string): Promise<Form> {
+  form(id: string, purpose: Scope, revision?: number): Promise<Form> {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
-      headers: headers
+    let search = new URLSearchParams()
+    if (purpose == 'Management') {
+      search.set('scope', 'admin')
+    } else if (revision) {
+      search.set('revisionNumber', revision.toString())
     }
-    let URL = this.baseURL + '/' + id
+    let options = {
+      headers: headers,
+      search: search
+    }
+    let endpoint = this.endpoint + '/' + id
 
     return new Promise<Form>((resolve, reject) => {
-      this.http.get(URL, options).map(res => res.json())
-        .subscribe(form => {
-          resolve(<Form>form)
-        })
+      this.http.get(endpoint, options).map(res => res.json())
+        .map($0 => new Form($0))
+        .subscribe(resolve, reject)
     })
   }
 
@@ -83,113 +73,79 @@ export class FormService {
    * 
    * 回傳表單的 id
    */
-  new(): Promise<string> {
+  create(): Promise<string> {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers,
     }
-    let URL = this.baseURL
+    let endpoint = this.endpoint
 
     return new Promise<string>((resolve, reject) => {
-      this.http.post(URL, '', options)
+      this.http.post(endpoint, '', options)
         .map(res => res.text())
         .subscribe(resolve, reject)
     })
+  }
+
+  async agents() {
+    let endpoint = this.endpoint + '/associatedAgents'
+    let agents = await this.http.get(endpoint).map($0 => $0.json()).toPromise()
+    return <{ id: string, name: string }[]>agents
   }
 
   /** 
    * 更新一個表單
    */
-  update(form: Form): Promise<void> {
+  async update(form: Form) {
     let headers = new Headers({
       token: this.authService.token.getValue(),
       'Content-Type': 'application/json'
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers
     }
-    let URL = this.baseURL + '/' + form._id
+    let URL = this.endpoint + `/${form.id}`
     let payloadObject = {
       name: form.name,
       identifier: form.identifier
     }
     let payload = JSON.stringify(payloadObject)
-
-    return new Promise<void>((resolve, reject) => {
-      this.http.put(URL, payload, options)
-        .subscribe(() => resolve(), reject)
-    })
+    await this.http.put(URL, payload, options).toPromise()
   }
 
   /**
    * 刪除一個表單
    */
-  delete(id: string): Promise<void> {
+  async delete(id: string) {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers
     }
-    let URL = this.baseURL + '/' + id
+    let URL = this.endpoint + `/${id}`
 
-    return new Promise<void>((resolve, reject) => {
-      this.http.delete(URL, options)
-        .subscribe(() => resolve(), reject)
-    })
+    await this.http.delete(URL, options).toPromise()
   }
 
-  /**
-   * SECTION
-   * 
-   * 表單版本
-   */
+  /// SECTION - 表單版本
 
-  /**
-   * 取得特定表單版本
-   */
-  revision(formID: string, revisionID: string): Promise<FormRevision> {
+  /** 新增表單版本 */
+  async createRevision(formId: string) {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers
     }
-    let URL = this.baseURL + '/revisions/' + formID + '/' + revisionID
+    let endpoint = this.endpoint + `${formId}/revisions/`
 
-    return new Promise<FormRevision>((resolve, reject) => {
-      this.http.get(URL, options).map(res => res.json())
-        .subscribe(formRevision => {
-          resolve(<FormRevision>formRevision)
-        })
-    })
+    await this.http.post(endpoint, '', options).map(res => res.text()).toPromise()
   }
-
-  /**
-   * 新增表單版本
-   */
-  newRevision(formID: string): Promise<string> {
-    let headers = new Headers({
-      token: this.authService.token.getValue()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/revisions/' + formID
-
-    return new Promise<string>((resolve, reject) => {
-      this.http.post(URL, '', options)
-        .map(res => res.text())
-        .subscribe(resolve, reject)
-    })
-  }
-
-  /**
-   * 更新表單版本
-   */
-  updateRevision(formID: string, revision: FormRevision): Promise<void> {
+  /** 更新表單版本 */
+  async updateRevision(formId: string, revision: FormRevision) {
     let headers = new Headers({
       token: this.authService.token.getValue(),
       'Content-Type': 'application/json'
@@ -197,156 +153,22 @@ export class FormService {
     let options = {
       headers: headers
     }
-    let URL = this.baseURL + '/revisions/' + formID + '/' + revision._id
-
-    let payloadObject = {
-      revision: revision.revision,
-      signatures: revision.signatures,
-      officerSignature: revision.officerSignature,
-      group: revision.group,
-      secrecyLevel: revision.secrecyLevel
-    }
-    let payload = JSON.stringify(payloadObject)
-
-    return new Promise<void>((resolve, reject) => {
-      this.http.put(URL, payload, options)
-        .subscribe(() => resolve(), reject)
-    })
-  }
-
-  /**
-   * 發佈版本
-   */
-  publishRevision(formID: string, revision: FormRevision): Promise<void> {
-    let headers = new Headers({
-      token: this.authService.token.getValue(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/revisions/' + formID + '/' + revision._id + '/publish'
-
-    let payloadObject = {}
-    let payload = JSON.stringify(payloadObject)
-
-    return new Promise<void>((resolve, reject) => {
-      this.http.put(URL, payload, options)
-        .subscribe(() => resolve(), reject)
-    })
+    let endpoint = this.endpoint + `/forms/${formId}/revisions/${revision.id}`
+    let payload = JSON.stringify(revision)
+    await this.http.put(endpoint, payload, options).toPromise()
   }
 
   /**
    * 刪除表單版本
    */
-  deleteRevision(formID: string, revisionID: string): Promise<void> {
+  async deleteRevision(formId: string, revision: number) {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers
     }
-    let URL = this.baseURL + '/revisions/' + formID + '/' + revisionID
-
-    return new Promise<void>((resolve, reject) => {
-      this.http.delete(URL, options)
-        .subscribe(() => resolve(), reject)
-    })
-  }
-
-  /**
-   * SECTION
-   * 
-   * 表單欄位
-   */
-
-  /**
-   * 取得特定表單欄位
-   */
-  field(formID: string, revisionID: string, fieldID: string): Promise<Field> {
-    let headers = new Headers({
-      token: this.authService.token.getValue()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID
-
-    return new Promise<Field>((resolve, reject) => {
-      this.http.get(URL, options).map(res => res.json())
-        .subscribe(field => {
-          resolve({
-            _id: field._id,
-            name: field.name,
-            type: field.type,
-            hint: field.hint,
-            metadata: JSON.parse(field.metadata)
-          })
-        })
-    })
-  }
-
-  /**
-   * 新增表單欄位
-   */
-  newField(formID: string, revisionID: string): Promise<string> {
-    let headers = new Headers({
-      token: this.authService.token.getValue()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/revisions/fields/' + formID + '/' + revisionID
-
-    return new Promise<string>((resolve, reject) => {
-      this.http.post(URL, '', options)
-        .map(res => res.text())
-        .subscribe(resolve, reject)
-    })
-  }
-
-  /**
-   * 更新表單欄位
-   */
-  updateField(formID: string, revisionID: string, field: Field): Promise<void> {
-    let headers = new Headers({
-      token: this.authService.token.getValue(),
-      'Content-Type': 'application/json'
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + field._id
-
-    let payloadObject = {
-      name: field.name,
-      type: field.type,
-      hint: field.hint,
-      metadata: JSON.stringify(field.metadata)
-    }
-    let payload = JSON.stringify(payloadObject)
-
-    return new Promise<void>((resolve, reject) => {
-      this.http.put(URL, payload, options)
-        .subscribe(() => resolve(), reject)
-    })
-  }
-
-  /**
-   * 刪除表單欄位
-   */
-  deleteField(formID: string, revisionID: string, fieldID: string): Promise<void> {
-    let headers = new Headers({
-      token: this.authService.token.getValue()
-    })
-    let options = {
-      headers: headers
-    }
-    let URL = this.baseURL + '/revisions/fields/' + formID + '/' + revisionID + '/' + fieldID
-
-    return new Promise<void>((resolve, reject) => {
-      this.http.delete(URL, options)
-        .subscribe(() => resolve(), reject)
-    })
+    let endpoint = this.endpoint + `/${formId}/revisions/${revision}`
+    await this.http.delete(endpoint, options)
   }
 }
