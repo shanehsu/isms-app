@@ -1,31 +1,32 @@
 // Angular 2
-import {Self, Input, Output, Component, EventEmitter, OnInit, OnChanges, forwardRef, AfterViewInit, ViewChildren, QueryList} from '@angular/core'
-import {ControlValueAccessor, NgModel} from '@angular/forms'
+import { Self, Input, Output, Component, EventEmitter, OnInit, OnChanges, forwardRef, AfterViewInit, ViewChildren, QueryList } from '@angular/core'
+import { ControlValueAccessor, NgModel } from '@angular/forms'
 
 // 服務
-import {FormService} from './../../services/form.service'
+import { FormService } from './../../services/form.service'
 
 // 基本型態
-import {Field, FormRevision} from './../../types/types'
+import { Group } from './../../types/group'
+import { Field, FormRevision } from './../../types/types'
 
 // 子元件
-import {FieldComponent} from './field.component'
+import { FieldComponent } from './field.component'
 
 @Component({
   selector: 'revision',
   template: `
-  <form id="revisionForm" class="ui form" (ngSubmit)="submit_revision()" #revisionForm="ngForm">
+  <form id="revisionForm" class="ui form" (ngSubmit)="submitrevision()" #revisionForm="ngForm">
     <div class="field">
       <label>ID</label>
-      <p>{{_revision?._id}}</p>
+      <p>{{revision?._id}}</p>
     </div>
     <div class="field">
       <label>已發佈</label>
-      <p>{{_revision?.published ? '是' : '否'}}</p>
+      <p>{{revision?.published ? '是' : '否'}}</p>
     </div>
     <div class="field">
       <label>版本</label>
-      <input type="number" min="1.0" step="0.1" [(ngModel)]="_revision.revision" name="revision" required>
+      <input type="number" min="1.0" step="0.1" [(ngModel)]="revision.number" name="number" required>
     </div>
 
     <div class="field">
@@ -33,13 +34,13 @@ import {FieldComponent} from './field.component'
       <div class="inline fields">
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="signaturesRadio" value="false" [checked]="_revision.signatures == false" (change)="_revision.signatures = false">
+            <input type="radio" name="signaturesRadio" value="false" [checked]="revision.signatures == false" (change)="revision.signatures = false">
             <label>不需要</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="signaturesRadio" value="true" [checked]="_revision.signatures == true" (change)="_revision.signatures = true">
+            <input type="radio" name="signaturesRadio" value="true" [checked]="revision.signatures == true" (change)="revision.signatures = true">
             <label>需要</label>
           </div>
         </div>
@@ -51,13 +52,13 @@ import {FieldComponent} from './field.component'
       <div class="inline fields">
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="officerSignatureRadio" value="false" [checked]="_revision.officerSignature == false" (change)="_revision.officerSignature = false">
+            <input type="radio" name="skipImmediateChiefRadio" value="true" [checked]="revision.skipImmediateChief == true" (change)="revision.skipImmediateChief = true">
             <label>不需要</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="officerSignatureRadio" value="true" [checked]="_revision.officerSignature == true" (change)="_revision.officerSignature = true">
+            <input type="radio" name="skipImmediateChiefRadio" value="false" [checked]="revision.skipImmediateChief == false" (change)="revision.skipImmediateChief = false">
             <label>需要</label>
           </div>
         </div>
@@ -68,21 +69,27 @@ import {FieldComponent} from './field.component'
       <label>權限</label>
       <div class="inline fields">
         <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="groupRadio" value="1" [checked]="_revision.group == 1" (change)="_revision.group = 1">
+          <div class="ui checkbox">
+            <input type="checkbox" name="groupCheckbox" [checked]="revision.groups.includes('admins')" (change)="toggleGroup('admins', $event)">
             <label>管理員</label>
           </div>
         </div>
         <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="groupRadio" value="2" [checked]="_revision.group == 2" (change)="_revision.group = 2">
+          <div class="ui checkbox">
+            <input type="checkbox" name="groupCheckbox" [checked]="revision.groups.includes('securityPersonnel')" (change)="toggleGroup('securityPersonnel', $event)">
             <label>資訊安全人員</label>
           </div>
         </div>
         <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="groupRadio" value="3" [checked]="_revision.group == 3" (change)="_revision.group = 3">
-            <label>一般使用者</label>
+          <div class="ui checkbox">
+            <input type="checkbox" name="groupCheckbox" [checked]="revision.groups.includes('users')" (change)="toggleGroup('users', $event)">
+            <label>校內人士</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" name="groupCheckbox" [checked]="revision.groups.includes('vendors')" (change)="toggleGroup('vendors', $event)">
+            <label>廠商</label>
           </div>
         </div>
       </div>
@@ -93,25 +100,25 @@ import {FieldComponent} from './field.component'
       <div class="inline fields">
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="secrecyLevelRadio" value="1" [checked]="_revision.secrecyLevel == 1" (change)="_revision.secrecyLevel = 1">
+            <input type="radio" name="secrecyRadio" value="1" [checked]="revision.secrecy == 1" (change)="revision.secrecy = 1">
             <label>機密</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="secrecyLevelRadio" value="2" [checked]="_revision.secrecyLevel == 2" (change)="_revision.secrecyLevel = 2">
+            <input type="radio" name="secrecyRadio" value="2" [checked]="revision.secrecy == 2" (change)="revision.secrecy = 2">
             <label>敏感</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="secrecyLevelRadio" value="3" [checked]="_revision.secrecyLevel == 3" (change)="_revision.secrecyLevel = 3">
+            <input type="radio" name="secrecyRadio" value="3" [checked]="revision.secrecy == 3" (change)="revision.secrecy = 3">
             <label>限閱</label>
           </div>
         </div>
         <div class="field">
           <div class="ui radio checkbox">
-            <input type="radio" name="secrecyLevelRadio" value="4" [checked]="_revision.secrecyLevel == 4" (change)="_revision.secrecyLevel = 4">
+            <input type="radio" name="secrecyRadio" value="4" [checked]="revision.secrecy == 4" (change)="revision.secrecy = 4">
             <label>一般</label>
           </div>
         </div>
@@ -119,11 +126,13 @@ import {FieldComponent} from './field.component'
     </div>
 
     <div style="text-align: right;">
-      <button type="button" class="ui teal basic button" (click)="publish_revision()" *ngIf="!_revision.published" [class.loading]="isPublishing">發佈</button>
-      <button type="button" class="ui red basic button" (click)="delete_revision()" *ngIf="!_revision.published" [class.loading]="isDeleting">刪除</button>
+      <button type="button" class="ui teal basic button" (click)="publishrevision()" *ngIf="!revision.published" [class.loading]="isPublishing">發佈</button>
+      <button type="button" class="ui red basic button" (click)="deleterevision()" *ngIf="!revision.published" [class.loading]="isDeleting">刪除</button>
       <button type="submit" id="update_button" class="ui basic button" [class.green]="revisionForm.form.valid" [class.red]="!revisionForm.form.valid"
         [disabled]="!revisionForm.form.valid" [class.loading]="isUpdating">更新</button>
     </div>
+
+    <pre>{{revision | json}}</pre>
   </form>
 
   <div class="ui secdion divider"></div>
@@ -132,9 +141,9 @@ import {FieldComponent} from './field.component'
     <h3 class="ui header" style="clear: none;">表單欄位</h3>
     <a class="link" (click)="toggleCollapse()" style="float: right;">展開／收合表單欄位</a>
     <p><small>每個版本有自己的欄位設計。</small></p>
-    <div *ngIf="fields.length != 0" class="ui segments">
-      <div class="ui segment" style="overflow: auto;" *ngFor="let _ of fields; let i = index; let coloring = odd;" [class.secondary]="coloring">
-        <field *ngIf="fields[i]" [(ngModel)]="fields[i]" [update-button]="true" (reload)="reloadField(fields[i], $event)" (update)="updateField(fields[i], $event)" (delete)="deleteField(fields[i])"></field>
+    <div *ngIf="revision.fields.length != 0" class="ui segments">
+      <div class="ui segment" style="overflow: auto;" *ngFor="let _ of revision.fields; let i = index; let coloring = odd;" [class.secondary]="coloring">
+        <field [(ngModel)]="revision.fields[i]" [update-button]="false" (delete)="revision.fields.splice(i, 1)"></field>
       </div>
     </div>
     <div style="text-align: center;">
@@ -154,28 +163,27 @@ export class RevisionComponent implements OnInit, OnChanges, ControlValueAccesso
   @Output('update') _shouldUpdate = new EventEmitter<() => void>()
   @Output('delete') _shouldDelete = new EventEmitter<null>()
   @Output('publish') _shouldPublish = new EventEmitter<() => void>()
-  
+
   // 子元件
   @ViewChildren(FieldComponent) fieldFormComponents: QueryList<FieldComponent>
-  
+
   // ControlValueAccessor Callbacks
   private change: (_: any) => void
   private touched: () => void
-  
+
   private isDeleting: boolean
   private isPublishing: boolean
   private isUpdating: boolean
-  private _revision: FormRevision
-  
+  private revision: FormRevision
+
   private isCreatingField: boolean
-  private fields: (Field | undefined)[] = []
   private isLoadingFields: boolean
   private areFieldsCollapsed: boolean
 
   // 服務
   // 簡單初始化
-  constructor(private _formService: FormService, @Self() private _model: NgModel) {
-    _model.valueAccessor = this
+  constructor(private formService: FormService, @Self() private model: NgModel) {
+    model.valueAccessor = this
   }
 
   // 生命週期掛鉤
@@ -187,7 +195,7 @@ export class RevisionComponent implements OnInit, OnChanges, ControlValueAccesso
     this.areFieldsCollapsed = false
   }
   ngAfterViewInit() {
-    ($('form#revisionForm * * * .ui.radio.checkbox') as any).checkbox()
+    ($('form#revisionForm * * * .ui.checkbox') as any).checkbox()
   }
   ngOnChanges() {
   }
@@ -195,24 +203,24 @@ export class RevisionComponent implements OnInit, OnChanges, ControlValueAccesso
   // 收合子元件
   toggleCollapse(): void {
     let expectedState = !this.areFieldsCollapsed
-    
+
     this.fieldFormComponents.forEach(fieldFormComponent => {
       fieldFormComponent.isCollapsed = expectedState
     })
-    
+
     this.areFieldsCollapsed = expectedState
   }
 
   // 動作
-  submit_revision(): void {
+  submitrevision(): void {
     this.isUpdating = true
     this._shouldUpdate.emit(() => { this.isUpdating = false; })
   }
-  publish_revision(): void {
+  publishrevision(): void {
     this.isPublishing = true
     this._shouldPublish.emit(() => { this.isPublishing = false; })
   }
-  delete_revision(): void {
+  deleterevision(): void {
     this.isDeleting = true
     this._shouldDelete.emit(null)
   }
@@ -232,76 +240,28 @@ export class RevisionComponent implements OnInit, OnChanges, ControlValueAccesso
     this.isPublishing = false
     this.isUpdating = false
     this.isCreatingField = false
-    
+
     if (!value) {
-      this._revision = <FormRevision>{}
+      this.revision = this.formService.placeholderRevision
     } else {
-      this._revision = value
-
-      this.isLoadingFields = this._revision.fields.length > 0
-      this.fields = this._revision.fields.map(_ => undefined)
-      this._revision.fields.forEach((id, index) => {
-        this._formService.field(this._formID, this._revision._id, id).then(field => {
-          this.fields[index] = field
-
-          if (this.fields.indexOf(undefined) < 0) {
-            this.isLoadingFields = false
-          }
-        }).catch(err => {
-          console.error('無法取得欄位')
-          console.error(err)
-        })
-      })
+      this.revision = value
     }
   }
 
-  // SECTION - 欄位
-  reloadField(field: Field, finishedReloading: () => void) {
-    let id = field._id
-    
-    this._formService.field(this._formID, this._revision._id, id).then(fetchedField => {
-      let index = this.fields.findIndex(field => field!._id == id)
-      if (index >= 0) this.fields[index] = fetchedField
-      finishedReloading()
-    }).catch(err => {
-      console.error('欄位載入失敗')
-      console.error(err)
-    })
+  toggleGroup(group: Group, event: Event) {
+    let sourceElement = event.srcElement as HTMLInputElement
+    let value = sourceElement.checked
+
+    if (value && !this.revision.groups.includes(group)) {
+      // 加入
+      this.revision.groups.push(group)
+    } else if (!value && this.revision.groups.includes(group)) {
+      // 移出
+      this.revision.groups.splice(this.revision.groups.indexOf(group), 1)
+    }
   }
-  updateField(field: Field, finishedUpdating: () => void) {
-    this._formService.updateField(this._formID, this._revision._id, field).then(() => {
-      console.log('欄位更新成功')
-      finishedUpdating()
-    }).catch(err => {
-      console.error('欄位更新失敗')
-      console.error(err)
-    })
-  }
-  deleteField(field: Field) {
-    this._formService.deleteField(this._formID, this._revision._id, field._id).then(() => {
-      console.log('欄位刪除成功')
-      
-      this.fields.splice(this.fields.indexOf(field), 1)
-    }).catch(err => {
-      console.error('欄位刪除失敗')
-      console.error(err)
-    })
-  }
-  createField(field: Field) {
-    this.isCreatingField = true
-    this._formService.newField(this._formID, this._revision._id).then(id => {
-      console.log('增加欄位成功，嘗試取得欄位')
-      
-      this._formService.field(this._formID, this._revision._id, id).then(field => {
-        this.fields.push(field)
-        this.isCreatingField = false
-      }).catch(err => {
-        console.error('取得剛剛增加的欄位失敗')
-        console.error(err)
-      })
-    }).catch(err => {
-      console.error('增加欄位失敗')
-      console.error(err)
-    })
+
+  createField() {
+    this.revision.fields.push(this.formService.placeholderField)
   }
 }

@@ -3,7 +3,8 @@ import { Field } from './field'
 
 export class FormRevision {
   constructor(json: any) {
-
+    Object.assign(this, json)
+    this.fields = json.fields.map(field => new Field(field))
   }
 
   get id() {

@@ -1,18 +1,18 @@
 // Angular 2
-import {Self, Input, Output, Component, EventEmitter, OnInit, AfterViewInit, ViewChild, Inject} from '@angular/core'
-import {ControlValueAccessor, NgModel} from '@angular/forms'
+import { Self, Input, Output, Component, EventEmitter, OnInit, AfterViewInit, ViewChild, Inject } from '@angular/core'
+import { ControlValueAccessor, NgModel } from '@angular/forms'
 
 // 服務
-import {FormService} from './../../services/form.service'
+import { FormService } from './../../services/form.service'
 
 // 基本型態
-import {Field} from './../../types/types'
+import { Field } from './../../types/types'
 
 // 子元件
-import {EmptyFieldMetadataComponent, TableFieldMetadataComponent, OptionFieldMetadataComponent} from './field-metadata.component'
+import { EmptyFieldMetadataComponent, TableFieldMetadataComponent, OptionFieldMetadataComponent } from './field-metadata.component'
 
-import {RandomString} from './../../util'
-import {Pipe, PipeTransform} from '@angular/core';
+import { RandomString } from './../../util'
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Component({
   selector: 'field',
@@ -23,10 +23,6 @@ import {Pipe, PipeTransform} from '@angular/core';
     <p>類型：{{field.type | fieldType}}</p>
   </div>
   <form class="ui form" (ngSubmit)="updateField()" #fieldForm="ngForm" [style.display]="isCollapsed ? 'none' : 'initial'">
-    <div class="field" style="clear: none;">
-      <label>ID</label>
-      <p>{{field._id}}</p>
-    </div>
     <div class="field">
       <label>名稱</label>
       <input type="text" [(ngModel)]="field.name" name="name" (change)="emitValue()" required>
@@ -63,33 +59,33 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 export class FieldComponent implements OnInit, AfterViewInit, ControlValueAccessor {
   @Input('update-button') shouldShowUpdateButton: boolean
-  
+
   // 事件：更新或是刪除一個欄位
   @Output('reload') reload = new EventEmitter<() => void>()
   @Output('update') update = new EventEmitter<() => void>()
   @Output('delete') delete = new EventEmitter<null>()
-  
+
   // 將會由 ngModel 所管理的資料
   private field: Field
-  
+
   // Angular 給我們的 Callback 函數
   private change: (_: any) => void
   private touched: () => void
-  
+
   // 「欄位類型」單選 input 的 HTML ID
   private _radioUID: string
-  
+
   // 狀態
   private isReloading: boolean
   private isUpdating: boolean
   private isDeleting: boolean
-  public  isCollapsed: boolean
-  
+  public isCollapsed: boolean
+
   // 建構子：服務
-  constructor(@Self() private model: NgModel, private _formService: FormService, @Inject('fieldTypes') private fieldTypes: {label: string, value: string}[]) {
+  constructor( @Self() private model: NgModel, private _formService: FormService, @Inject('fieldTypes') private fieldTypes: { label: string, value: string }[]) {
     model.valueAccessor = this
   }
-  
+
   // 生命週期
   ngOnInit(): void {
     this.field = <Field>{}
@@ -107,7 +103,7 @@ export class FieldComponent implements OnInit, AfterViewInit, ControlValueAccess
   writeValue(value: any): void {
     this.field = value
   }
-  
+
   // 按鈕動作：更新與刪除
   reloadField(): void {
     this.isReloading = true
@@ -121,12 +117,12 @@ export class FieldComponent implements OnInit, AfterViewInit, ControlValueAccess
     this.isDeleting = true
     this.delete.emit(null)
   }
-  
+
   // 按鈕動作：展開、收合
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed
   }
-  
+
   // ControlValueAccessor - 註冊函數
   registerOnChange(fn: (_: any) => void): void {
     this.change = fn
@@ -134,7 +130,7 @@ export class FieldComponent implements OnInit, AfterViewInit, ControlValueAccess
   registerOnTouched(fn: () => void): void {
     this.touched = fn
   }
-  
+
   表單改動
   emitValue(): void {
     this.change(this.field)

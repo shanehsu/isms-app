@@ -17,6 +17,35 @@ export class FormService {
     private http: Http) {
     this.endpoint = config.endpoint + '/forms'
   }
+  get placeholder(): Form {
+    return new Form({
+      _id: '507f191e810c19729de860ea',
+      name: 'Placeholder 表單',
+      identifier: 'ISMS-PLACEHOLDER-FORM',
+      revisions: []
+    })
+  }
+  get placeholderRevision(): FormRevision {
+    return new FormRevision({
+      _id: '',
+      number: 1.0,
+      signatures: false,
+      skipImmediateChief: false,
+      published: false,
+      groups: [],
+      secrecy: 1,
+      template: '',
+      fields: []
+    })
+  }
+  get placeholderField(): Field {
+    return new Field({
+      name: 'Field Name',
+      type: 'shortText',
+      hint: '',
+      metadata: {}
+    })
+  }
   /**
    * 取得現在登入的使用者，可以填寫或是管理的所有表單
    * 只會回傳 id, name, identifier
@@ -140,12 +169,12 @@ export class FormService {
     let options: RequestOptionsArgs = {
       headers: headers
     }
-    let endpoint = this.endpoint + `${formId}/revisions/`
+    let endpoint = this.endpoint + `/${formId}/revisions/`
 
     await this.http.post(endpoint, '', options).map(res => res.text()).toPromise()
   }
   /** 更新表單版本 */
-  async updateRevision(formId: string, revision: FormRevision) {
+  async updateRevision(formId: string, revisionNumber: number, revision: FormRevision) {
     let headers = new Headers({
       token: this.authService.token.getValue(),
       'Content-Type': 'application/json'
@@ -153,7 +182,7 @@ export class FormService {
     let options = {
       headers: headers
     }
-    let endpoint = this.endpoint + `/forms/${formId}/revisions/${revision.id}`
+    let endpoint = this.endpoint + `/${formId}/revisions/${revisionNumber}`
     let payload = JSON.stringify(revision)
     await this.http.put(endpoint, payload, options).toPromise()
   }
@@ -161,14 +190,16 @@ export class FormService {
   /**
    * 刪除表單版本
    */
-  async deleteRevision(formId: string, revision: number) {
+  async deleteRevision(formId: string, revisionNumber: number) {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
     let options: RequestOptionsArgs = {
       headers: headers
     }
-    let endpoint = this.endpoint + `/${formId}/revisions/${revision}`
-    await this.http.delete(endpoint, options)
+    let endpoint = this.endpoint + `/${formId}/revisions/${revisionNumber}`
+    await this.http.delete(endpoint, options).toPromise()
+
+    console.log('Deleted')
   }
 }
