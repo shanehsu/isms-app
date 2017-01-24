@@ -1,73 +1,25 @@
-export interface Signature {
-  id: string
+export class Signature {
   personnel: string
-  signed: boolean
   timestamp: Date
+  signed: boolean
 }
-export interface Record {
-  id: string
-  created: Date
-  data: any
+
+export class Record {
+  constructor(json: any) {
+    Object.assign(this, json)
+    this.created = new Date(this.created)
+  }
+
+  get id() { return this._id; }
+  _id?: string
   formID: string
   formRevision: string
-  owner: string
   owningUnit: string
-  serial: number
-  signatures: Signature[]
-} 
-export interface PopulatedRecord {
-  id: string
   created: Date
-  form: {
-    id: string,
-    name: string
-  }
-  revision: {
-    id: string,
-    version: number
-  }
-  owner: {
-    id: string,
-    name: string
-  }
-  owningUnit: {
-    id: string,
-    identifier: string,
-    name: string
-  }
   serial: number
+  generatedSerial: string
+  owner: string
+  status: "awaiting_review" | "accepted" | "declined"
   signatures: Signature[]
-}
-export interface SinglePopulatedRecord {
-  id: string
-  created: Date
-  form: {
-    id: string,
-    name: string
-  }
-  revision: {
-    id: string,
-    version: number
-  }
-  owner: {
-    id: string,
-    name: string
-  }
-  owningUnit: {
-    id: string,
-    identifier: string,
-    name: string
-  }
-  serial: number
-  data: any
-  signatures: {
-    personnel: {
-      id: string,
-      name: string
-    },
-    signed: boolean,
-    timestamp: Date,
-    unit: string,
-    role: string
-  }[]
+  contents?: any
 }

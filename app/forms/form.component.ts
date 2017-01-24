@@ -1,10 +1,10 @@
-import {Component, OnInit, forwardRef, Inject} from '@angular/core';
-import {FormService}          from './../services/form.service'
-import {RecordService}        from './../services/record.service'
-import {Form}                 from './../types/types'
-import {Field}                from './../types/types'
+import { Component, OnInit, forwardRef, Inject } from '@angular/core';
+import { FormService } from './../services/form.service'
+import { RecordService } from './../services/record.service'
+import { Form } from './../types/types'
+import { Field } from './../types/types'
 
-import {Router, ActivatedRoute} from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({
   template: `<div class="container">
@@ -31,33 +31,31 @@ import {Router, ActivatedRoute} from '@angular/router'
 })
 
 export class FormComponent implements OnInit {
-  private data: any[]
+  private data: any
   private fields: Field[]
   private id: string
-  
+
   ngOnInit() {
     this.data = []
     this.id = this.route.snapshot.params['id']
     this.fields = []
-    
-    this.recordService.schema(this.id).then(fields => {
-      let parsedFields = fields.map(field => {
-        field.metadata = JSON.parse(field.metadata)
-        return field
-      })
-      this.data = this.recordService.emptyRecordForFields(parsedFields)
-      this.fields = parsedFields
+
+    this.formService.form(this.id, "Filling").then(form => {
+      console.dir(form)
+      this.data = this.recordService.emptyRecordForFields(form.revision.fields)
+      this.fields = form.revision.fields
     }).catch(console.error)
   }
-  
+
   submit() {
-    this.recordService.upload(this.id, this.data).then(recordID => {
+    this.recordService.submit(this.id, this.data).then(recordID => {
       console.dir(`已經建立紀錄：${recordID}`)
+      this.router.navigate(['..'], { relativeTo: this.route })
     }).catch(err => {
       console.error('無法建立表單紀錄')
       console.error(err)
     })
   }
-  
-  constructor(private formService: FormService, private recordService: RecordService, private route: ActivatedRoute, @Inject("app.debug") private debug) {}
+
+  constructor(private formService: FormService, private recordService: RecordService, private route: ActivatedRoute, private router: Router, @Inject("app.debug") private debug) { }
 }

@@ -1,6 +1,6 @@
-import {Component, OnInit}         from '@angular/core'
-import {FormService}               from './../services/form.service'
-import {Form}                      from './../types/types'
+import { Component, OnInit } from '@angular/core'
+import { FormService } from './../services/form.service'
+import { Form } from './../types/types'
 
 @Component({
   template: `
@@ -14,27 +14,27 @@ import {Form}                      from './../types/types'
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let form of _forms">
+      <tr *ngFor="let form of forms">
         <td>{{form.identifier}}</td>
         <td><h4 class="ui header">{{form.name}}</h4></td>
-        <td class="center aligned selectable"><a [routerLink]="form._id">填寫</a></td>
+        <td class="center aligned selectable"><a [routerLink]="form.id">填寫</a></td>
       </tr>
     </tbody>
   </table>`,
 })
 
 export class FormListComponent implements OnInit {
-  private _forms: Form[]
-  
+  private forms: Form[]
+
   refresh() {
-    this.formService.fillableForms()
-        .then(forms => this._forms = forms)
-        .catch(console.error)
+    this.formService.forms("Filling")
+      .then(forms => this.forms = forms)
+      .catch(console.error)
   }
-  
+
   ngOnInit() {
     this.refresh()
   }
-  
-  constructor(private formService: FormService) {}
+
+  constructor(private formService: FormService) { }
 }

@@ -75,7 +75,7 @@ export class UnitService {
       })
     }
     let payload = Object.assign({}, unit)
-    delete payload.id
+    delete payload._id
 
     await this.http.put(endpoint, JSON.stringify(payload), options).toPromise()
   }

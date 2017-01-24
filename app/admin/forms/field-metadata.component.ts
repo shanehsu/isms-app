@@ -1,18 +1,18 @@
 // Angular 2
-import {Self, Input, Output, Component, EventEmitter, OnInit, AfterViewInit, forwardRef, ViewChild, ViewChildren, QueryList, ElementRef} from '@angular/core'
-import {ControlValueAccessor, NgModel} from '@angular/forms'
+import { Self, Input, Output, Component, EventEmitter, OnInit, AfterViewInit, forwardRef, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core'
+import { ControlValueAccessor, NgModel } from '@angular/forms'
 
 // 服務
-import {FormService} from './../../services/form.service'
+import { FormService } from './../../services/form.service'
 
 // 基本型態
-import {Field} from './../../types/types'
+import { Field } from './../../types/types'
 
 // 子元件
-import {FieldComponent} from './field.component'
+import { FieldComponent } from './field.component'
 
 // 輔助函數
-import {RandomString} from './../../util'
+import { RandomString } from './../../util'
 
 let OptionsPresentationTypes = [
   {
@@ -53,12 +53,12 @@ function cloneOptionFieldMetadata(metadata: OptionFieldMetadata): OptionFieldMet
 })
 export class EmptyFieldMetadataComponent implements ControlValueAccessor {
   private change: (_: any) => void
-  
+
   // 建構子
-  constructor(@Self() private model: NgModel) {
+  constructor( @Self() private model: NgModel) {
     model.valueAccessor = this
   }
-  
+
   writeValue(value: any) {
     // Discard any value written as it is not important anyway
     if (value) {
@@ -66,11 +66,11 @@ export class EmptyFieldMetadataComponent implements ControlValueAccessor {
       if (this.change) this.change({})
     }
   }
-  
+
   registerOnChange(fn: (_: any) => void): void {
     this.change = fn
   }
-  registerOnTouched(fn: () => void): void {}
+  registerOnTouched(fn: () => void): void { }
 }
 
 @Component({
@@ -145,30 +145,30 @@ export class EmptyFieldMetadataComponent implements ControlValueAccessor {
 
 export class OptionFieldMetadataComponent implements ControlValueAccessor, AfterViewInit {
   private presentationTypes = OptionsPresentationTypes
-  
+
   private metadata: OptionFieldMetadata
   private cachedMetadata: OptionFieldMetadata
-  
+
   private areOptionsCollapsed: boolean = false
   private newOptionName: string = ""
-  
+
   // Angular 給我們的 Callback 函數
   private change: (_: any) => void
   private touched: () => void
-  
+
   // 建構子
-  constructor(@Self() private model: NgModel, private elementRef: ElementRef) {
+  constructor( @Self() private model: NgModel, private elementRef: ElementRef) {
     model.valueAccessor = this
     this.metadata = {
       presentation: 'radio',
       options: []
     }
   }
-  
+
   ngAfterViewInit(): void {
     ($(this.elementRef.nativeElement).find('.ui.radio.checkbox') as any).checkbox()
   }
-  
+
   // ControlValueAccessor - 註冊函數
   registerOnChange(fn: (_: any) => void): void {
     this.change = fn
@@ -176,7 +176,7 @@ export class OptionFieldMetadataComponent implements ControlValueAccessor, After
   registerOnTouched(fn: () => void): void {
     this.touched = fn
   }
-  
+
   // ControlValueAccessor - 接收資料
   writeValue(value: any): void {
     if (value && value.options && value.presentation) {
@@ -187,16 +187,16 @@ export class OptionFieldMetadataComponent implements ControlValueAccessor, After
         presentation: 'radio',
         options: []
       }
-      
+
       if (this.change) this.emitValue()
     }
   }
-  
+
   // 利用回呼函式送出資料
   emitValue(): void {
     this.change(this.metadata)
   }
-  
+
   // 選項
   pushOption(): void {
     this.metadata.options.push({
@@ -204,29 +204,29 @@ export class OptionFieldMetadataComponent implements ControlValueAccessor, After
       value: this.newOptionName,
       fields: []
     })
-    
+
     this.emitValue()
-    
+
     this.newOptionName = ""
   }
-  pullOption(option: {id: string, value: string, fields: Field[] }): void {
+  pullOption(option: { id: string, value: string, fields: Field[] }): void {
     this.metadata.options.splice(this.metadata.options.indexOf(option), 1)
-    
+
     this.emitValue()
   }
-  
+
   // 子欄位處理
-  createField(option: {id: string, value: string, fields: Field[] }): void {
-    option.fields.push({
+  createField(option: { id: string, value: string, fields: Field[] }): void {
+    option.fields.push(new Field({
       _id: RandomString(10),
       name: '欄位名稱',
       type: 'shortText',
       hint: '',
-      metadata: undefined
-    })
+      metadata: null
+    }))
   }
-  
-  deleteField(option: {id: string, value: string, fields: Field[] }, field: Field): void {
+
+  deleteField(option: { id: string, value: string, fields: Field[] }, field: Field): void {
     option.fields.splice(option.fields.indexOf(field), 1)
   }
 }
@@ -256,27 +256,27 @@ export class OptionFieldMetadataComponent implements ControlValueAccessor, After
 
 export class TableFieldMetadataComponent implements OnInit, AfterViewInit, ControlValueAccessor {
   @ViewChildren(forwardRef(() => FieldComponent)) fieldFormComponents: QueryList<FieldComponent>
-  
+
   private modalID: string
   private cachedMetadata: TableFieldMetadata
   private metadata: TableFieldMetadata
   private isCollapsed: boolean
   private areFieldsCollapsed: boolean
-  
+
   // Angular 給我們的 Callback 函數
   private change: (_: any) => void
   private touched: () => void
-  
+
   private isUpdating: boolean
-  
+
   // 建構子
-  constructor(@Self() private model: NgModel) {
+  constructor( @Self() private model: NgModel) {
     model.valueAccessor = this
     this.metadata = {
       fields: []
     }
   }
-  
+
   // 初始化
   ngOnInit(): void {
     this.isUpdating = false
@@ -285,44 +285,44 @@ export class TableFieldMetadataComponent implements OnInit, AfterViewInit, Contr
     this.areFieldsCollapsed = false
   }
   ngAfterViewInit(): void {
-    
+
   }
-  
+
   // 按鈕
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed
   }
   toggleFieldsCollapse(): void {
     let expectedState = !this.areFieldsCollapsed
-    
+
     this.fieldFormComponents.forEach(fieldFormComponent => {
       fieldFormComponent.isCollapsed = expectedState
     })
-    
+
     this.areFieldsCollapsed = expectedState
   }
-  
+
   reset(): void {
     this.metadata = this.cachedMetadata
     this.change(this.metadata)
   }
-  
+
   createField(): void {
-    this.metadata.fields.push({
+    this.metadata.fields.push(new Field({
       _id: RandomString(10),
       name: '欄位名稱',
       type: 'shortText',
       hint: '',
       metadata: undefined
-    })
-    
+    }))
+
     this.emitValue()
   }
   deleteField(field: Field): void {
     this.metadata.fields.splice(this.metadata.fields.indexOf(field), 1)
     this.emitValue()
   }
-  
+
   // ControlValueAccessor 寫入值
   writeValue(value: any): void {
     // 判斷是否是正確的 metadata
@@ -336,7 +336,7 @@ export class TableFieldMetadataComponent implements OnInit, AfterViewInit, Contr
       if (this.change) this.emitValue()
     }
   }
-  
+
   // ControlValueAccessor - 註冊函數
   registerOnChange(fn: (_: any) => void): void {
     this.change = fn
@@ -344,7 +344,7 @@ export class TableFieldMetadataComponent implements OnInit, AfterViewInit, Contr
   registerOnTouched(fn: () => void): void {
     this.touched = fn
   }
-  
+
   emitValue(): void {
     this.change(this.metadata)
   }
