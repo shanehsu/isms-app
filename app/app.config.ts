@@ -14,7 +14,8 @@ export var config: Config = {
     {
       name: "表單",
       path: "forms",
-      group: ["vendors", "users", "securityPersonnel", "admins"]
+      group: ["vendors", "users", "securityPersonnel", "admins"],
+      roles: ['agent', 'vendor']
     },
     {
       name: "紀錄",

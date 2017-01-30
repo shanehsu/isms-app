@@ -28,7 +28,8 @@ export class User {
     role: {
       agent: boolean,
       manager: boolean,
-      docsControl: boolean
+      docsControl: boolean,
+      vendor: boolean
     }
   }
 }

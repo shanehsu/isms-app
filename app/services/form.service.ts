@@ -8,6 +8,7 @@ import { AuthService } from './auth.service'
 import { Form, FormRevision, Field } from './../types/types'
 
 export type Scope = 'Management' | 'Filling'
+export type AssociatedAgent = { name: string, id: string }
 
 @Injectable()
 export class FormService {
@@ -102,7 +103,7 @@ export class FormService {
    * 
    * 回傳表單的 id
    */
-  create(): Promise<string> {
+  async create() {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
@@ -111,17 +112,20 @@ export class FormService {
     }
     let endpoint = this.endpoint
 
-    return new Promise<string>((resolve, reject) => {
-      this.http.post(endpoint, '', options)
-        .map(res => res.text())
-        .subscribe(resolve, reject)
-    })
+    return await this.http.post(endpoint, '', options)
+      .map(res => res.text())
+      .toPromise()
   }
 
   async agents() {
     let endpoint = this.endpoint + '/associatedAgents'
-    let agents = await this.http.get(endpoint).map($0 => $0.json()).toPromise()
-    return <{ id: string, name: string }[]>agents
+    let options: RequestOptionsArgs = {
+      headers: new Headers({
+        token: this.authService.token.getValue()
+      })
+    }
+    let agents = await this.http.get(endpoint, options).map($0 => $0.json()).toPromise()
+    return <AssociatedAgent[]>agents
   }
 
   /** 

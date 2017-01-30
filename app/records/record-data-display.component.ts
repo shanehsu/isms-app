@@ -1,9 +1,5 @@
 import { Component, Self } from '@angular/core'
 import { ControlValueAccessor, NgModel } from '@angular/forms'
-import { TextFieldData, TimeFieldData, DateFieldData, OptionFieldData,
-         TableFieldData, FieldData, Schema, GenericFieldDisplayData,
-         OptionFieldDisplayData, TableFieldDisplayData, FieldDisplayData,
-         FieldDisplayMetadata } from './records.types'
 
 @Component({
   selector: 'record-data-display',
@@ -35,27 +31,27 @@ import { TextFieldData, TimeFieldData, DateFieldData, OptionFieldData,
       </tbody>
     </table>
   </div>
-  <p *ngIf="value && !value.titles && !value.selectedValues">{{value}}</p>
+  <pre *ngIf="value && !value.titles && !value.selectedValues">{{value}}</pre>
   `,
   styles: [
-    'div.sub-fields { padding-left: 1em; }'
+    'div.sub-fields { padding-left: 3em; }'
   ]
 })
 export class RecordDataDisplay implements ControlValueAccessor {
-  private value: FieldDisplayMetadata | undefined
-  
+  private value: any | undefined
+
   // Angular 給我們的 Callback 函數
   private change: (_: any) => void
   private touched: () => void
-  
-  constructor(@Self() private model: NgModel) {
+
+  constructor( @Self() private model: NgModel) {
     model.valueAccessor = this
     this.value = undefined
   }
   writeValue(value: any) {
     this.value = value
   }
-  
+
   // ControlValueAccessor - 註冊函數
   registerOnChange(fn: (_: any) => void): void {
     this.change = fn

@@ -2,96 +2,9 @@ import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ElementRef }
 import { NgClass } from '@angular/common'
 import { Router, ActivatedRoute } from '@angular/router'
 import { RecordService } from './../services/record.service'
-import { SinglePopulatedRecord, Record, Signature, Field } from './../types/types'
-import { TextFieldData, TimeFieldData, DateFieldData, OptionFieldData,
-         TableFieldData, FieldData, Schema, GenericFieldDisplayData,
-         OptionFieldDisplayData, TableFieldDisplayData, FieldDisplayData,
-         FieldDisplayMetadata } from './records.types'
-
-function merge(schema: Schema, data: FieldData[]): FieldDisplayMetadata[] {
-  for (var field of schema) {
-    for (var key in field) {
-      if (key == 'metadata') {
-        field.metadata = JSON.parse(field.metadata)
-      }
-    }
-  }
-  
-  // 開始工作囉！
-  if (schema.length != data.length) {
-    console.error(`合併欄位資料與欄位形式的時候發生錯誤，資料有 ${data.length} 個欄位，但是形式有 ${data.length} 個欄位。`)
-    return []
-  } else {
-    let merge_algorithm = function(schema: Field, data: FieldData): FieldDisplayMetadata {
-      let getData = function(field: Field, data: FieldData): FieldDisplayData {
-        switch (field.type) {
-          case 'shortText':
-          case 'longText':
-            return <string>data
-          case 'time':
-            let time = <TimeFieldData>data
-            return `${time.hour} 時 ${time.minute} 分`
-          case 'date':
-            let date = <DateFieldData>data
-            return Intl.DateTimeFormat().format(new Date(date))
-          case 'options':
-            let optionData = <OptionFieldData>data
-            let optionFieldDisplayData: OptionFieldDisplayData = {
-              selectedValues: [],
-              nestedValues: []
-            }
-            let fieldMetadata = field.metadata as {options: {id: string, value: string, fields: Field[]}[]}
-            
-            optionData.selected.forEach((value, index) => {
-              if (value) {
-                optionFieldDisplayData.selectedValues.push(fieldMetadata.options[index].value)
-                let nestedFieldValues: FieldData[] = optionData.values[index]
-                let metadatas = nestedFieldValues.map((nestedValue, nestedFieldIndex) => {
-                  return merge_algorithm(fieldMetadata.options[index].fields[nestedFieldIndex], nestedValue)
-                })
-                optionFieldDisplayData.nestedValues.push(metadatas)
-              }
-            })
-            
-            return optionFieldDisplayData
-          case 'table':
-            let tableFieldData = <TableFieldData>data
-            let tableFieldDisplayData: TableFieldDisplayData = {
-              titles: [],
-              values: []
-            }
-            let tableFieldMetadata = field.metadata as {fields: Field[]}
-            
-            tableFieldDisplayData.titles = tableFieldMetadata.fields.map(field => field.name)
-            
-            tableFieldData.forEach((rowData, i) => {
-              let row: FieldDisplayData[] = []
-              rowData.forEach((cellData, j) => {
-                row.push(getData(tableFieldMetadata.fields[j], cellData))
-              })
-              tableFieldDisplayData.values.push(row)
-            })
-            
-            return tableFieldDisplayData
-        }
-      }
-      
-      return {
-        title: schema.name,
-        value: getData(schema, data)
-      }
-    }
-    let metadata: FieldDisplayMetadata[] = []
-    for (let i = 0; i < schema.length; i ++) {
-      let tSchema = schema[0]
-      let tData = data[0]
-      
-      metadata.push(merge_algorithm(tSchema, tData))
-    }
-    
-    return metadata
-  }
-}
+import { FormService } from './../services/form.service'
+import { MeService } from './../services/me.service'
+import { Record, Signature, Field } from './../types/types'
 
 @Component({
   template: `
@@ -104,7 +17,7 @@ function merge(schema: Schema, data: FieldData[]): FieldDisplayMetadata[] {
         <th>{{field.title}}</th>
         <td>
           <p *ngIf="field.value && !field.value.titles && !field.value.selectedValues">{{field.value}}</p>
-          <p *ngIf="field.value.titles || field.value.titles">
+          <p *ngIf="field.value && ( field.value.selectedValues || field.value.titles)">
             <record-data-display [(ngModel)]="field.value"></record-data-display>
           </p>
         </td>
@@ -114,22 +27,29 @@ function merge(schema: Schema, data: FieldData[]): FieldDisplayMetadata[] {
   <h3 class="ui header">簽核狀況</h3>
   <table class="ui table">
     <tbody>
-      <tr *ngIf="record && record.signatures">
+      <tr *ngIf="record && record.signatures && this.userId">
         <td *ngFor="let signature of record.signatures">
           <div class="ui list">
-            <div class="item">
+            <div *ngIf="signature.signed" class="item">
               <i class="user icon"></i>
-              <div class="content">{{signature.personnel.name}}</div>
-            </div>
-            <div class="item">
-              <i class="users icon"></i>
-              <div class="content">{{signature.unit}} 的 {{signature.role}}</div>
+              <div class="content">{{signature.name}}</div>
             </div>
             <div *ngIf="signature.signed" class="item">
               <i class="calendar icon"></i>
               <div class="content">{{signature.timestamp | date}}</div>
             </div>
-            <button *ngIf="canSign(signature)" type="button" class="ui button" (click)="sign()" [class.loading]="isSigning">簽章</button>
+            <div class="ui form" *ngIf="canSign(signature)">
+              <div class="commented field">
+                <label>簽名</label>
+                <input class="commented-input" type="text" [ngModelOptions]="{ standalone: true }" [(ngModel)]="signatureText">
+                <label class="field-comment">{{signatureMatchText}}</label>
+              </div>
+              <button type="button" style="position: relative; bottom: 2em; " class="ui button" (click)="sign()" [class.loading]="isSigning" [disabled]="signatureText != signatureMatchText" >簽章</button>
+            </div>
+            <div *ngIf="!signature.signed && !canSign(signature)" class="item">
+              <i class="delete icon"></i>
+              <div class="content">尚未簽核</div>
+            </div>
           </div>
         </td>
       </tr>
@@ -142,56 +62,140 @@ function merge(schema: Schema, data: FieldData[]): FieldDisplayMetadata[] {
   <div><pre>{{schema | json}}</pre></div>
   <h3 class="ui header">Record</h3>
   <div><pre>{{record | json}}</pre></div>
-  <h3 class="ui header">Record Data</h3>
-  <div><pre>{{data | json}}</pre></div>
   `,
   styles: [
-    '#record_display th:first-child { width: 12em; }',
+    '#record_display th:first-child { padding: .78571429em; width: 8em; }',
     '#record_display > tbody > tr { vertical-align: initial; }',
-    '#record_display > tbody > tr > th { color: initial; }'
+    '#record_display > tbody > tr > th { color: initial; }',
+    `.commented.field {
+      text-align: left;
+      display: inline-block;
+      margin-right: 2em;
+    }
+    `,
+    `label.field-comment {
+      color: rgb(180, 180, 180);
+      font-weight: normal;
+      font-style: italic;
+    }
+    `,
+    `.commented-input {
+      width: 10em !important;
+    }`
   ]
 })
 
 export class RecordComponent implements OnInit {
+  private userId: string
   private id: string
-  private schema: Field[] | undefined
-  private record: SinglePopulatedRecord | undefined
-  private data: FieldData[] | undefined
-  private merged: FieldDisplayMetadata[] | undefined
-  
-  private isSigning: boolean = false
-  
-  constructor(private route: ActivatedRoute, private recordService: RecordService) { }
-  ngOnInit() {
-    this.id = this.route.snapshot.params['id']
-    this.schema = undefined
-    this.record = undefined
-    this.data = undefined
-    this.merged = undefined
+  private schema: Field[] | null
+  private record: Record | null
+  private merged: any | null
 
-    // 載入資料
-    this.recordService.record(this.id).then(record => {
-      this.recordService.schemaForRevision(record.form.id, record.revision.id).then(schema => {
-        this.schema = schema
-        this.record = record
-        this.data = record.data
-        
-        this.merged = merge(this.schema, this.data)
-      })
+  private isSigning: boolean = false
+
+  private signatureMatchText: string
+  private signatureText: string
+
+  constructor(private route: ActivatedRoute, private formService: FormService, private recordService: RecordService, private meSerivce: MeService) { }
+  async ngOnInit() {
+    this.id = this.route.snapshot.params['id']
+    this.schema = null
+    this.record = null
+    this.merged = []
+
+    this.signatureText = ''
+    this.signatureMatchText = ''
+
+    this.meSerivce.user.subscribe(u => {
+      if (u) {
+        this.userId = u.id
+        this.signatureMatchText = u.name
+      }
     })
+    // 載入資料
+    this.record = await this.recordService.record(this.id)
+    let form = await this.formService.form(this.record.formId, "Filling", this.record.revisionNumber)
+    this.schema = form.revision.fields
+
+    // 合併資料
+    function get_data(field: Field, content: any) {
+      switch (field.type) {
+        case 'shortText':
+        case 'longText':
+          return content
+        case 'date':
+          let formatter = new Intl.DateTimeFormat()
+          let dateValue = new Date(content)
+          return formatter.format(dateValue)
+        case 'time':
+          let timeValue = content
+          return `${timeValue.hour} 時 ${timeValue.minute} 分`
+        case 'options':
+          type OptionValueType = { [optionId: string]: { values: any, selected: boolean } }
+          let optionValue: OptionValueType = content
+          let value = {
+            selectedValues: [],
+            nestedValues: []
+          }
+          for (let _option of field.metadata.options) {
+            let option = <{ fields: Field[], value: string, id: string }>_option
+            if (!optionValue[option.id].selected) { continue }
+
+            let v = optionValue[option.id].values
+            value.selectedValues.push(option.value)
+            option.fields = option.fields.map(f => new Field(f))
+            value.nestedValues.push(merge(option.fields, v))
+          }
+
+          return value
+        case 'table':
+          let columns: Field[] = field.metadata.fields.map(field => new Field(field))
+          let rows: { [columnId: string]: any }[] = content
+
+          return {
+            titles: columns.map(field => field.name),
+            values: rows.map(row => {
+              // row is field id => data
+              let data = []
+              for (let column of columns) {
+                data.push(get_data(column, row[column.id]))
+              }
+
+              return data
+            })
+          }
+      }
+    }
+    function merge(schema: Field[], contents: any) {
+      let r = []
+      for (let field of schema) {
+        let result: any = {
+          title: field.name,
+          value: get_data(field, contents[field.id])
+        }
+        r.push(result)
+      }
+      return r
+    }
+
+    this.merged = merge(this.schema, this.record.contents)
   }
-  canSign(signature: { personnel: {id: string, name: string}, signed: boolean, timestamp: string, unit: string, role: string }): boolean {
-    if (signature.personnel.id == localStorage.getItem('userid') && !signature.signed) {
+  canSign(signature: Signature): boolean {
+    if (signature.personnel == this.userId && !signature.signed) {
       return true
     }
     return false
   }
   sign(): void {
     this.isSigning = true
-    this.recordService.sign(this.id).then(() => {
+    this.recordService.sign(this.id, this.signatureText).then(() => {
       this.isSigning = false
-      
+
       this.ngOnInit()
     })
+  }
+  decline(): void {
+
   }
 }

@@ -52,9 +52,8 @@ export class UserService {
       'Content-Type': 'application/json'
     })
     try {
-      let id = await this.http.post(this.endpoint, "", { headers: headers })
+      return await this.http.post(this.endpoint, "", { headers: headers })
         .map(res => res.text()).toPromise()
-      return id
     } catch (networkError) {
       console.error('無法新增使用者')
       console.dir(networkError)

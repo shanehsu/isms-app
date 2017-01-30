@@ -39,13 +39,19 @@ export class RecordService {
           break
         case 'options':
           value = {}
-          let values: { [optionId: string]: RecordData } = {}
+          let first = metadata.presentation != 'checkbox'
           for (let option of <{ id: string, fields: Field[] }[]>metadata.options) {
-            value[option.id] = this.emptyRecordForFields(option.fields)
+            option.fields = option.fields.map(f => new Field(f))
+            value[option.id] = {
+              selected: first,
+              values: this.emptyRecordForFields(option.fields)
+            }
+            first = false
           }
           break
         case 'table':
           value = []
+          metadata.fields = metadata.fields.map(field => new Field(field))
           break
         default:
           console.error('emptyRecordForFields: Error')
@@ -57,13 +63,14 @@ export class RecordService {
     return record
   }
 
-  async submit(formId: string, contents: RecordData, associatedAgent?: string): Promise<string> {
+  async submit(formId: string, contents: RecordData, signature: string, associatedAgent?: string): Promise<string> {
     // If user is an agent, associatedAgent is required; if user is not, associatedAgent is forbidden
 
     let endpoint = this.endpoint
     let payload = {
       formId: formId,
       contents: contents,
+      signature: signature
     }
     if (this.meService.user.getValue().group == 'vendors') {
       if (!associatedAgent) {
@@ -123,16 +130,17 @@ export class RecordService {
       .toPromise()
   }
 
-  async sign(id: string): Promise<void> {
+  async sign(id: string, signature: string): Promise<void> {
     let headers = new Headers({
-      token: this.authService.token.getValue()
+      token: this.authService.token.getValue(),
+      "Content-Type": "application/json"
     })
     let options = {
       headers: headers
     }
     let endpoint = this.endpoint + `/${id}/actions/sign`
 
-    await this.http.post(endpoint, '', options).toPromise()
+    await this.http.post(endpoint, JSON.stringify({ as: signature }), options).toPromise()
   }
 
   async return(id: string): Promise<void> {

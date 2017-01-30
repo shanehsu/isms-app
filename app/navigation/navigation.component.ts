@@ -153,9 +153,24 @@ export class NavigationComponent implements OnInit {
 
     // 訂閱 User 以及 Loading
     this.meService.user.subscribe(u => {
+      console.dir(u)
       this.user = u
       if (u) {
-        this.navigationItems = this.config.navigationItems.filter(item => item.group.includes(u.group))
+        this.navigationItems = this.config.navigationItems.filter(item => {
+          let role = true
+          if (item.roles) {
+            role = false
+            if (u.unit) {
+              for (let r of item.roles) {
+                if (u.unit.role[r]) {
+                  role = true
+                  break
+                }
+              }
+            }
+          }
+          return item.group.includes(u.group) && role
+        })
       } else {
         this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
       }
