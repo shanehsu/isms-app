@@ -32,7 +32,7 @@ typings
 # TypeScript Compiled Source
 dist
 
-.DS_Store
+**/.DS_Store
 
 server.crt
 
