@@ -33,13 +33,12 @@ var options = {
   // cert: fs.readFileSync(__dirname + '/server.crt')
 }
 
-var server = http.createServer(app)
-
 module.exports = {
-  server: server
+  app: app
 }
 
 if (require.main === module) {
+  var server = http.createServer(app)
   server.listen(port, err => {
     if (err) {
       console.error(err)
