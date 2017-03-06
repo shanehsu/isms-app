@@ -34,11 +34,18 @@ var options = {
 }
 
 var server = http.createServer(app)
-server.listen(port, err => {
-  if (err) {
-    console.error(err)
-    return process.exit(1)
-  } else {
-    console.log(`開始監聽 ${port}`)
-  }
-})
+
+module.exports = {
+  server: server
+}
+
+if (require.main === module) {
+  server.listen(port, err => {
+    if (err) {
+      console.error(err)
+      return process.exit(1)
+    } else {
+      console.log(`開始監聽 ${port}`)
+    }
+  })
+}
