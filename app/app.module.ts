@@ -1,11 +1,12 @@
-import { NgModule, Directive } from '@angular/core';
+import { NgModule, Directive } from '@angular/core'
 
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser'
+import { FormsModule } from '@angular/forms'
+import { HttpModule } from '@angular/http'
 import { DragulaModule } from 'ng2-dragula'
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component'
+import { DebugComponent } from './debug.component'
 
 import { AuthService } from './services/auth.service'
 import { FormService } from './services/form.service'
@@ -41,6 +42,7 @@ class MessageContent { }
 @NgModule({
   declarations: [
     AppComponent,
+    DebugComponent,
     MessageHeader,
     MessageContent
   ],
