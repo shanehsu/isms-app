@@ -129,7 +129,7 @@ import { FieldComponent } from './field.component'
       <button type="button" class="ui teal basic button" (click)="publishrevision()" *ngIf="!revision.published" [class.loading]="isPublishing">發佈</button>
       <button type="button" class="ui red basic button" (click)="deleterevision()" *ngIf="!revision.published" [class.loading]="isDeleting">刪除</button>
       <button type="submit" id="update_button" class="ui basic button" [class.green]="revisionForm.form.valid" [class.red]="!revisionForm.form.valid"
-        [disabled]="!revisionForm.form.valid" [class.loading]="isUpdating">更新</button>
+        [disabled]="!revisionForm.form.valid" [class.loading]="isUpdating" *ngIf="!revision.published">更新</button>
     </div>
 
     <pre>{{revision | json}}</pre>
