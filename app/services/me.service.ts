@@ -15,8 +15,8 @@ export class MeService {
 
   constructor(private authService: AuthService, private http: Http, @Inject("app.config") private config) {
     this.endpoint = config.endpoint + '/me'
-    
-    this.user = new BehaviorSubject<User>(undefined)
+
+    this.user = new BehaviorSubject<User>(null)
     this.isLoading = new BehaviorSubject<boolean>(false)
 
     this.authService.token.subscribe(token => {
@@ -28,7 +28,13 @@ export class MeService {
           this.user.next(new User(json))
           this.isLoading.next(false)
         }, err => {
-          this.user.error(err)
+          if (err.status == 404) {
+            // API 中 404 表示 token 不存在
+            this.authService.didLogout()
+            this.user.next(null)
+          } else {
+            this.user.error(err)
+          }
           this.isLoading.next(false)
         })
       }
@@ -38,7 +44,7 @@ export class MeService {
   invalidate_current_token(): Promise<void> {
     let t = this.authService.token.getValue()
     let token = this.user.getValue().tokens.find(token => token.token == t)
-    
+
     if (token) {
       let endpoint = this.endpoint + `/tokens/${token.id}`
       this.isLoading.next(true)
