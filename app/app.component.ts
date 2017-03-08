@@ -14,6 +14,8 @@ import { Message, MessageService } from './services/message.service'
       <div class="ui container">
         <router-outlet></router-outlet>
       </div>
+
+      <button class="ui fluid red button" (click)="debug.show()" style="margin-top: 2em;">顯示偵錯窗格</button>
     </div>
     <div class="message-panel">
       <sm-message *ngFor="let message of messages" [class]="message.class" [icon]="message.icon">
@@ -26,9 +28,8 @@ import { Message, MessageService } from './services/message.service'
       </sm-message>
     </div>
     <debug>
-      <p>你好</p>
+      <p>偵錯資訊</p>
     </debug>
-    <button class="ui button" (click)="debug.show()">顯示 Debug 窗格</button>
     `,
   styles: [
     ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll; z-index: 10; }"

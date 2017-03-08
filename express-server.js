@@ -38,7 +38,10 @@ module.exports = {
 }
 
 if (require.main === module) {
-  var server = http.createServer(app)
+  let parent = express()
+  parent.use('/app', app)
+
+  var server = http.createServer(parent)
   server.listen(port, err => {
     if (err) {
       console.error(err)

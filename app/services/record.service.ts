@@ -155,7 +155,7 @@ export class RecordService {
     await this.http.post(endpoint, '', options).toPromise()
   }
 
-  async edit(id: string, contents: RecordData, scope?: "Management") {
+  async edit(id: string, signature: string, contents: RecordData, scope?: "Management") {
     let endpoint = this.endpoint + `/${id}`
     let headers = new Headers({
       token: this.authService.token.getValue(),
@@ -165,6 +165,9 @@ export class RecordService {
       headers: headers
     }
 
-    await this.http.put(endpoint, JSON.stringify(contents), options)
+    await this.http.put(endpoint, JSON.stringify({
+      contents: contents,
+      signature: signature
+    }), options).toPromise()
   }
 }

@@ -12,12 +12,12 @@ import { Component, HostListener, OnInit } from '@angular/core'
     `#close { top: 10px; right: 10px; position: absolute; }`
   ],
   template: `
-    <div id='chat' [style.top.px]='y' *ngIf="shown"
-                   [style.left.px]='x'
-                   [style.width.px]='width'
-                   [style.height.px]='height'
-                   (mousedown)='onWindowPress($event)'
-                   (mousemove)='onWindowDrag($event)'>
+    <div id="chat" [style.top.px]="y" *ngIf="shown"
+                   [style.left.px]="x"
+                   [style.width.px]="width"
+                   [style.height.px]="height"
+                   (mousedown)="onWindowPress($event)"
+                   (mousemove)="onWindowDrag($event)">
         <div class="ui segment" style="height: 100%;">
           <div id="close"><i class="ui remove icon" (click)="close()"></i></div>
           <ng-content></ng-content>

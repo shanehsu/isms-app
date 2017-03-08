@@ -28,6 +28,9 @@ import { Record, Signature, Field } from './../types/types'
   <table class="ui table">
     <tbody>
       <tr *ngIf="record && record.signatures && this.userId">
+        <td *ngIf="record.status == 'declined' && record.signatures[0].personnel == userId">
+          <button class="ui teal button" (click)="update()">重新填寫</button>
+        </td>
         <td *ngFor="let signature of record.signatures">
           <div class="ui list">
             <div *ngIf="signature.signed" class="item">
@@ -39,12 +42,19 @@ import { Record, Signature, Field } from './../types/types'
               <div class="content">{{signature.timestamp | date}}</div>
             </div>
             <div class="ui form" *ngIf="canSign(signature)">
-              <div class="commented field">
+              <div class="commented field" style="margin-bottom: 0; margin-right: 1em;">
                 <label>簽名</label>
                 <input class="commented-input" type="text" [ngModelOptions]="{ standalone: true }" [(ngModel)]="signatureText">
                 <label class="field-comment">{{signatureMatchText}}</label>
               </div>
-              <button type="button" style="position: relative; bottom: 2em; " class="ui button" (click)="sign()" [class.loading]="isSigning" [disabled]="signatureText != signatureMatchText" >簽章</button>
+              <button type="button" style="position: relative; bottom: 2em;" class="ui green button"
+                [class.loading]="isSigning" [disabled]="signatureText != signatureMatchText" (click)="sign()">簽章</button>
+              <button type="button" style="position: relative; bottom: 2em;" class="ui red button"
+                [class.loading]="isReturning" (click)="decline()">退回</button>
+            </div>
+            <div *ngIf="!signature.signed && !canSign(signature)" class="item">
+              <i class="user icon"></i>
+              <div class="content">{{signature.name}}</div>
             </div>
             <div *ngIf="!signature.signed && !canSign(signature)" class="item">
               <i class="delete icon"></i>
@@ -56,12 +66,14 @@ import { Record, Signature, Field } from './../types/types'
     </tbody>
   </table>
   
+  <!--
   <h3 class="ui header">Merged</h3>
   <div><pre>{{merged | json}}</pre></div>
   <h3 class="ui header">Schema</h3>
   <div><pre>{{schema | json}}</pre></div>
   <h3 class="ui header">Record</h3>
   <div><pre>{{record | json}}</pre></div>
+  -->
   `,
   styles: [
     '#record_display th:first-child { padding: .78571429em; width: 8em; }',
@@ -93,11 +105,16 @@ export class RecordComponent implements OnInit {
   private merged: any | null
 
   private isSigning: boolean = false
+  private isReturning: boolean = false
 
   private signatureMatchText: string
   private signatureText: string
 
-  constructor(private route: ActivatedRoute, private formService: FormService, private recordService: RecordService, private meSerivce: MeService) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private formService: FormService,
+    private recordService: RecordService,
+    private meSerivce: MeService) { }
   async ngOnInit() {
     this.id = this.route.snapshot.params['id']
     this.schema = null
@@ -182,7 +199,7 @@ export class RecordComponent implements OnInit {
     this.merged = merge(this.schema, this.record.contents)
   }
   canSign(signature: Signature): boolean {
-    if (signature.personnel == this.userId && !signature.signed) {
+    if (signature.personnel == this.userId && !signature.signed && this.record.status == 'awaiting_review') {
       return true
     }
     return false
@@ -191,11 +208,19 @@ export class RecordComponent implements OnInit {
     this.isSigning = true
     this.recordService.sign(this.id, this.signatureText).then(() => {
       this.isSigning = false
-
       this.ngOnInit()
     })
   }
-  decline(): void {
-
+  async decline() {
+    try {
+      this.isReturning = true
+      await this.recordService.return(this.record.id)
+      this.router.navigate(['..'], { relativeTo: this.route })
+    } catch (err) {
+      console.error('發生錯誤，無法退回')
+    }
+  }
+  update() {
+    this.router.navigate(['../update/', this.id], { relativeTo: this.route })
   }
 }

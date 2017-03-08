@@ -8,7 +8,8 @@ import { Field } from './../types/types'
 import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({
-  template: `<div class="container">
+  template: `
+  <div class="container">
     <div *ngIf="fields">
       <form class="ui form">
         <form-fields [fields]="fields" [(ngModel)]="data" name="fields"></form-fields>
@@ -133,9 +134,9 @@ export class FormComponent implements OnInit {
         console.error(err)
       })
     } else {
-      this.recordService.submit(this.id, this.data, this.signature).then(recordID => {
-        console.dir(`已經建立紀錄：${recordID}`)
-        this.router.navigate(['..'], { relativeTo: this.route })
+      this.recordService.submit(this.id, this.data, this.signature).then(recordId => {
+        console.dir(`已經建立紀錄：${recordId}`)
+        this.router.navigate([`../../records/${recordId}`], { relativeTo: this.route })
       }).catch(err => {
         console.error('無法建立表單紀錄')
         console.error(err)

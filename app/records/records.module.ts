@@ -1,12 +1,15 @@
 import { NgModule, Component, Pipe, PipeTransform } from '@angular/core';
 import { RecordsListComponent } from './records-list.component'
 import { RecordComponent } from './record.component'
+import { RecordUpdateComponent } from './record.update.component'
 import { RecordDataDisplay } from './record-data-display.component'
 
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
+import { formControlsModule } from './../controls/form-controls.module'
 
 @Component({
   template: `<router-outlet></router-outlet>`
@@ -19,7 +22,8 @@ let routes: Routes = [
     component: RecordsComponent,
     children: [
       { path: '', component: RecordsListComponent },
-      { path: ':id', component: RecordComponent }
+      { path: ':id', component: RecordComponent },
+      { path: 'update/:id', component: RecordUpdateComponent }
     ]
   }
 ];
@@ -46,6 +50,7 @@ class StatusPipe implements PipeTransform {
     RecordsComponent,
     RecordsListComponent,
     RecordComponent,
+    RecordUpdateComponent,
     RecordDataDisplay,
     StatusPipe
   ],
@@ -53,7 +58,8 @@ class StatusPipe implements PipeTransform {
     CommonModule,
     FormsModule,
 
-    recordsRoutingModule
+    recordsRoutingModule,
+    formControlsModule
   ]
 })
 
