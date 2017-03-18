@@ -1,151 +1,68 @@
-import { Component, HostListener, OnInit } from '@angular/core'
+import { Component, HostListener, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core'
+import * as _ from "lodash"
 
 @Component({
   selector: 'debug',
   styles: [
-    `#chat { position: fixed; opacity: 0.9; cursor: grab; }`,
-    `.chat-corner-resize { position: absolute; width: 10px; height: 10px; }`,
-    `#chat-top-left-resize { top: 0px; left: 0px; cursor: nw-resize; }`,
-    `#chat-top-right-resize { top: 0px; right: 0px; cursor: ne-resize; }`,
-    `#chat-bottom-left-resize { bottom: 0px; left: 0px; cursor: sw-resize; }`,
-    `#chat-bottom-right-resize { bottom: 0px; right: 0px; cursor: se-resize; }`,
+    `#window { position: fixed; opacity: 0.9; cursor: grab; }`,
+    `.corner-resize { position: absolute; width: 10px; height: 10px; }`,
+    `#bottom-right-resize { bottom: 0px; right: 0px; cursor: se-resize; }`,
     `#close { top: 10px; right: 10px; position: absolute; }`
   ],
   template: `
-    <div id="chat" [style.top.px]="y" *ngIf="shown"
-                   [style.left.px]="x"
-                   [style.width.px]="width"
-                   [style.height.px]="height"
-                   (mousedown)="onWindowPress($event)"
-                   (mousemove)="onWindowDrag($event)">
+    <div id="window" *ngIf="shown" draggable="true"
+      [style.top.px]="window.y" [style.left.px]="window.x"
+      [style.width.px]="width" [style.height.px]="height"
+      (dragstart)="windowDragStart($event)">
         <div class="ui segment" style="height: 100%;">
           <div id="close"><i class="ui remove icon" (click)="close()"></i></div>
           <ng-content></ng-content>
-        </div>
-        <div (mousedown)='onCornerClick($event, topLeftResize)' id='chat-top-left-resize' class='chat-corner-resize'></div>    
-        <div (mousedown)='onCornerClick($event, topRightResize)' id='chat-top-right-resize' class='chat-corner-resize'></div>    
-        <div (mousedown)='onCornerClick($event, bottomLeftResize)' id='chat-bottom-left-resize' class='chat-corner-resize'></div>    
-        <div (mousedown)='onCornerClick($event, bottomRightResize)' id='chat-bottom-right-resize' class='chat-corner-resize'></div>
+        </div> 
+        <div id="bottom-right-resize" class="corner-resize"></div>
     </div> 
   `
 })
-export class DebugComponent implements OnInit {
-  x: number
-  y: number
-  px: number
-  py: number
+export class DebugComponent {
   width: number
   height: number
-  minArea: number
-  draggingCorner: boolean
-  draggingWindow: boolean
-  resizer: Function
+
+  private window: { x: number, y: number }
+  private anchor: { x: number, y: number }
+  private origin: { x: number, y: number }
 
   shown: boolean
+  private rate: number
 
   constructor() {
-    this.x = 300
-    this.y = 100
-    this.px = 0
-    this.py = 0
     this.width = 600
     this.height = 300
-    this.draggingCorner = false
-    this.draggingWindow = false
-    this.minArea = 20000
 
-    this.shown = true
+    this.window = { x: 20, y: 20 }
+    this.anchor = { x: 0, y: 0 }
+    this.origin = { x: 0, y: 0 }
+
+    this.shown = false
   }
 
-  ngOnInit() {
-    this.x = window.innerWidth - 50
-    this.y = window.innerHeight - 50
-  }
+  // 移動
+  private windowDragStart(event: MouseEvent) {
+    // 記錄初始位置
+    this.origin.x = this.window.x
+    this.origin.y = this.window.y
 
-  area() {
-    return this.width * this.height
-  }
+    // 紀錄滑鼠點擊位置
+    this.anchor.x = event.x
+    this.anchor.y = event.y
 
-  onWindowPress(event: MouseEvent) {
-    this.draggingWindow = true
-    this.px = event.clientX
-    this.py = event.clientY
-  }
+    let src: HTMLDivElement = <any>event.srcElement
+    src.ondrag = _.throttle((event: MouseEvent) => {
+      let dx = event.x - this.anchor.x
+      let dy = event.y - this.anchor.y
 
-  onWindowDrag(event: MouseEvent) {
-    if (!this.draggingWindow) {
-      return
-    }
-    let offsetX = event.clientX - this.px
-    let offsetY = event.clientY - this.py
-
-    this.x += offsetX
-    this.y += offsetY
-    this.px = event.clientX
-    this.py = event.clientY
-  }
-
-  topLeftResize(offsetX: number, offsetY: number) {
-    this.x += offsetX
-    this.y += offsetY
-    this.width -= offsetX
-    this.height -= offsetY
-  }
-
-  topRightResize(offsetX: number, offsetY: number) {
-    this.y += offsetY
-    this.width += offsetX
-    this.height -= offsetY
-  }
-
-  bottomLeftResize(offsetX: number, offsetY: number) {
-    this.x += offsetX
-    this.width -= offsetX
-    this.height += offsetY
-  }
-
-  bottomRightResize(offsetX: number, offsetY: number) {
-    this.width += offsetX
-    this.height += offsetY
-  }
-
-  onCornerClick(event: MouseEvent, resizer?: Function) {
-    this.draggingCorner = true
-    this.px = event.clientX
-    this.py = event.clientY
-    this.resizer = resizer
-    event.preventDefault()
-    event.stopPropagation()
-  }
-
-  @HostListener('document:mousemove', ['$event'])
-  onCornerMove(event: MouseEvent) {
-    if (!this.draggingCorner) {
-      return
-    }
-    let offsetX = event.clientX - this.px
-    let offsetY = event.clientY - this.py
-
-    let lastX = this.x
-    let lastY = this.y
-    let pWidth = this.width
-    let pHeight = this.height
-
-    this.resizer(offsetX, offsetY);
-    if (this.area() < this.minArea) {
-      this.x = lastX
-      this.y = lastY
-      this.width = pWidth
-      this.height = pHeight
-    }
-    this.px = event.clientX
-    this.py = event.clientY
-  }
-
-  @HostListener('document:mouseup', ['$event'])
-  onCornerRelease(event: MouseEvent) {
-    this.draggingWindow = false
-    this.draggingCorner = false
+      // 利用差值寫入新位置
+      this.window.x = this.origin.x + dx
+      this.window.y = this.origin.y + dy
+    }, 100)
   }
 
   close() {
