@@ -42,13 +42,8 @@ import { Record, Signature, Field } from './../types/types'
               <div class="content">{{signature.timestamp | date}}</div>
             </div>
             <div class="ui form" *ngIf="canSign(signature)">
-              <div class="commented field" style="margin-bottom: 0; margin-right: 1em;">
-                <label>簽名</label>
-                <input class="commented-input" type="text" [ngModelOptions]="{ standalone: true }" [(ngModel)]="signatureText">
-                <label class="field-comment">{{signatureMatchText}}</label>
-              </div>
               <button type="button" style="position: relative; bottom: 2em;" class="ui green button"
-                [class.loading]="isSigning" [disabled]="signatureText != signatureMatchText" (click)="sign()">簽章</button>
+                [class.loading]="isSigning" (click)="sign()">簽章</button>
               <button type="button" style="position: relative; bottom: 2em;" class="ui red button"
                 [class.loading]="isReturning" (click)="decline()">退回</button>
             </div>
@@ -65,35 +60,11 @@ import { Record, Signature, Field } from './../types/types'
       </tr>
     </tbody>
   </table>
-  
-  <!--
-  <h3 class="ui header">Merged</h3>
-  <div><pre>{{merged | json}}</pre></div>
-  <h3 class="ui header">Schema</h3>
-  <div><pre>{{schema | json}}</pre></div>
-  <h3 class="ui header">Record</h3>
-  <div><pre>{{record | json}}</pre></div>
-  -->
   `,
   styles: [
     '#record_display th:first-child { padding: .78571429em; width: 8em; }',
     '#record_display > tbody > tr { vertical-align: initial; }',
     '#record_display > tbody > tr > th { color: initial; }',
-    `.commented.field {
-      text-align: left;
-      display: inline-block;
-      margin-right: 2em;
-    }
-    `,
-    `label.field-comment {
-      color: rgb(180, 180, 180);
-      font-weight: normal;
-      font-style: italic;
-    }
-    `,
-    `.commented-input {
-      width: 10em !important;
-    }`
   ]
 })
 
@@ -107,9 +78,6 @@ export class RecordComponent implements OnInit {
   private isSigning: boolean = false
   private isReturning: boolean = false
 
-  private signatureMatchText: string
-  private signatureText: string
-
   constructor(private route: ActivatedRoute,
     private router: Router,
     private formService: FormService,
@@ -121,15 +89,6 @@ export class RecordComponent implements OnInit {
     this.record = null
     this.merged = []
 
-    this.signatureText = ''
-    this.signatureMatchText = ''
-
-    this.meSerivce.user.subscribe(u => {
-      if (u) {
-        this.userId = u.id
-        this.signatureMatchText = u.name
-      }
-    })
     // 載入資料
     this.record = await this.recordService.record(this.id)
     let form = await this.formService.form(this.record.formId, "Filling", this.record.revisionNumber)
@@ -206,7 +165,7 @@ export class RecordComponent implements OnInit {
   }
   sign(): void {
     this.isSigning = true
-    this.recordService.sign(this.id, this.signatureText).then(() => {
+    this.recordService.sign(this.id).then(() => {
       this.isSigning = false
       this.ngOnInit()
     })

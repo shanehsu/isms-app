@@ -63,14 +63,13 @@ export class RecordService {
     return record
   }
 
-  async submit(formId: string, contents: RecordData, signature: string, associatedAgent?: string): Promise<string> {
+  async submit(formId: string, contents: RecordData, associatedAgent?: string): Promise<string> {
     // If user is an agent, associatedAgent is required; if user is not, associatedAgent is forbidden
 
     let endpoint = this.endpoint
     let payload = {
       formId: formId,
-      contents: contents,
-      signature: signature
+      contents: contents
     }
     if (this.meService.user.getValue().group == 'vendors') {
       if (!associatedAgent) {
@@ -130,7 +129,7 @@ export class RecordService {
       .toPromise()
   }
 
-  async sign(id: string, signature: string): Promise<void> {
+  async sign(id: string): Promise<void> {
     let headers = new Headers({
       token: this.authService.token.getValue(),
       "Content-Type": "application/json"
@@ -140,7 +139,7 @@ export class RecordService {
     }
     let endpoint = this.endpoint + `/${id}/actions/sign`
 
-    await this.http.post(endpoint, JSON.stringify({ as: signature }), options).toPromise()
+    await this.http.post(endpoint, options).toPromise()
   }
 
   async return(id: string): Promise<void> {
@@ -155,7 +154,7 @@ export class RecordService {
     await this.http.post(endpoint, '', options).toPromise()
   }
 
-  async edit(id: string, signature: string, contents: RecordData, scope?: "Management") {
+  async edit(id: string, contents: RecordData, scope?: "Management") {
     let endpoint = this.endpoint + `/${id}`
     let headers = new Headers({
       token: this.authService.token.getValue(),
@@ -166,8 +165,7 @@ export class RecordService {
     }
 
     await this.http.put(endpoint, JSON.stringify({
-      contents: contents,
-      signature: signature
+      contents: contents
     }), options).toPromise()
   }
 }

@@ -20,46 +20,12 @@ import { Router, ActivatedRoute } from '@angular/router'
               <option *ngFor="let agent of associatedAgents; let i = index" [value]="agent.id">{{agent.name}}</option>
             </select>
           </div>
-          <div class="commented field">
-            <label>簽名</label>
-            <input class="commented-input" type="text" [ngModelOptions]="{ standalone: true }" [(ngModel)]="signature">
-            <label class="field-comment">{{signatureMatch}}</label>
-          </div>
-          <button id="submitButton" type="button" (click)="submit()" class="ui yellow button" [disabled]="signature != signatureMatch || signature == ''">送出</button>
+          <button id="submitButton" type="button" (click)="submit()" class="ui yellow button">送出</button>
         </div> 
       </form>
-      
-      <div class="ui raised segment" *ngIf="true || debug">
-        <h2 class="ui header">除錯資訊</h2>
-        <h3 class="ui header">欄位 JSON</h3>
-        <pre>{{fields | json}}</pre>
-        <h2 class="card-title">除錯資訊</h2>
-        <h3 class="card-subtitle text-muted">表單 JSON</h3>
-        <pre>{{data | json}}</pre>
-      </div>
-    </div>
-    <div class="ui raised segment" *ngIf="!_nested && debug">
-      <h2 class="card-title">除錯資訊</h2>
-      <h3 class="card-subtitle text-muted">表單 JSON</h3>
-      <pre>{{data | json}}</pre>
     </div>
   </div>`,
   styles: [
-    `.commented.field {
-      text-align: left;
-      display: inline-block;
-      margin-right: 2em;
-    }
-    `,
-    `label.field-comment {
-      color: rgb(180, 180, 180);
-      font-weight: normal;
-      font-style: italic;
-    }
-    `,
-    `.commented-input {
-      width: 10em !important;
-    }`,
     `#submitButton {
       position: relative;
       bottom: 2em;
@@ -69,10 +35,6 @@ import { Router, ActivatedRoute } from '@angular/router'
 })
 
 export class FormComponent implements OnInit {
-  // 簽名
-  private signature: string
-  private signatureMatch: string
-
   // 承辦人
   private needsAssociatedAgent: boolean
   private associatedAgents: AssociatedAgent[] | null
@@ -88,14 +50,11 @@ export class FormComponent implements OnInit {
     this.data = []
     this.id = this.route.snapshot.params['id']
     this.fields = []
-    this.signature = ''
-    this.signatureMatch = ''
     this.associatedAgent = ''
     this.needsAssociatedAgent = true
 
     this.identityService.user.subscribe(user => {
       if (user) {
-        this.signatureMatch = user.name
         if (user.group == 'vendors') {
           this.formService.agents().then(agents => {
             this.associatedAgents = agents
@@ -126,7 +85,7 @@ export class FormComponent implements OnInit {
 
   submit() {
     if (this.needsAssociatedAgent) {
-      this.recordService.submit(this.id, this.data, this.signature, this.associatedAgent).then(recordID => {
+      this.recordService.submit(this.id, this.data, this.associatedAgent).then(recordID => {
         console.dir(`已經建立紀錄：${recordID}`)
         this.router.navigate(['..'], { relativeTo: this.route })
       }).catch(err => {
@@ -134,7 +93,7 @@ export class FormComponent implements OnInit {
         console.error(err)
       })
     } else {
-      this.recordService.submit(this.id, this.data, this.signature).then(recordId => {
+      this.recordService.submit(this.id, this.data).then(recordId => {
         console.dir(`已經建立紀錄：${recordId}`)
         this.router.navigate([`../../records/${recordId}`], { relativeTo: this.route })
       }).catch(err => {
