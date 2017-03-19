@@ -24,14 +24,7 @@ import { Router, ActivatedRoute } from '@angular/router'
         </div> 
       </form>
     </div>
-  </div>`,
-  styles: [
-    `#submitButton {
-      position: relative;
-      bottom: 2em;
-    }
-    `
-  ]
+  </div>`
 })
 
 export class FormComponent implements OnInit {
