@@ -43,7 +43,7 @@ export class DropdownOptionsFormControl implements ControlValueAccessor, AfterVi
 
   select(event: Event): void {
     let select = event.srcElement as HTMLSelectElement
-    let id = select.selectedOptions[0].value
+    let id = select.selectedOptions.item(0).value
     let model = <{ [id: string]: { selected: boolean, value: any } }>this._dataModel
     for (let $0 in model) {
       model[$0].selected = false
