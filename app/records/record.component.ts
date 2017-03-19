@@ -42,9 +42,9 @@ import { Record, Signature, Field } from './../types/types'
               <div class="content">{{signature.timestamp | date}}</div>
             </div>
             <div class="ui form" *ngIf="canSign(signature)">
-              <button type="button" style="position: relative; bottom: 2em;" class="ui green button"
+              <button type="button" class="ui green button"
                 [class.loading]="isSigning" (click)="sign()">簽章</button>
-              <button type="button" style="position: relative; bottom: 2em;" class="ui red button"
+              <button type="button" class="ui red button"
                 [class.loading]="isReturning" (click)="decline()">退回</button>
             </div>
             <div *ngIf="!signature.signed && !canSign(signature)" class="item">
