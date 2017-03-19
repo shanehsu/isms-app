@@ -89,6 +89,10 @@ export class RecordComponent implements OnInit {
     this.record = null
     this.merged = []
 
+    this.meSerivce.user.subscribe(user => {
+      if (user) this.userId = user.id
+    })
+
     // 載入資料
     this.record = await this.recordService.record(this.id)
     let form = await this.formService.form(this.record.formId, "Filling", this.record.revisionNumber)
