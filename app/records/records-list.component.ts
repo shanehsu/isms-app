@@ -10,7 +10,7 @@ import { Record, Signature, Field } from './../types/types'
     <table class="ui sortable selectable striped table">
       <thead>
         <tr>
-          <th (click)="sortBy('generatedSerial')" [ngClass]="styleClasses('generatedSerial')" #identifier>流水號</th>
+          <th (click)="sortBy('generatedSerial')" [ngClass]="styleClasses('generatedSerial')" #identifier>記錄編號</th>
           <th (click)="sortBy('formName')" [ngClass]="styleClasses('formName')" #form>表單</th>
           <th (click)="sortBy('created')" [ngClass]="styleClasses('created')" [class]="" #date>填表日期</th>
           <th (click)="sortBy('ownerName')" [ngClass]="styleClasses('ownerName')" #filler>填表人</th>

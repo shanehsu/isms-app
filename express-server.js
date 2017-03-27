@@ -7,8 +7,8 @@ let app = express()
 
 let port = process.env.PORT ? +(process.env.PORT) : 8080
 let default_host = process.env.HOST ? process.env.HOST : '10.0.0.219'
-let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : `http://${default_host}:3000`
-let ssoUrl = process.env.SSOURL ? process.env.SSOURL : `http://${default_host}:3000/sso`
+let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : `https://${default_host}`
+let ssoUrl = process.env.SSOURL ? process.env.SSOURL : `https://${default_host}/sso`
 
 app.get('/dist/app.config.js', (req, res, next) => {
   fs.readFile(`${__dirname}/dist/app.config.js`, 'utf8', (err, data) => {
