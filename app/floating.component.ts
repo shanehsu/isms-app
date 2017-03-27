@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit, ViewChild, AfterViewInit, ElementRef }
 import * as _ from "lodash"
 
 @Component({
-  selector: 'debug',
+  selector: 'float',
   styles: [
     `#window { position: fixed; opacity: 0.9; cursor: grab; }`,
     `.corner-resize { position: absolute; width: 10px; height: 10px; }`,
@@ -20,9 +20,15 @@ import * as _ from "lodash"
         </div> 
         <div id="bottom-right-resize" class="corner-resize"></div>
     </div> 
-  `
+  `,
+  host: {
+    "(document:drag)": "documentDrag($event)",
+
+    // For Firefox
+    "(document:dragover)": "documentDrag($event)"
+  }
 })
-export class DebugComponent {
+export class FloatingComponent {
   width: number
   height: number
 
@@ -45,25 +51,37 @@ export class DebugComponent {
   }
 
   // 移動
-  private windowDragStart(event: MouseEvent) {
+  private windowDragStart(event: DragEvent) {
+    console.log('dragstart')
+
+    // Workaround for Firefox
+    event.dataTransfer.setData('text/plain', '')
+
     // 記錄初始位置
     this.origin.x = this.window.x
     this.origin.y = this.window.y
 
     // 紀錄滑鼠點擊位置
-    this.anchor.x = event.x
-    this.anchor.y = event.y
+    this.anchor.x = event.clientX
+    this.anchor.y = event.clientY
 
-    let src: HTMLDivElement = <any>event.srcElement
-    src.ondrag = _.throttle((event: MouseEvent) => {
-      let dx = event.x - this.anchor.x
-      let dy = event.y - this.anchor.y
-
-      // 利用差值寫入新位置
-      this.window.x = this.origin.x + dx
-      this.window.y = this.origin.y + dy
-    }, 100)
+    console.dir(event)
   }
+
+  private documentDrag = _.throttle((event: DragEvent) => {
+
+    // For Chrome
+    if (event.clientX == 0 && event.clientY == 0) { return; }
+
+    let dx = event.clientX - this.anchor.x
+    let dy = event.clientY - this.anchor.y
+
+    // 利用差值寫入新位置
+    this.window.x = this.origin.x + dx
+    this.window.y = this.origin.y + dy
+
+    event.preventDefault()
+  }, 100)
 
   close() {
     this.shown = false

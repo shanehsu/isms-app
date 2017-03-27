@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http'
 import { DragulaModule } from 'ng2-dragula'
 
 import { AppComponent } from './app.component'
-import { DebugComponent } from './debug.component'
+import { FloatingComponent } from './floating.component'
 
 import { AuthService } from './services/auth.service'
 import { FormService } from './services/form.service'
@@ -42,7 +42,7 @@ class MessageContent { }
 @NgModule({
   declarations: [
     AppComponent,
-    DebugComponent,
+    FloatingComponent,
     MessageHeader,
     MessageContent
   ],

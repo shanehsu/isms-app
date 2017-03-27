@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AuthService } from './services/auth.service'
-import { DebugComponent } from './debug.component'
+import { FloatingComponent } from './floating.component'
 import { Message, MessageService } from './services/message.service'
 
 @Component({
@@ -27,9 +27,9 @@ import { Message, MessageService } from './services/message.service'
         </message-content>
       </sm-message>
     </div>
-    <debug>
+    <float>
       <p>偵錯資訊</p>
-    </debug>
+    </float>
     `,
   styles: [
     ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll; z-index: 10; }"
@@ -37,7 +37,7 @@ import { Message, MessageService } from './services/message.service'
 })
 
 export class AppComponent implements OnInit {
-  @ViewChild(DebugComponent) debug: DebugComponent
+  @ViewChild(FloatingComponent) debug: FloatingComponent
 
   private messages: Message[]
 

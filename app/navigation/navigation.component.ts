@@ -153,7 +153,6 @@ export class NavigationComponent implements OnInit {
 
     // 訂閱 User 以及 Loading
     this.meService.user.subscribe(u => {
-      console.dir(u)
       this.user = u
       if (u) {
         this.navigationItems = this.config.navigationItems.filter(item => {
