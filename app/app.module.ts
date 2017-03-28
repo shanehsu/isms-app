@@ -16,6 +16,7 @@ import { MeService } from './services/me.service'
 import { UnitService } from './services/unit.service'
 import { UserService } from './services/user.service'
 import { MessageService } from './services/message.service'
+import { DebugService } from './services/debug.service'
 
 import { pipesModule } from './pipes/pipes.module'
 import { formControlsModule } from './controls/form-controls.module'
@@ -33,18 +34,15 @@ import { config } from './app.config'
 
 import { NgSemanticModule } from "ng-semantic"
 
-@Directive({ selector: 'message-header' })
-class MessageHeader { }
-@Directive({ selector: 'message-content' })
-class MessageContent { }
+@Directive({ selector: 'message-header, message-content' })
+class NullComponent { }
 
 
 @NgModule({
   declarations: [
     AppComponent,
     FloatingComponent,
-    MessageHeader,
-    MessageContent
+    NullComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +74,7 @@ class MessageContent { }
     UnitService,
     UserService,
     MessageService,
+    DebugService,
 
     { provide: 'app.config', useValue: config },
     { provide: 'app.debug', useValue: false },

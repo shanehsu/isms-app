@@ -1,34 +1,40 @@
-import { Component, HostListener, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core'
+import { Input, Component, HostListener, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core'
 import * as _ from "lodash"
 
 @Component({
   selector: 'float',
   styles: [
-    `#window { position: fixed; opacity: 0.9; cursor: grab; }`,
+    `#window { position: fixed; opacity: 0.9; }`,
+    `#titleBar { cursor: grab; }`,
     `.corner-resize { position: absolute; width: 10px; height: 10px; }`,
     `#bottom-right-resize { bottom: 0px; right: 0px; cursor: se-resize; }`,
     `#close { top: 10px; right: 10px; position: absolute; }`
   ],
   template: `
-    <div id="window" *ngIf="shown" draggable="true"
+    <div id="window" *ngIf="shown" style="overflow: hidden;"
       [style.top.px]="window.y" [style.left.px]="window.x"
-      [style.width.px]="width" [style.height.px]="height"
-      (dragstart)="windowDragStart($event)">
-        <div class="ui segment" style="height: 100%;">
-          <div id="close"><i class="ui remove icon" (click)="close()"></i></div>
-          <ng-content></ng-content>
-        </div> 
+      [style.width.px]="width" [style.height.px]="height">
+        <div class="ui segments" style="height: 100%;">
+          <div id="titleBar" class="ui segment" draggable="true" (dragstart)="windowDragStart($event)">
+            <h4 class="ui header" style="margin-bottom: calc(-1em/7);">{{ headerText }}</h4>
+            <div id="close"><i class="ui remove icon" (click)="close()"></i></div>
+          </div>
+          <div class="ui segment" style="height: calc(100% - 2em + 2em/7 - 1.071em - 4px);">
+            <ng-content></ng-content>
+          </div> 
+        </div>
         <div id="bottom-right-resize" class="corner-resize"></div>
     </div> 
   `,
   host: {
     "(document:drag)": "documentDrag($event)",
-
     // For Firefox
     "(document:dragover)": "documentDrag($event)"
   }
 })
 export class FloatingComponent {
+  @Input('header') headerText: string
+
   width: number
   height: number
 

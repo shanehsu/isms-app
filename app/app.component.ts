@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AuthService } from './services/auth.service'
+import { DebugItem, DebugService } from './services/debug.service'
 import { FloatingComponent } from './floating.component'
 import { Message, MessageService } from './services/message.service'
 
@@ -14,7 +15,6 @@ import { Message, MessageService } from './services/message.service'
       <div class="ui container">
         <router-outlet></router-outlet>
       </div>
-
       <button class="ui fluid red button" (click)="debug.show()" style="margin-top: 2em;">顯示偵錯窗格</button>
     </div>
     <div class="message-panel">
@@ -27,8 +27,8 @@ import { Message, MessageService } from './services/message.service'
         </message-content>
       </sm-message>
     </div>
-    <float>
-      <p>偵錯資訊</p>
+    <float [header]="'偵錯資訊'">
+      <pre>{{debugItems | json}}</pre>
     </float>
     `,
   styles: [
@@ -40,12 +40,14 @@ export class AppComponent implements OnInit {
   @ViewChild(FloatingComponent) debug: FloatingComponent
 
   private messages: Message[]
+  private debugItems: DebugItem[]
 
   ngOnInit(): void {
     this.messages = []
-    this.messageService.messages.subscribe(messages => {
-      this.messages = messages
-    })
+    this.debugItems = []
+
+    this.messageService.messages.subscribe(messages => this.messages = messages)
+    this.debugService.items.subscribe(items => this.debugItems = items)
 
     this.activatedRoute.queryParams.subscribe((query: any) => {
       if (query.sso && query.token) {
@@ -64,5 +66,6 @@ export class AppComponent implements OnInit {
     })
   }
   constructor(private authService: AuthService, private messageService: MessageService,
+    private debugService: DebugService,
     private router: Router, private activatedRoute: ActivatedRoute) { }
 }

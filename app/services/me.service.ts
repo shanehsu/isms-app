@@ -4,6 +4,8 @@ import { AuthService } from './auth.service'
 import { Token } from './../types/token'
 import { User } from './../types/user'
 
+import { DebugItem, DebugService } from './debug.service'
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 @Injectable()
@@ -13,7 +15,7 @@ export class MeService {
   isLoading: BehaviorSubject<boolean>
   user: BehaviorSubject<User>
 
-  constructor(private authService: AuthService, private http: Http, @Inject("app.config") private config) {
+  constructor(private authService: AuthService, private debugService: DebugService, private http: Http, @Inject("app.config") private config) {
     this.endpoint = config.endpoint + '/me'
 
     this.user = new BehaviorSubject<User>(null)
@@ -38,6 +40,12 @@ export class MeService {
           this.isLoading.next(false)
         })
       }
+    })
+
+    this.debugService.register({
+      context: 'MeService',
+      name: 'user',
+      value: this.user
     })
   }
 

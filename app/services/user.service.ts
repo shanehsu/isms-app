@@ -95,7 +95,7 @@ export class UserService {
     })
 
     try {
-      await this.http.delete(`${this.endpoint}/${id}`, headers).toPromise()
+      await this.http.delete(`${this.endpoint}/${id}`, { headers: headers }).toPromise()
     } catch (networkError) {
       console.error('無法刪除使用者')
       console.dir(networkError)
