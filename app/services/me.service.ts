@@ -43,9 +43,9 @@ export class MeService {
     })
 
     this.debugService.register({
-      context: 'MeService',
+      source: 'MeService',
       name: 'user',
-      value: this.user
+      subject: this.user
     })
   }
 
@@ -61,6 +61,7 @@ export class MeService {
           headers: new Headers({ token: t })
         }).subscribe(_ => {
           this.isLoading.next(false)
+          this.user.next(null)
           this.authService.didLogout()
           resolve()
         }, err => {

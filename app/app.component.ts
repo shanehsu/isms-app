@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AuthService } from './services/auth.service'
-import { DebugItem, DebugService } from './services/debug.service'
+import { DebugView, DebugService } from './services/debug.service'
 import { FloatingComponent } from './floating.component'
 import { Message, MessageService } from './services/message.service'
 
@@ -28,11 +28,37 @@ import { Message, MessageService } from './services/message.service'
       </sm-message>
     </div>
     <float [header]="'偵錯資訊'">
-      <pre>{{debugItems | json}}</pre>
+      <table class="ui celled table" style="table-layout: fixed;">
+        <thead>
+          <tr>
+            <th>元件</th>
+            <th>子系統</th>
+            <th>名稱</th>
+          </tr>
+          <tr>
+            <th colspan="3">值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template ngFor [ngForOf]="debuggables" let-debuggable>
+            <tr>
+              <td>{{debuggable.source}}</td>
+              <td>{{debuggable.section ? debuggable.section : '' }}</td>
+              <td>{{debuggable.name}}</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <pre><code>{{debuggable.value | json}}</code></pre>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
     </float>
     `,
   styles: [
-    ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll; z-index: 10; }"
+    ".message-panel { position: fixed; bottom: 0; right: 20pt; max-width: 30em; width: 40%; max-height: 12em; overflow-x: scroll; z-index: 10; }",
+    "pre code { font-family: 'SFMono-Regular', 'Courier New', monospace; }"
   ]
 })
 
@@ -40,14 +66,14 @@ export class AppComponent implements OnInit {
   @ViewChild(FloatingComponent) debug: FloatingComponent
 
   private messages: Message[]
-  private debugItems: DebugItem[]
+  private debuggables: DebugView[]
 
   ngOnInit(): void {
     this.messages = []
-    this.debugItems = []
+    this.debuggables = []
 
     this.messageService.messages.subscribe(messages => this.messages = messages)
-    this.debugService.items.subscribe(items => this.debugItems = items)
+    this.debugService.debuggables.subscribe(debuggables => this.debuggables = debuggables)
 
     this.activatedRoute.queryParams.subscribe((query: any) => {
       if (query.sso && query.token) {

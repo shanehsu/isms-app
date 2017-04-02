@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
 
 export interface DebugItem {
-  context: string
+  source: string
   section?: string
   name: string
-  value: Observable<any>
+  subject: BehaviorSubject<any>
+  subscription?: Subscription
 }
 
-export interface DebugViewItem {
-  context: string
+export interface DebugView {
+  source: string
   section?: string
   name: string
   value: any
@@ -18,25 +20,38 @@ export interface DebugViewItem {
 
 @Injectable()
 export class DebugService {
-  private subject: BehaviorSubject<DebugItem[]>
+  private subjects: DebugItem[]
+  private _debuggables: BehaviorSubject<DebugView[]>
+  public debuggables: Observable<DebugView[]>
 
-  public get items(): Observable<DebugViewItem[]> {
-    return new BehaviorSubject()
-  }
   constructor() {
-    this.subject = new BehaviorSubject<DebugItem[]>([])
+    this.subjects = []
+    this._debuggables = new BehaviorSubject<DebugView[]>([])
+    this.debuggables = this._debuggables.asObservable()
   }
-
   public register(item: DebugItem) {
-    let values = this.subject.getValue()
-    values.push(item)
-    this.subject.next(values)
+    this.subjects.push(item)
+    this.subjects[this.subjects.length - 1].subscription = item.subject.subscribe(_ => this.pushNewValues())
+    this.pushNewValues()
   }
-  public takeBack(item: DebugItem) {
-    let values = this.subject.getValue()
-    let index = values.findIndex(e => e.context === item.context && e.section === item.section && e.name === item.name)
-    if (index >= 0) { values.splice(index, 1) }
-
-    this.subject.next(values)
+  public revoke(item: DebugItem) {
+    let index = this.subjects.findIndex($0 => {
+      return item.source == $0.source && item.section == $0.section && item.name == $0.name
+    })
+    if (index >= 0) {
+      this.subjects[index].subscription.unsubscribe()
+      this.subjects.splice(index, 1)
+    }
+    this.pushNewValues()
+  }
+  private pushNewValues() {
+    this._debuggables.next(this.subjects.map($0 => {
+      return {
+        source: $0.source,
+        section: $0.section,
+        name: $0.name,
+        value: $0.subject.value
+      }
+    }))
   }
 }

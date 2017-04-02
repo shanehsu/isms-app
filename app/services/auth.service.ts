@@ -107,6 +107,6 @@ export class AuthService {
   }
   private removeToken() {
     localStorage.removeItem('token')
-    this.token.next(undefined)
+    this.token.next(null)
   }
 }

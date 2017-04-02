@@ -2,36 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "啟動",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceRoot}/node_modules/.bin/lite-server",
-      "stopOnEntry": false,
-      "args": [],
-      "cwd": "${workspaceRoot}",
-      "preLaunchTask": "tsc",
-      "runtimeExecutable": null,
+      "preLaunchTask": "編譯",
+      "name": "Launch Chrome",
+      "runtimeExecutable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
       "runtimeArgs": [
-        "--nolazy"
+        "--remote-debugging-port=9222"
       ],
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "externalConsole": false,
-      "sourceMaps": false,
-      "outDir": null
-    },
-    {
-      "name": "附加",
-      "type": "node",
-      "request": "attach",
-      "port": 5858,
-      "address": "localhost",
-      "restart": false,
-      "sourceMaps": false,
-      "outDir": null,
-      "localRoot": "${workspaceRoot}",
-      "remoteRoot": null
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3001/app/index.html",
+      "webRoot": "${workspaceRoot}"
     }
   ]
 }

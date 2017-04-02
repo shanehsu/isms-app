@@ -24,7 +24,7 @@
     'ng-semantic': 'npm:ng-semantic',
     'ng2-dragula': 'npm:ng2-dragula/bundles',
     'angular2-contextmenu': 'npm:angular2-contextmenu',
-    'lodash': 'npm:lodash/dist'
+    'lodash': 'npm:lodash'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
