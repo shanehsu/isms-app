@@ -108,6 +108,7 @@ export class UsersListComponent implements OnInit {
       .then(id => this.edit(id))
       .catch(err => {
         this.creating = false
+        this.messageService.error("無法建立使用者", "建立使用者時發生錯誤，請檢查是否有使用者的 email 未修改。")
       });
   }
   edit(id: string): void {
@@ -123,12 +124,7 @@ export class UsersListComponent implements OnInit {
       this.users.splice(this.users.findIndex(x => x.id == id), 1)
     }).catch(err => {
       this.states[id] = UserState.Errored
-      this.messageService.post({
-        header: '刪除失敗',
-        content: '刪除失敗，資料與伺服器可能不同步，請考慮重整網頁。',
-        icon: 'remove',
-        class: 'error'
-      })
+      this.messageService.error('刪除失敗', '刪除失敗，資料與伺服器可能不同步，請考慮重整網頁。')
     })
   }
 

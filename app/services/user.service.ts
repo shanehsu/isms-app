@@ -51,13 +51,8 @@ export class UserService {
       token: this.authService.token.getValue(),
       'Content-Type': 'application/json'
     })
-    try {
-      return await this.http.post(this.endpoint, "", { headers: headers })
-        .map(res => res.text()).toPromise()
-    } catch (networkError) {
-      console.error('無法新增使用者')
-      console.dir(networkError)
-    }
+    return await this.http.post(this.endpoint, "", { headers: headers })
+      .map(res => res.text()).toPromise()
   }
   async confirm(userId: string): Promise<void> {
     let headers = new Headers({
