@@ -6,9 +6,9 @@ import { StepDirective } from './step.directive'
   selector: 'wizard',
   template: `
   <div *ngIf="!finished">
-    <ng-content select="step"></ng-content>
+    <ng-content></ng-content>
     <div>
-      <button *ngIf="__currentStep !== 1"             class="ui button" [disabled]="!canPrevious" (click)="prev()">上一步</button>
+      <button *ngIf="__currentStep !== 0"             class="ui button" [disabled]="!canPrevious" (click)="prev()">上一步</button>
       <button *ngIf="__currentStep !== totalStep - 1" class="ui right floated button" [disabled]="!canNext" (click)="next()">下一步</button>
       <button *ngIf="__currentStep === totalStep - 1" class="ui right floated green button" [disabled]="!canNext" (click)="finish()">完成</button>
     </div>
