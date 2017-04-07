@@ -2,13 +2,21 @@ import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AuthService } from './services/auth.service'
 import { DebugView, DebugService } from './services/debug.service'
-import { FloatingComponent } from './floating.component'
+import { FloatingComponent } from './views/floating.component'
 import { Message, MessageService } from './services/message.service'
 
 @Component({
   selector: 'isms-app',
   template: `
     <div class="ui container">
+      <wizard [canNext]="true" [canPrevious]="false">
+        <step>
+          <p>I am first step.</p>
+        </step>
+        <step>
+          <p>I am second step.</p>
+        </step>
+      </wizard>
       <div class="ui fluid container" style="margin-top: 1em; margin-bottom: 2em;">
         <isms-nav></isms-nav>
       </div>

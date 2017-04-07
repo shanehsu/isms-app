@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http'
 import { DragulaModule } from 'ng2-dragula'
 
 import { AppComponent } from './app.component'
-import { FloatingComponent } from './floating.component'
+import { FloatingComponent } from './views/floating.component'
 
 import { AuthService } from './services/auth.service'
 import { FormService } from './services/form.service'
@@ -22,6 +22,7 @@ import { pipesModule } from './pipes/pipes.module'
 import { formControlsModule } from './controls/form-controls.module'
 import { customControlsModule } from './controls/custom-controls.module'
 import { directivesModule } from './directives/directives.module'
+import { wizardModule } from './views/wizard/wizard.module'
 
 import { navigationModule } from './navigation/navigation.module'
 import { newsModule } from './news/news.module'
@@ -35,14 +36,13 @@ import { config } from './app.config'
 import { NgSemanticModule } from "ng-semantic"
 
 @Directive({ selector: 'message-header, message-content' })
-class NullComponent { }
-
+class NullDirective { }
 
 @NgModule({
   declarations: [
     AppComponent,
     FloatingComponent,
-    NullComponent
+    NullDirective
   ],
   imports: [
     BrowserModule,
@@ -61,6 +61,7 @@ class NullComponent { }
     formControlsModule,
     customControlsModule,
     directivesModule,
+    wizardModule,
 
     NgSemanticModule
   ],
