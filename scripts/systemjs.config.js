@@ -24,7 +24,10 @@
     'ng-semantic': 'npm:ng-semantic',
     'ng2-dragula': 'npm:ng2-dragula/bundles',
     'angular2-contextmenu': 'npm:angular2-contextmenu',
-    'lodash': 'npm:lodash'
+    'lodash': 'npm:lodash',
+    'codemirror': 'npm:codemirror',
+    'htmlmixed': 'npm:codemirror/mode/htmlmixed',
+    'ng2-codemirror': 'npm:ng2-codemirror',
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -34,7 +37,10 @@
     'ng-semantic': { main: 'ng-semantic.js', defaultExtension: 'js' },
     'ng2-dragula': { main: 'ng2-dragula.umd.js', defaultExtension: 'js' },
     'angular2-contextmenu': { defaultExtension: 'js' },
-    'lodash': { main: 'lodash.js', defaultExtension: 'js' }
+    'lodash': { main: 'lodash.js', defaultExtension: 'js' },
+    'codemirror': { main: 'lib/codemirror.js', defaultExtension: 'js' },
+    'htmlmixed': { main: 'htmlmixed.js', defaultExtension: 'js' },
+    'ng2-codemirror': { main: 'lib/index.js', defaultExtension: 'js' }
   }
   var config = {
     paths: paths,

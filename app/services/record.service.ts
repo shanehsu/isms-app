@@ -134,19 +134,19 @@ export class RecordService {
       token: this.authService.token.getValue(),
       "Content-Type": "application/json"
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers
     }
     let endpoint = this.endpoint + `/${id}/actions/sign`
 
-    await this.http.post(endpoint, options).toPromise()
+    await this.http.post(endpoint, '', options).toPromise()
   }
 
   async return(id: string): Promise<void> {
     let headers = new Headers({
       token: this.authService.token.getValue()
     })
-    let options = {
+    let options: RequestOptionsArgs = {
       headers: headers
     }
     let endpoint = this.endpoint + `/${id}/actions/decline`

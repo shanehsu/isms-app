@@ -96,7 +96,7 @@ export class EmptyFieldMetadataComponent implements ControlValueAccessor {
     </div>
   </div>
   <div class="ui segments" style="margin-bottom: 1em;">
-    <template ngFor [ngForOf]="metadata.options" let-i="index" let-odd="odd">
+    <ng-template ngFor [ngForOf]="metadata.options" let-i="index" let-odd="odd">
       <!-- 選項 -->
       <!-- 展開狀態 -->
       <div class="ui segment" [class.secondary]="odd" *ngIf="!areOptionsCollapsed">
@@ -128,7 +128,7 @@ export class EmptyFieldMetadataComponent implements ControlValueAccessor {
       <div class="ui segment" [class.secondary]="odd" *ngIf="areOptionsCollapsed">
         {{metadata.options[i].value}}
       </div>
-    </template>
+    </ng-template>
     
     <!-- 新增選項 -->
     <div class="ui segment" style="overflow: auto;" [class.secondary]="metadata.options.length % 2 == 1">

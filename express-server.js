@@ -6,7 +6,7 @@ let fs = require('fs')
 let app = express()
 
 let port = process.env.PORT ? +(process.env.PORT) : 3001
-let default_host = process.env.HOST ? process.env.HOST : '127.0.0.1:8080'
+let default_host = process.env.HOST ? process.env.HOST : '120.107.193.148:8080'
 let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : `http://${default_host}`
 let ssoUrl = process.env.SSOURL ? process.env.SSOURL : `http://${default_host}/sso`
 

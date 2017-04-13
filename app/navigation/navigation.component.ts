@@ -15,12 +15,12 @@ import { SemanticModalComponent } from 'ng-semantic'
   template: `
   <div class="ui large fluid stackable menu">
     <a class="item" *ngFor="let item of navigationItems" [routerLink]="[item.path]" routerLinkActive="active">{{item.name}}</a>
-    <template [ngIf]="user == undefined">
+    <ng-template [ngIf]="user == undefined">
       <div *ngIf="!loading" class="right item">
         <div class="ui green button" (click)="chooseLoginMethodModal.show()">登入</div>
       </div>
       <a class="right item" *ngIf="loading">載入中</a>
-    </template>
+    </ng-template>
     <div class="right menu" *ngIf="user != undefined && !loading">
       <sm-dropdown [title]="user.name" class="link" [options]="{on: 'hover'}">
         <sm-item (click)="logout()">登出</sm-item>

@@ -9,14 +9,6 @@ import { Message, MessageService } from './services/message.service'
   selector: 'isms-app',
   template: `
     <div class="ui container">
-      <wizard [canNext]="true" [canPrevious]="false">
-        <step>
-          <p>I am first step.</p>
-        </step>
-        <step>
-          <p>I am second step.</p>
-        </step>
-      </wizard>
       <div class="ui fluid container" style="margin-top: 1em; margin-bottom: 2em;">
         <isms-nav></isms-nav>
       </div>
@@ -48,7 +40,7 @@ import { Message, MessageService } from './services/message.service'
           </tr>
         </thead>
         <tbody>
-          <template ngFor [ngForOf]="debuggables" let-debuggable>
+          <ng-template ngFor [ngForOf]="debuggables" let-debuggable>
             <tr>
               <td>{{debuggable.source}}</td>
               <td>{{debuggable.section ? debuggable.section : '' }}</td>
@@ -59,7 +51,7 @@ import { Message, MessageService } from './services/message.service'
                 <pre><code>{{debuggable.value | json}}</code></pre>
               </td>
             </tr>
-          </template>
+          </ng-template>
         </tbody>
       </table>
     </float>
@@ -71,6 +63,11 @@ import { Message, MessageService } from './services/message.service'
 })
 
 export class AppComponent implements OnInit {
+  // WIZARD TEST
+  private _WIZ_1: number = 0
+  private _WIZ_2: string = ""
+  // WIZARD TEST
+
   @ViewChild(FloatingComponent) debug: FloatingComponent
 
   private messages: Message[]

@@ -9,6 +9,15 @@
       "isBuildCommand": true
     },
     {
+      "taskName": "觀察編譯",
+      "command": "tsc",
+      "args": [
+        "-w"
+      ],
+      "showOutput": "always",
+      "problemMatcher": "$tsc-watch"
+    },
+    {
       "taskName": "安裝依賴元件",
       "command": "npm",
       "args": [

@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core'
-import { NgClass } from '@angular/common'
+import {
+  Component, OnInit, ViewChildren, QueryList, AfterViewInit, ElementRef,
+  ViewContainerRef, ReflectiveInjector, Compiler, NgModule, ModuleWithComponentFactories
+} from '@angular/core'
+import { NgClass, CommonModule } from '@angular/common'
 import { Router, ActivatedRoute } from '@angular/router'
 import { RecordService } from './../services/record.service'
 import { FormService } from './../services/form.service'
@@ -60,6 +63,7 @@ import { Record, Signature, Field } from './../types/types'
       </tr>
     </tbody>
   </table>
+  <button class="ui button" (click)="showTemplated()">表格版</button>
   `,
   styles: [
     '#record_display th:first-child { padding: .78571429em; width: 8em; }',
@@ -82,7 +86,10 @@ export class RecordComponent implements OnInit {
     private router: Router,
     private formService: FormService,
     private recordService: RecordService,
-    private meSerivce: MeService) { }
+    private meSerivce: MeService,
+    // 動態元件
+    private viewContainer: ViewContainerRef,
+    private compiler: Compiler) { }
   async ngOnInit() {
     this.id = this.route.snapshot.params['id']
     this.schema = null
@@ -185,5 +192,73 @@ export class RecordComponent implements OnInit {
   }
   update() {
     this.router.navigate(['../update/', this.id], { relativeTo: this.route })
+  }
+  async showTemplated() {
+    let record = this.record
+    let form = await this.formService.form(record.formId, "Filling", record.revisionNumber)
+    let template = form.revision.template
+
+    // 動態元件
+    let metadata = { template: template }
+    const decoratedCmp = Component(metadata)(class {
+      private record: Record
+      private rendered: boolean
+      constructor() {
+        this.record = record
+        this.rendered = false
+      }
+      ngAfterViewInit() { this.rendered = true }
+    })
+    const decoratedModule = NgModule({ imports: [CommonModule], declarations: [decoratedCmp] })(class { })
+
+    let componentFactory = await this.compiler.compileModuleAndAllComponentsAsync(decoratedModule)
+      .then((moduleWithComponentFactory: ModuleWithComponentFactories<any>) => {
+        return moduleWithComponentFactory.componentFactories.find(x => x.componentType === decoratedCmp);
+      })
+    // 加入 View Container 中
+    let injector = ReflectiveInjector.fromResolvedProviders([], this.viewContainer.parentInjector)
+    let createdComponent = this.viewContainer.createComponent(componentFactory, undefined, injector, [])
+    let intervalId = window.setInterval(() => {
+      if (createdComponent.instance.rendered) {
+        window.clearInterval(intervalId)
+        let element = createdComponent.location.nativeElement as HTMLElement
+
+        let isolationAttribute = ""
+        for (var i = 0; i < element.attributes.length; i++) {
+          let attr = element.attributes.item(i)
+          if (attr.name.startsWith('_nghost-')) {
+            isolationAttribute = attr.name.substr(8)
+          }
+        }
+
+        let applyingCssRules: string[] = []
+
+        // 尋找 CSS Stylesheet
+        for (let i = 0; i < window.document.styleSheets.length; i++) {
+          let stylesheet = window.document.styleSheets.item(i) as CSSStyleSheet
+          console.dir(stylesheet)
+          if (!stylesheet.cssRules) {
+            continue
+          }
+          for (let i = 0; i < stylesheet.cssRules.length; i++) {
+            let rule = stylesheet.cssRules.item(i)
+            if (rule.cssText.includes('_ngcontent-' + isolationAttribute) || rule.cssText.includes('_nghost-' + isolationAttribute)) {
+              let ruleText = rule.cssText
+              console.log(ruleText)
+              applyingCssRules.push(ruleText)
+            }
+          }
+        }
+
+        let cssText = applyingCssRules.reduce((text, rule) => text += rule, "<style>")
+        cssText += "</style>"
+
+        let renderedHtml = element.innerHTML
+        window.open('data:text/html;charset=UTF-8,' + `<div _nghost-${isolationAttribute}>${renderedHtml}${cssText}</div>`)
+
+        // createdComponent.hostView.detach()
+        // createdComponent.destroy()
+      }
+    }, 100)
   }
 }

@@ -11,15 +11,15 @@ import { RandomString } from './../../util'
   template: `
   <div>
     <select [id]="_uid" (change)="select($event)" class="ui dropdown">
-      <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+      <ng-template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
         <option [value]="item.id" [selected]="_dataModel[item.id]?.selected">{{item.value}}</option>
-      </template>
+      </ng-template>
     </select>
-    <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+    <ng-template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
       <div *ngIf="_dataModel[item.id]?.selected" style="margin-left: 4em;">
         <form-fields [nested]="true" [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel[item.id].values"></form-fields>
       </div>
-    </template>
+    </ng-template>
   </div>`
 })
 

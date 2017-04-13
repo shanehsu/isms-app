@@ -1,4 +1,4 @@
-import { NgModule, Directive } from '@angular/core'
+import { NgModule, Directive, ErrorHandler, Injectable } from '@angular/core'
 
 import { BrowserModule } from '@angular/platform-browser'
 import { FormsModule } from '@angular/forms'
@@ -34,6 +34,15 @@ import { appRoutingModule } from './app.routes'
 import { config } from './app.config'
 
 import { NgSemanticModule } from "ng-semantic"
+
+@Injectable()
+class MyErrorHandler implements ErrorHandler {
+  constructor(private messageService: MessageService) { }
+  handleError(error: any) {
+    this.messageService.error("Angular 2 錯誤", "請檢查 Console")
+    console.dir(error)
+  }
+}
 
 @Directive({ selector: 'message-header, message-content' })
 class NullDirective { }
@@ -79,6 +88,7 @@ class NullDirective { }
 
     { provide: 'app.config', useValue: config },
     { provide: 'app.debug', useValue: false },
+    { provide: ErrorHandler, useClass: MyErrorHandler }
   ]
 })
 

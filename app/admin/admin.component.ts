@@ -13,11 +13,11 @@ import { MeService } from './../services/me.service'
   <div class="ui grid">
     <div class="sixteen wide mobile two wide computer column">
       <div class="ui secondary stacking fluid vertical pointing menu">
-        <template ngFor let-item [ngForOf]="adminItems">
-          <a class="active item" [routerLink]="item.path" routerLinkActive="active">
+        <ng-template ngFor let-item [ngForOf]="adminItems">
+          <a class="item" [routerLink]="item.path" routerLinkActive="active">
             {{item.name}}
           </a>
-        </template>
+        </ng-template>
       </div>
     </div>
     <div id="content" class="sixteen wide mobile fourteen wide computer column">

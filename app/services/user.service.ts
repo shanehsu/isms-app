@@ -51,7 +51,7 @@ export class UserService {
       token: this.authService.token.getValue(),
       'Content-Type': 'application/json'
     })
-    return await this.http.post(this.endpoint, "", { headers: headers })
+    return this.http.post(this.endpoint, "", { headers: headers })
       .map(res => res.text()).toPromise()
   }
   async confirm(userId: string): Promise<void> {
@@ -83,17 +83,12 @@ export class UserService {
       console.dir(networkError)
     }
   }
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<any> {
     let headers = new Headers({
       token: this.authService.token.getValue(),
       'Content-Type': 'application/json'
     })
 
-    try {
-      await this.http.delete(`${this.endpoint}/${id}`, { headers: headers }).toPromise()
-    } catch (networkError) {
-      console.error('無法刪除使用者')
-      console.dir(networkError)
-    }
+    return this.http.delete(`${this.endpoint}/${id}`, { headers: headers }).toPromise()
   }
 }

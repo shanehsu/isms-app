@@ -1,6 +1,6 @@
 import { NgModule, Component } from '@angular/core'
 
-import { CommonModule }  from '@angular/common'
+import { CommonModule } from '@angular/common'
 import { ModuleWithProviders } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 
@@ -21,28 +21,32 @@ let routes: Routes = [
     component: AdminComponent,
     children: [
       { path: '', redirectTo: 'news', pathMatch: 'full' },
-      { path: 'news', 
+      {
+        path: 'news',
         component: NewsAdminComponent,
         children: [
           { path: '', component: NewsListComponent },
           { path: ':id', component: NewsDetailComponent }
         ]
       },
-      { path: 'users',
+      {
+        path: 'users',
         component: UserAdminComponent,
         children: [
           { path: '', component: UsersListComponent },
           { path: ':id', component: UserDetailComponent }
         ]
       },
-      { path: 'units',
+      {
+        path: 'units',
         component: UnitAdminComponent,
         children: [
           { path: '', component: UnitsListComponent },
           { path: ':id', component: UnitDetailComponent }
         ]
       },
-      { path: 'forms',
+      {
+        path: 'forms',
         component: FormAdminComponent,
         children: [
           { path: '', component: FormsListComponent },
@@ -62,7 +66,7 @@ const adminRoutingModule: ModuleWithProviders = RouterModule.forChild(routes)
   imports: [
     CommonModule,
     RouterModule,
-    
+
     adminRoutingModule,
     newsAdminModule,
     usersAdminModule,

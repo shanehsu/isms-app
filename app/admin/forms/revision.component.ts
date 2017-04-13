@@ -2,6 +2,8 @@
 import { Self, Input, Output, Component, EventEmitter, OnInit, OnChanges, forwardRef, AfterViewInit, ViewChildren, QueryList } from '@angular/core'
 import { ControlValueAccessor, NgModel } from '@angular/forms'
 
+import 'htmlmixed'
+
 // 服務
 import { FormService } from './../../services/form.service'
 
@@ -124,19 +126,8 @@ import { FieldComponent } from './field.component'
         </div>
       </div>
     </div>
-
-    <div style="text-align: right;">
-      <button type="button" class="ui teal basic button" (click)="publishrevision()" *ngIf="!revision.published" [class.loading]="isPublishing">發佈</button>
-      <button type="button" class="ui red basic button" (click)="deleterevision()" *ngIf="!revision.published" [class.loading]="isDeleting">刪除</button>
-      <button type="submit" id="update_button" class="ui basic button" [class.green]="revisionForm.form.valid" [class.red]="!revisionForm.form.valid"
-        [disabled]="!revisionForm.form.valid" [class.loading]="isUpdating" *ngIf="!revision.published">更新</button>
-    </div>
-
-    <pre>{{revision | json}}</pre>
   </form>
-
-  <div class="ui secdion divider"></div>
-
+  <div class="ui section divider"></div>
   <div class="ui basic segment" [class.loading]="isLoadingFields">
     <h3 class="ui header" style="clear: none;">表單欄位</h3>
     <a class="link" (click)="toggleCollapse()" style="float: right;">展開／收合表單欄位</a>
@@ -149,6 +140,18 @@ import { FieldComponent } from './field.component'
     <div style="text-align: center;">
       <button type="button" class="ui teal basic button" (click)="createField()" [class.loading]="isCreatingField">增加欄位</button>
     </div>
+  </div>
+  <div class="ui section divider"></div>
+  <div class="ui basic segment">
+    <h3 class="ui header" style="clear: none;">樣板</h3>
+    <p><small>不用包含 <pre style="display: inline;">body</pre> 標籤。</small></p>
+    <codemirror [(ngModel)]="revision.template" [config]="{ lineNumbers: true, mode: 'text/html' }"></codemirror>
+  </div>
+  <div style="text-align: right;">
+    <button type="button" class="ui teal basic button" (click)="publishrevision()" *ngIf="!revision.published" [class.loading]="isPublishing">發佈</button>
+    <button type="button" class="ui red basic button" (click)="deleterevision()" *ngIf="!revision.published" [class.loading]="isDeleting">刪除</button>
+    <button type="submit" id="update_button" class="ui basic button" [class.green]="revisionForm.form.valid" [class.red]="!revisionForm.form.valid"
+      [disabled]="!revisionForm.form.valid" [class.loading]="isUpdating" *ngIf="!revision.published" (click)="submitrevision()">更新</button>
   </div>
   `
 })

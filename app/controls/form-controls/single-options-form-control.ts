@@ -10,20 +10,20 @@ import { RandomString } from './../../util'
   selector: 'form-control[type=options][presentation=single]',
   template: `
   <div [id]="_uid" class="inline fields">
-    <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+    <ng-template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
       <div class="field">
         <div class="ui radio checkbox">
           <input [name]="_uid" type="radio" (change)="select(item.id)" [checked]="_dataModel[item.id]?.selected">
           <label>{{item.value}}</label>
         </div>
       </div>
-    </template>
+    </ng-template>
   </div>
-  <template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
+  <ng-template ngFor let-item [ngForOf]="_metadata.options" let-i="index">
     <div style="margin-left: 4em;" *ngIf="_dataModel && _dataModel[item.id] && _dataModel[item.id].selected">
       <form-fields [nested]="true" [fields]="_metadata.options[i].fields" [(ngModel)]="_dataModel[item.id].values"></form-fields>
     </div>
-  </template>
+  </ng-template>
   `
 })
 

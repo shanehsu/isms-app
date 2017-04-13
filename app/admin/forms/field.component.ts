@@ -21,8 +21,13 @@ import { Pipe, PipeTransform } from '@angular/core';
   <div [style.display]="isCollapsed ? 'initial' : 'none'">
     <p>名稱：{{field.name}}</p>
     <p>類型：{{field.type | fieldType}}</p>
+    <p>唯一識別碼：{{field.id}}</p>
   </div>
   <form class="ui form" (ngSubmit)="updateField()" #fieldForm="ngForm" [style.display]="isCollapsed ? 'none' : 'initial'">
+    <div class="field">
+      <label>唯一識別碼</label>
+      <p>{{field.id}}</p>
+    </div>
     <div class="field">
       <label>名稱</label>
       <input type="text" [(ngModel)]="field.name" name="name" (change)="emitValue()" required>

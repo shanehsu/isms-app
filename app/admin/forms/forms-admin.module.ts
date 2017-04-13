@@ -12,6 +12,8 @@ import { FieldComponent } from './field.component'
 import { EmptyFieldMetadataComponent, OptionFieldMetadataComponent, TableFieldMetadataComponent } from './field-metadata.component'
 export { FormsListComponent, FormDetailComponent }
 
+import { CodemirrorModule } from 'ng2-codemirror'
+
 let FieldTypes = [
   {
     label: '單行文字',
@@ -72,11 +74,11 @@ export class FormAdminComponent { }
     CommonModule,
     FormsModule,
     RouterModule,
-    
+    CodemirrorModule,
     customControlsModule
   ],
   providers: [
-    {provide: 'fieldTypes', useValue: FieldTypes}
+    { provide: 'fieldTypes', useValue: FieldTypes }
   ],
   exports: [
     FormAdminComponent,

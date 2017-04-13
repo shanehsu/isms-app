@@ -36,12 +36,12 @@ import { Form, FormRevision } from './../../types/types'
   <div class="ui raised padded segment" [class.loading]="isLoadingForm">
     <h2 class="ui header">版本</h2>
     <div class="ui top attached tabular menu">
-      <template ngIf="form">
+      <ng-template ngIf="form">
         <a *ngFor="let revision of form.revisions" class="link item" [class.active]="isActiveRevision(revision)" (click)="selectRevision(revision)">
           <i *ngIf="!revision" class="notched circle loading icon"></i>
           <span>{{revision?.number?.toFixed(1)}}</span>
         </a>
-      </template>
+      </ng-template>
       <a class="link item" (click)="createRevision()" [class.active]="form && form.revisions.length == 0">
         <i *ngIf="requestingNewRevision" class="notched circle loading icon"></i>
         <i *ngIf="!requestingNewRevision" class="plus icon"></i>

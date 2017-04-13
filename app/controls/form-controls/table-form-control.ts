@@ -22,53 +22,53 @@ import { RecordService } from './../../services/record.service'
       <tr *ngFor="let record of _dataModel; let recordIndex = index">
         <td style="text-align: right;">{{recordIndex + 1}}</td>
         <td *ngFor="let item of _metadata.fields; let fieldIndex = index">
-          <template [ngIf]="item.type == 'shortText'">
+          <ng-template [ngIf]="item.type == 'shortText'">
             <div class="field">
               <form-control type="text" row="single" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
             </div>
-          </template>
+          </ng-template>
           
-          <template [ngIf]="item.type == 'longText'">
+          <ng-template [ngIf]="item.type == 'longText'">
             <div class="field">
               <form-control type="text" row="multi" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
             </div>
-          </template>
+          </ng-template>
           
-          <template [ngIf]="item.type == 'date'">
+          <ng-template [ngIf]="item.type == 'date'">
             <div class="field">
               <form-control type="date" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
             </div>
-          </template>
+          </ng-template>
           
-          <template [ngIf]="item.type == 'time'">
+          <ng-template [ngIf]="item.type == 'time'">
             <div class="field">
               <form-control type="time" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
             </div>
-          </template>
+          </ng-template>
           
-          <template [ngIf]="item.type == 'options'">
-            <template [ngIf]="item.metadata.presentation == 'radio'">
+          <ng-template [ngIf]="item.type == 'options'">
+            <ng-template [ngIf]="item.metadata.presentation == 'radio'">
               <div class="field">
                 <form-control type="options" presentation="single" [metadata]="item.metadata" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
               </div>
-            </template>
-            <template [ngIf]="item.metadata.presentation == 'checkbox'">
+            </ng-template>
+            <ng-template [ngIf]="item.metadata.presentation == 'checkbox'">
               <div class="field">
                 <form-control type="options" presentation="multi" [metadata]="item.metadata" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
               </div>
-            </template>
-            <template [ngIf]="item.metadata.presentation == 'select'">
+            </ng-template>
+            <ng-template [ngIf]="item.metadata.presentation == 'select'">
               <div class="field">
                 <form-control type="options" presentation="dropdown" [metadata]="item.metadata" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
               </div>
-            </template>
-          </template>
+            </ng-template>
+          </ng-template>
           
-          <template [ngIf]="item.type == 'table'">
+          <ng-template [ngIf]="item.type == 'table'">
             <div class="field">
               <form-control type="table" [metadata]="item.metadata" [(ngModel)]="_dataModel[recordIndex][item.id]"></form-control>
             </div>
-          </template>
+          </ng-template>
         </td>
       </tr>
     </tbody>
