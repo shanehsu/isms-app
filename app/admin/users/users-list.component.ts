@@ -7,6 +7,7 @@ import { UserService } from './../../services/user.service'
 import { UnitService } from './../../services/unit.service'
 import { MessageService } from './../../services/message.service'
 import { User } from './../../types/user'
+import { WizardComponent } from './../../views/wizard/wizard.component'
 
 import { SemanticModalComponent } from "ng-semantic"
 
@@ -23,9 +24,11 @@ enum UserState {
         <button type="button" class="ui right floated teal labeled icon button" (click)="showWizard()">
           <i class="plus icon"></i>新增使用者精靈
         </button>
+        <!--
         <button type="button" class="ui right floated blue labeled icon button" [class.loading]="creating" (click)="create()">
           <i class="plus icon"></i>新增使用者
         </button>
+        -->
       </form>
     </div>
     <table class="ui striped table">
@@ -72,7 +75,7 @@ enum UserState {
     </table>
     <sm-modal title="建立使用者精靈" class="basic" #newuser_wizard>
       <modal-content>
-        <wizard (finish)="wizardCreateUser()">
+        <wizard (finish)="wizardCreateUser()" #newuser_wizard_comp>
           <step name="基本資料" [canNext]="basicInfoForm.valid">
             <form class="ui form" #basicInfoForm="ngForm">
               <div class="ui field">
@@ -253,7 +256,7 @@ export class UsersListComponent implements OnInit {
     Error: ['red', 'warning', 'icon']
   }
   @ViewChild('newuser_wizard') newUserWizardModal: SemanticModalComponent
-
+  @ViewChild('newuser_wizard_comp') wizardComponent: WizardComponent
   /**
    * 精靈的資料
    */
@@ -310,6 +313,18 @@ export class UsersListComponent implements OnInit {
     }
   }
   private async wizardCreateUser() {
+    this.wizardComponent.reset()
+    this.wizardData = {
+      email: "",
+      name: "",
+      group: null,
+      roles: [],
+      rolesString: "",
+      units: null,
+      selectedUnit: null,
+      canFinish: true,
+      wizardTasks: []
+    }
     this.wizardData.canFinish = false
 
     this.wizardData.wizardTasks = [
