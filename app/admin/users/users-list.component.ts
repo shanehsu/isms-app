@@ -24,11 +24,6 @@ enum UserState {
         <button type="button" class="ui right floated teal labeled icon button" (click)="showWizard()">
           <i class="plus icon"></i>新增使用者精靈
         </button>
-        <!--
-        <button type="button" class="ui right floated blue labeled icon button" [class.loading]="creating" (click)="create()">
-          <i class="plus icon"></i>新增使用者
-        </button>
-        -->
       </form>
     </div>
     <table class="ui striped table">
@@ -75,7 +70,7 @@ enum UserState {
     </table>
     <sm-modal title="建立使用者精靈" class="basic" #newuser_wizard>
       <modal-content>
-        <wizard (finish)="wizardCreateUser()" #newuser_wizard_comp>
+        <wizard #newuser_wizard_comp>
           <step name="基本資料" [canNext]="basicInfoForm.valid">
             <form class="ui form" #basicInfoForm="ngForm">
               <div class="ui field">
@@ -180,6 +175,7 @@ enum UserState {
 export class UsersListComponent implements OnInit {
   private loading: boolean
   private loadingError: any
+  private shouldResetOnNextLoad: boolean = true
 
   // 新增狀態
   private creating: boolean
@@ -241,6 +237,20 @@ export class UsersListComponent implements OnInit {
     }
   }
   private showWizard() {
+    if (this.shouldResetOnNextLoad) {
+      this.wizardData = {
+        email: "@cc.ncue.edu.tw",
+        name: "",
+        group: null,
+        roles: [],
+        rolesString: "",
+        units: null,
+        selectedUnit: null,
+        canFinish: true,
+        wizardTasks: []
+      }
+      this.wizardComponent.reset()
+    }
     this.newUserWizardModal.show({
       onHide: this.wizardCanHide.bind(this),
       closable: false,
@@ -313,18 +323,6 @@ export class UsersListComponent implements OnInit {
     }
   }
   private async wizardCreateUser() {
-    this.wizardComponent.reset()
-    this.wizardData = {
-      email: "",
-      name: "",
-      group: null,
-      roles: [],
-      rolesString: "",
-      units: null,
-      selectedUnit: null,
-      canFinish: true,
-      wizardTasks: []
-    }
     this.wizardData.canFinish = false
 
     this.wizardData.wizardTasks = [

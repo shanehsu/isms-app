@@ -65,7 +65,9 @@ export class WizardComponent implements AfterContentInit {
   private get finished() { return this.__finished }
   private set finished(newValue: boolean) {
     this.__finished = newValue
-    this.onFinished.emit()
+    if (newValue) {
+      this.onFinished.emit()
+    }
   }
   public ngAfterContentInit() {
     this.reset()
@@ -76,6 +78,9 @@ export class WizardComponent implements AfterContentInit {
 
     this.hasDescription = this.steps.reduce((prev, cur) => prev || cur.description !== undefined, false)
     this.totalStep = this.steps.length
+
+    this.currentStep = 0
+    this.finished = false
   }
   private prev() {
     this.steps.toArray()[this.currentStep].active = false
