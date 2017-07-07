@@ -7,7 +7,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
-    "noImplicitAny": false,
     "outDir": "dist",
     "lib": [
       "dom",
@@ -17,6 +16,9 @@
       "es2015.core",
       "es2017.object",
       "es2016.array.include"
+    ],
+    "typeRoots": [
+      "./../node_modules/@types"
     ]
   },
   "exclude": [

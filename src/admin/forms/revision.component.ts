@@ -2,7 +2,7 @@
 import { Self, Input, Output, Component, EventEmitter, OnInit, OnChanges, forwardRef, AfterViewInit, ViewChildren, QueryList } from '@angular/core'
 import { ControlValueAccessor, NgModel } from '@angular/forms'
 
-import 'htmlmixed'
+// import 'codemirror/mode/htmlmixed'
 
 // 服務
 import { FormService } from './../../services/form.service'

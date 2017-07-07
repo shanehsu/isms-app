@@ -3,8 +3,8 @@
 import { Config } from './types/config'
 
 export var config: Config = {
-  endpoint: '$$endpoint$$',
-  ssoUrl: '$$ssourl$$',
+  endpoint: 'http://127.0.0.1:10000/api/v2', //'$$endpoint$$',
+  ssoUrl: 'http://127.0.0.1:10000/sso',
   navigationItems: [
     {
       name: "最新消息",
