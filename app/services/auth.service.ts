@@ -20,15 +20,16 @@ export class AuthService {
 
     this.token = new BehaviorSubject<string>(localStorage.getItem('token'))
     this.isLoading = new BehaviorSubject<boolean>(false)
+
+    let self = this
+    window.addEventListener('storage', (event: StorageEvent) => {
+      if (event.key === "token") {
+        self.token.next(event.newValue)
+      }
+    })
   }
   login_sso() {
-    let ending = ''
-    if (window.location.href.includes('?')) {
-      ending = '&sso=true&token='
-    } else {
-      ending = '?sso=true&token='
-    }
-    window.location.href = this.ssoUrl + '?redirectUrl=' + encodeURIComponent(window.location.href + ending)
+    window.open(this.ssoUrl)
   }
   authenticate_sso(token: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {

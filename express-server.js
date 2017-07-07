@@ -7,14 +7,14 @@ let app = express()
 
 let port = process.env.PORT ? +(process.env.PORT) : 3001
 let default_host = process.env.HOST ? process.env.HOST : '10.0.0.219:80'
-let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : `http://${default_host}`
-let ssoUrl = process.env.SSOURL ? process.env.SSOURL : `http://${default_host}/sso`
+let endpoint = process.env.ENDPOINT ? process.env.ENDPOINT : `http://${default_host}/api/v2`
+let ssoUrl = process.env.SSOURL ? process.env.SSOURL : `http://${default_host}/sso/index.php?redirect=${endpoint}/login/sso`
 
 app.get('/dist/app.config.js', (req, res, next) => {
   fs.readFile(`${__dirname}/dist/app.config.js`, 'utf8', (err, data) => {
     if (err) { console.dir(err); next(err); return; }
     res.contentType('application/javascript').send(
-      data.replace('$$endpoint$$', `${endpoint}/api/v2`)
+      data.replace('$$endpoint$$', `${endpoint}`)
         .replace('$$ssourl$$', `${ssoUrl}`)
     )
   })
@@ -39,7 +39,7 @@ module.exports = {
 
 if (require.main === module) {
   let parent = express()
-  parent.use('/app', app)
+  parent.use(app)
 
   var server = http.createServer(parent)
   server.listen(port, err => {

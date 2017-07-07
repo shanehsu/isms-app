@@ -22,9 +22,8 @@ import { SemanticModalComponent } from 'ng-semantic'
     </sm-dropdown>
     
     <ng-template [ngIf]="user == undefined">
-      <div *ngIf="!loading" class="right item">
-        <div class="ui green button" (click)="chooseLoginMethodModal.show()">登入</div>
-      </div>
+      <a *ngIf="!loading" class="right link item" (click)="chooseLoginMethodModal.show()">登入</a>
+      <!-- <div class="ui green button" (click)="chooseLoginMethodModal.show()">登入</div> -->
       <a class="right item" *ngIf="loading">載入中</a>
     </ng-template>
     <div class="right menu" *ngIf="user != undefined && !loading">
@@ -179,6 +178,8 @@ export class NavigationComponent implements OnInit {
       } else {
         this.navigationItems = this.config.navigationItems.filter(item => item.group.includes('guests'))
       }
+
+      this.loginMethodModal.hide()
     })
     this.meService.isLoading.subscribe(_ => {
       this.loading = this.meService.isLoading.getValue() || this.authService.isLoading.getValue()
@@ -248,7 +249,7 @@ export class NavigationComponent implements OnInit {
     })
   }
   submit_register_standalone(): void {
-    console.dir(this.registerInfo)
+    // console.dir(this.registerInfo)
     this.authService.register(this.registerInfo.name, this.registerInfo.email, this.registerInfo.password).then(_ => {
       this.registerSuccessModal.show()
       this.standaloneRegisterModal.hide()
